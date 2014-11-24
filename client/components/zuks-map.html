@@ -1,0 +1,40 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
+
+<link rel="import" href="zuks-service.html">
+
+<polymer-element name="zuks-map">
+  <template>
+    <style>
+    :host {
+      
+    }
+
+    leaflet-map {
+      width: 100%;
+      height: 100%;
+    }
+    </style>
+    
+    <zuks-service volunteers="{{volunteers}}"></zuks-service>
+    
+    <leaflet-map
+      longitude="8.238611"
+      latitude="50.083056"
+      zoom="14">
+        <template repeat="{{volunteer in volunteers}}">
+          <leaflet-marker longitude="{{volunteer.location.longitude}}" 
+                        latitude="{{volunteer.location.latitude}}">
+            {{volunteer.first_name}} {{volunteer.last_name}}
+          </leaflet-marker>
+        </template>
+        
+    </leaflet-map>
+
+  </template>
+  <script>
+  Polymer({
+
+  });
+  </script>
+</polymer-element>
