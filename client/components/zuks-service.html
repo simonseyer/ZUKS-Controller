@@ -20,6 +20,19 @@
     created: function() {
       this.volunteers = [];
     },
+    addVolunteer: function(volunteer) {
+      var self = this;
+      $.ajax({
+        url:"http://localhost:8000/volunteers/",
+        type:"POST",
+        data:JSON.stringify(volunteer),
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+        success: function(data){
+          self.volunteers.push(data);
+        }
+      });
+    },
     volunteersLoaded: function() {
       this.volunteers = this.$.volunteers.response.slice(0);
     }
