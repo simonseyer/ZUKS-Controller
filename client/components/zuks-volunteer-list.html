@@ -1,0 +1,35 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+
+<polymer-element name="zuks-volunteer-list" attributes="volunteers">
+  <template>
+    <style>
+    :host {
+      display: block;
+      height: 100%;
+      overflow: scroll;
+    }
+
+    .song-entry-container {
+      background-color: white;
+      margin: 5px;
+      padding: 10px;
+      min-width: 200px;
+    }
+
+    </style>
+    
+    <template repeat="{{volunteer in volunteers}}">
+      <div class="song-entry-container" layout horizontal center>
+        <paper-shadow z="1"></paper-shadow>
+        <div>{{volunteer.first_name}} {{volunteer.last_name}}</div>
+      </div>
+    </template>
+
+  </template>
+  <script>
+  Polymer({
+  });
+  </script>
+</polymer-element>
