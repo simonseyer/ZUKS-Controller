@@ -1,13 +1,12 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
 
-<link rel="import" href="zuks-service.html">
-
-<polymer-element name="zuks-map">
+<polymer-element name="zuks-map" attributes="volunteers">
   <template>
     <style>
     :host {
-      
+      display: block;
+      height: 100%;
     }
 
     leaflet-map {
@@ -15,8 +14,6 @@
       height: 100%;
     }
     </style>
-    
-    <zuks-service volunteers="{{volunteers}}"></zuks-service>
     
     <leaflet-map
       longitude="8.238611"

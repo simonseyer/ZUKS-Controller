@@ -1,0 +1,37 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-action-dialog.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-decorator.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="zuks-service.html">
+<link rel="import" href="zuks-map.html">
+<link rel="import" href="zuks-volunteer-list.html">
+
+<polymer-element name="zuks-app">
+  <template>
+    <style>
+    :host {
+      
+    }
+
+    .container {
+      height: 100%;
+      background-color: #fff;
+    }
+
+    </style>
+    
+    <zuks-service volunteers="{{volunteers}}" id="service"></zuks-service>
+    
+    <div class="container" layout horizontal>
+      <zuks-map flex volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}"></zuks-map>
+      <zuks-volunteer-list volunteers="{{volunteers}}"></zuks-volunteer-list>
+    </div>
+    
+
+  </template>
+  <script>
+  Polymer({
+  });
+  </script>
+</polymer-element>
