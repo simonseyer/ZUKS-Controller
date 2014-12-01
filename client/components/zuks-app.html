@@ -27,11 +27,34 @@
       <zuks-map flex volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}"></zuks-map>
       <zuks-volunteer-list volunteers="{{volunteers}}"></zuks-volunteer-list>
     </div>
+
+    <paper-action-dialog heading="Freiwilligen hinzufügen" id="addVolunteer" backdrop="true">
+        <paper-input-decorator label="Vorname">
+          <input is="core-input" value="{{volunteer.first_name}}" autofocus />
+        </paper-input-decorator>
+        <paper-input-decorator label="Nachname">
+          <input is="core-input" value="{{volunteer.last_name}}" />
+        </paper-input-decorator>
+
+        <paper-button affirmative>Abbrechen</paper-button>
+        <paper-button affirmative on-click="{{saveVolunteer}}">Speichern</paper-button>
+    </paper-action-dialog>
     
 
   </template>
   <script>
   Polymer({
+    volunteerAdded: function(volunteerLocation) {
+      this.volunteer = {
+        first_name: "",
+        last_name: "",
+        location: volunteerLocation.detail
+      }
+      this.$.addVolunteer.open();
+    },
+    saveVolunteer: function() {
+      this.$.service.addVolunteer(this.volunteer);
+    }
   });
   </script>
 </polymer-element>

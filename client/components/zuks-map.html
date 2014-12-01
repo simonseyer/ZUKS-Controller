@@ -18,7 +18,9 @@
     <leaflet-map
       longitude="8.238611"
       latitude="50.083056"
-      zoom="14">
+      zoom="14"
+      id="map"
+      on-contextmenu="{{clickedRight}}">
         <template repeat="{{volunteer in volunteers}}">
           <leaflet-marker longitude="{{volunteer.location.longitude}}" 
                         latitude="{{volunteer.location.latitude}}">
@@ -31,7 +33,14 @@
   </template>
   <script>
   Polymer({
-
+    clickedRight: function(e) {
+      if (e.detail && e.detail.latlng) {
+        this.fire('volunteer-added', {
+          latitude: e.detail.latlng.lat,
+          longitude: e.detail.latlng.lng
+        });
+      }
+    }
   });
   </script>
 </polymer-element>
