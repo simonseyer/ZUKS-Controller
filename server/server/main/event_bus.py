@@ -1,9 +1,9 @@
 import re
 
-class MessageBus:
-  '''Simple message bus implementation
+class EventBus:
+  '''Simple event bus implementation
 
-  Message bus for event subscribtion. An event contains
+  Bus for event subscribtion. An event contains
   of a key and a value. The value could be any
   type. The receiver is able to distinct the value's type
   by evaluating the event key.
@@ -14,7 +14,7 @@ class MessageBus:
 
   Example: user_add, user_update, user_delete. 
 
-  A message handler now could subscribe to 'user_.*'. By
+  A event handler now could subscribe to 'user_.*'. By
   evaluating this key pattern with regex, all events that 
   start with 'user_' are transmitted to the handler. 
 
@@ -23,7 +23,7 @@ class MessageBus:
   '''
 
   def __init__(self):
-    '''Create a message bus'''
+    '''Create a event bus'''
     self.handler = set()
 
   def addHandler(self, key_pattern, func):
@@ -36,7 +36,7 @@ class MessageBus:
     key_pattern -- the regex pattern as string to filter events
     func        -- the function to be called when an event occurs
     '''
-    self.handler.add(MessageHandler(key_pattern, func))
+    self.handler.add(EventHandler(key_pattern, func))
 
   def removeHandler(self, key_pattern=None, func=None):
     '''Remove an event handler
@@ -65,11 +65,11 @@ class MessageBus:
     for handler in self.handler:
       handler(key, value)
 
-class MessageHandler:
+class EventHandler:
   '''Wrapper class for event handling functions'''
 
   def __init__(self, key_pattern, func):
-    '''Create a message handler
+    '''Create a event handler
 
     Keyword arguments:
     key_pattern -- the regex pattern as string to filter events
@@ -105,13 +105,13 @@ class MessageHandler:
     key_matches = not key_pattern or key_pattern == self.raw_key_pattern
     return func_matches and key_matches
 
-class MessageBusLogger:
+class EventBusLogger:
 
-  def __init__(self, message_bus):
+  def __init__(self, event_bus):
     import logging
     self.logger = logging.getLogger(__name__)
 
-    message_bus.addHandler('.*', self.log)
+    event_bus.addHandler('.*', self.log)
 
 
   def log(self, key, value):

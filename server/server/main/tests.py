@@ -1,17 +1,17 @@
 from django.test import TestCase
 
-from server.main.message_bus import MessageBus
+from server.main.event_bus import EventBus
 
-class MessageBusTestCase(TestCase):
+class EventBusTestCase(TestCase):
   def setUp(self):
-    self.message_bus = MessageBus()
+    self.event_bus = EventBus()
     self.eventKey = None
     self.eventObject = None
 
   def test_simple_key(self):
-    self.message_bus.addHandler('test', self.simple_key_handler)
+    self.event_bus.addHandler('test', self.simple_key_handler)
 
-    self.message_bus('test', None)
+    self.event_bus('test', None)
 
     self.assertEqual(self.eventKey, 'test')
 
@@ -20,35 +20,35 @@ class MessageBusTestCase(TestCase):
     self.eventObject = value
 
   def test_regex_key(self):
-    self.message_bus.addHandler('test_.*', self.simple_key_handler)
+    self.event_bus.addHandler('test_.*', self.simple_key_handler)
 
-    self.message_bus('test_fu', None)
+    self.event_bus('test_fu', None)
 
     self.assertEqual(self.eventKey, 'test_fu')
 
   def test_value_parameter(self):
-    self.message_bus.addHandler('test', self.simple_key_handler)
+    self.event_bus.addHandler('test', self.simple_key_handler)
 
-    self.message_bus('test', self)
+    self.event_bus('test', self)
 
     self.assertEqual(self.eventObject, self)
 
   def test_remove_handler(self):
-    self.message_bus.addHandler('test', self.simple_key_handler)
-    self.message_bus.removeHandler('test', self.simple_key_handler)
+    self.event_bus.addHandler('test', self.simple_key_handler)
+    self.event_bus.removeHandler('test', self.simple_key_handler)
 
-    self.message_bus('test', None)
+    self.event_bus('test', None)
 
     self.assertEqual(self.eventKey, None)
 
   def test_remove_handler_func(self):
-    self.message_bus.addHandler('test', self.simple_key_handler)
-    self.message_bus.addHandler('fu', self.simple_key_handler)
+    self.event_bus.addHandler('test', self.simple_key_handler)
+    self.event_bus.addHandler('fu', self.simple_key_handler)
 
-    self.message_bus.removeHandler(None, self.simple_key_handler)
+    self.event_bus.removeHandler(None, self.simple_key_handler)
 
-    self.message_bus('test', None)
+    self.event_bus('test', None)
     self.assertEqual(self.eventKey, None)
 
-    self.message_bus('fu', None)
+    self.event_bus('fu', None)
     self.assertEqual(self.eventKey, None)
