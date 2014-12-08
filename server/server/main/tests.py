@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .message_bus import MessageBus
+from server.main.message_bus import MessageBus
 
 class MessageBusTestCase(TestCase):
   def setUp(self):
