@@ -26,7 +26,7 @@ class WebsocketHandler(tornado.websocket.WebSocketHandler):
 
 application = tornado.web.Application([
   (r"/ws", WebsocketHandler),
-  (r"/notfiy", MainHandler),
+  (r"/notify", MainHandler),
 ])
 
 if __name__ == "__main__":
