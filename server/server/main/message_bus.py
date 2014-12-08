@@ -104,3 +104,15 @@ class MessageHandler:
     func_matches = not func or func == self.func
     key_matches = not key_pattern or key_pattern == self.raw_key_pattern
     return func_matches and key_matches
+
+class MessageBusLogger:
+
+  def __init__(self, message_bus):
+    import logging
+    self.logger = logging.getLogger(__name__)
+
+    message_bus.addHandler('.*', self.log)
+
+
+  def log(self, key, value):
+    self.logger.info("%s: %s" % (key, value))
