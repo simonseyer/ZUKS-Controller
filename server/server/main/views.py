@@ -1,5 +1,5 @@
 from server.main.models import Volunteer, Location
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from server.main.serializers import VolunteerSerializer
 from server.main.event_bus import EventBus, EventBusLogger
 
@@ -15,15 +15,18 @@ class VolunteerViewSet(viewsets.ModelViewSet):
 
   def create(self, request):
     result = super().create(request)
-    default_event_bus('volunteer.created', result.data)
+    if status.is_success(result.status_code):
+      default_event_bus('volunteer.created', result.data)
     return result
 
   def update(self, request, pk=None):
     result = super().update(request)
-    default_event_bus('volunteer.update', result.data)
+    if status.is_success(result.status_code):
+      default_event_bus('volunteer.update', result.data)
     return result
 
   def partial_update(self, request, pk=None):
     result = super().partial_update(request)
-    default_event_bus('volunteer.update', result.data)
+    if status.is_success(result.status_code):
+      default_event_bus('volunteer.update', result.data)
     return result
