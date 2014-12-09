@@ -106,8 +106,14 @@ class EventHandler:
     return func_matches and key_matches
 
 class EventBusLogger:
+  '''A simple logger that captures all event bus events'''
 
   def __init__(self, event_bus):
+    '''Create a new event bus logger
+
+    Keyword arguments:
+    event_bus -- the event bus to observe
+    '''
     import logging
     self.logger = logging.getLogger(__name__)
 
@@ -115,4 +121,9 @@ class EventBusLogger:
 
 
   def log(self, key, value):
+    '''Callback method for the event bus
+
+    key   -- the key, that identifies the event
+    value -- a value, that is passed to the handler
+    '''
     self.logger.info("%s: %s" % (key, value))
