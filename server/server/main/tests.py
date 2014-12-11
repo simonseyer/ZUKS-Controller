@@ -4,7 +4,7 @@ from server.main.event_bus import EventBus
 
 class EventBusTestCase(TestCase):
   def setUp(self):
-    self.event_bus = EventBus()
+    self.event_bus = EventBus(False)
     self.eventKey = None
     self.eventObject = None
 

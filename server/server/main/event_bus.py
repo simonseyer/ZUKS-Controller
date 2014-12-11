@@ -23,9 +23,14 @@ class EventBus:
   the receiver could expect to get a user object as value. 
   '''
 
-  def __init__(self):
-    '''Create a event bus'''
+  def __init__(self, async=True):
+    '''Create a event bus
+
+    Keyword arguments:
+    async -- if true, all handlers are executed in a separate thread (default: True)    
+    '''
     self.handler = set()
+    self.async = async
 
   def addHandler(self, key_pattern, func):
     '''Add a new event handler
@@ -63,7 +68,10 @@ class EventBus:
     key   -- the key, that identifies the event
     value -- a value, that should by passed to the handler
     '''
-    Thread(target=self.__fire, args=(key, value)).start()
+    if self.async:
+      Thread(target=self.__fire, args=(key, value)).start()
+    else:
+      self.__fire(key, value)
 
   def __fire(self, key, value):
     '''Submit a new event
@@ -73,7 +81,10 @@ class EventBus:
     value -- a value, that should by passed to the handler
     '''
     for handler in self.handler:
-      Thread(target=handler, args=(key, value)).start()
+      if self.async:
+        Thread(target=handler, args=(key, value)).start()
+      else:
+        handler(key, value)
 
 class EventHandler:
   '''Wrapper class for event handling functions'''
