@@ -17,8 +17,10 @@
   </template>
   <script>
   Polymer({
+    volunteers: [],
+    ws: null,
     created: function() {
-      this.volunteers = [];
+      this.initWebSocket();
     },
     addVolunteer: function(volunteer) {
       var self = this;
@@ -29,12 +31,37 @@
         contentType:"application/json; charset=utf-8",
         dataType:"json",
         success: function(data){
-          self.volunteers.push(data);
+
         }
       });
     },
     volunteersLoaded: function() {
       this.volunteers = this.$.volunteers.response.slice(0);
+    },
+    initWebSocket: function() {
+      var self = this;
+
+      self.ws = new WebSocket('ws://localhost:8888/ws');
+      self.ws.onopen = function() {
+        console.log("Webservice connected");
+      };
+      self.ws.onmessage = function(msg) {
+        console.log("Recieved message: " + msg.data);
+
+        object = JSON.parse(msg.data);
+
+        var event_function = eval("self.event_handler." + object.event);
+        if (event_function) {
+          event_function(self, object.data);
+        } else {
+          console.warn("No handler registered for event: " + object.event)
+        }
+      };
+    },
+    event_handler: {
+      volunteer_create: function(self, volunteer) {
+        self.volunteers.push(volunteer)
+      }
     }
   });
   </script>
