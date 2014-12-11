@@ -97,6 +97,8 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+# Logging
+
 LOGGING = {
     'version': 1,
     'handlers': {
@@ -110,3 +112,8 @@ LOGGING = {
         'level': 'INFO'
     }
 }
+
+# Web Socket Service
+
+WEB_SOCKET_SERVICE_URL = r'http://localhost:8888/notify'
+
