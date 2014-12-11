@@ -2,9 +2,11 @@ from server.main.models import Volunteer, Location
 from rest_framework import viewsets, status
 from server.main.serializers import VolunteerSerializer
 from server.main.event_bus import EventBus, EventBusLogger
+from server.main.web_notifier import WebNotifier
 
 default_event_bus = EventBus()
 logger = EventBusLogger(default_event_bus)
+web_notifier = WebNotifier(default_event_bus)
 
 class VolunteerViewSet(viewsets.ModelViewSet):
   """
