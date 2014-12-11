@@ -48,5 +48,5 @@ class WebNotifier:
     obj -- The object, that should be converted
     '''
     if isinstance(obj, Decimal):
-      return str(obj)
+      return float(obj)
     raise TypeError
