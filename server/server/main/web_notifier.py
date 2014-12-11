@@ -31,8 +31,12 @@ class WebNotifier:
     key   -- the key, that identifies the event
     value -- a value, that is passed to the handler. Has to be serializable to JSON:
     '''
-    jsonContent = json.dumps(value, default=WebNotifier.decimal_default)
-    requests.post(WebNotifier.WEB_SOCKET_SERVICE_URL, data=jsonContent)
+    jsonContent = {
+      'event' : key,
+      'data' : value
+    }
+    jsonData = json.dumps(jsonContent, default=WebNotifier.decimal_default)
+    requests.post(WebNotifier.WEB_SOCKET_SERVICE_URL, data=jsonData)
 
   def decimal_default(obj):
     '''Converter rule for Decimals
