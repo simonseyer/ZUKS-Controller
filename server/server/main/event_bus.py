@@ -123,6 +123,7 @@ class EventBusLogger:
   def log(self, key, value):
     '''Callback method for the event bus
 
+    Keyword arguments:
     key   -- the key, that identifies the event
     value -- a value, that is passed to the handler
     '''
