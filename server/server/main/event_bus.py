@@ -1,4 +1,5 @@
 import re
+from threading import Thread
 
 class EventBus:
   '''Simple event bus implementation
@@ -62,8 +63,17 @@ class EventBus:
     key   -- the key, that identifies the event
     value -- a value, that should by passed to the handler
     '''
+    Thread(target=self.__fire, args=(key, value)).start()
+
+  def __fire(key, value):
+    '''Submit a new event
+
+    Keyword arguments:
+    key   -- the key, that identifies the event
+    value -- a value, that should by passed to the handler
+    '''
     for handler in self.handler:
-      handler(key, value)
+      Thread(target=handler, args=(key, value)).start()
 
 class EventHandler:
   '''Wrapper class for event handling functions'''
