@@ -10,6 +10,8 @@ class MainHandler(tornado.web.RequestHandler):
     global clients
     for client in clients:
       client.write_message(self.request.body)
+    print("Forwarded message to %i clients: %s" % 
+          (len(clients), self.request.body))
 
 class WebsocketHandler(tornado.websocket.WebSocketHandler):
 
@@ -19,10 +21,14 @@ class WebsocketHandler(tornado.websocket.WebSocketHandler):
   def open(self):
     global clients
     clients.add(self)
+    print("New client has CONNECTED. Client count: %i" % 
+          (len(clients),))
 
   def on_close(self):
     global clients
     clients.remove(self)
+    print("Client has DISCONNECTED. Client count: %i" % 
+          (len(clients),))
 
 application = tornado.web.Application([
   (r"/ws", WebsocketHandler),
