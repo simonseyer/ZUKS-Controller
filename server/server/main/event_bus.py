@@ -65,7 +65,7 @@ class EventBus:
     '''
     Thread(target=self.__fire, args=(key, value)).start()
 
-  def __fire(key, value):
+  def __fire(self, key, value):
     '''Submit a new event
 
     Keyword arguments:
