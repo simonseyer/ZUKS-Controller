@@ -18,7 +18,6 @@
     "polymer": "Polymer/polymer#~0.5.1",
     "core-elements": "Polymer/core-elements#~0.5.1",
     "leaflet-map": "~0.3.1",
-    "polymer-platform": "~0.4.2",
     "paper-elements": "Polymer/paper-elements#~0.5.1",
     "i18next": "~1.7.7"
   }
