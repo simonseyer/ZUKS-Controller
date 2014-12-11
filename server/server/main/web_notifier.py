@@ -3,6 +3,34 @@ import json
 from decimal import Decimal
 from django.conf import settings
 
+class WebsocketService:
+  '''Interface to reach the websocket service'''
+
+  def send(self, data):
+    '''Send data to the websocket service
+
+    Keyword arguments:
+    data -- the encoded data that should be sent
+    '''
+    raise NotImplementedError("Should have implemented this")
+
+class DefaultWebsocketService(WebsocketService):
+  '''Default implemention of the websocket service interface
+
+  This implementation send the data via post request to the url
+  configured in the settings.py.
+  '''
+
+  WEB_SOCKET_SERVICE_URL = getattr(settings, "WEB_SOCKET_SERVICE_URL", None)
+
+  def send(self, data):
+    '''Send data to the websocket service
+
+    Keyword arguments:
+    data -- the encoded data that should be sent
+    '''
+    requests.post(DefaultWebsocketService.WEB_SOCKET_SERVICE_URL, data=data)
+
 class WebNotifier:
   ''' Forwards events to web clients over an websocket service
 
@@ -11,15 +39,15 @@ class WebNotifier:
   the clients.
   '''
 
-  WEB_SOCKET_SERVICE_URL = getattr(settings, "WEB_SOCKET_SERVICE_URL", None)
-
-  def __init__(self, event_bus):
+  def __init__(self, event_bus, websocket_service=DefaultWebsocketService()):
     '''Create a new web notifier
 
     Keyword arguments:
     event_bus -- the event bus to observe
+    websocket_service -- the interface to send messages to the websocket service
     '''
     event_bus.addHandler('.*', self.handleEvent)
+    self.websocket_service = websocket_service
 
   def handleEvent(self, key, value):
     '''Callback method for the event bus
@@ -36,7 +64,7 @@ class WebNotifier:
       'data' : value
     }
     jsonData = json.dumps(jsonContent, default=WebNotifier.decimal_default)
-    requests.post(WebNotifier.WEB_SOCKET_SERVICE_URL, data=jsonData)
+    self.websocket_service.send(jsonData)
 
   def decimal_default(obj):
     '''Converter rule for Decimals
