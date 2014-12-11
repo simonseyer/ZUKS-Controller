@@ -18,17 +18,17 @@ class VolunteerViewSet(viewsets.ModelViewSet):
   def create(self, request):
     result = super().create(request)
     if status.is_success(result.status_code):
-      default_event_bus('volunteer.created', result.data)
+      default_event_bus('volunteer_create', result.data)
     return result
 
   def update(self, request, pk=None):
     result = super().update(request)
     if status.is_success(result.status_code):
-      default_event_bus('volunteer.update', result.data)
+      default_event_bus('volunteer_update', result.data)
     return result
 
   def partial_update(self, request, pk=None):
     result = super().partial_update(request)
     if status.is_success(result.status_code):
-      default_event_bus('volunteer.update', result.data)
+      default_event_bus('volunteer_update', result.data)
     return result
