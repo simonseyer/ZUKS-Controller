@@ -36,6 +36,5 @@
   },
   "_source": "git://github.com/nhnb/leaflet-map.git",
   "_target": "~0.3.1",
-  "_originalSource": "leaflet-map",
-  "_direct": true
+  "_originalSource": "leaflet-map"
 }

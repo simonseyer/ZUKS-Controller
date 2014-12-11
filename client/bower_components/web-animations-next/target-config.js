@@ -8,7 +8,7 @@
       'src/effect.js',
       'src/property-interpolation.js',
       'src/animation.js',
-      'src/apply.js',
+      'src/apply-preserving-inline-style.js',
       'src/element-animatable.js',
       'src/interpolation.js',
       'src/matrix-interpolation.js',
@@ -25,7 +25,9 @@
       'src/transform-handler.js',
       'src/font-weight-handler.js',
       'src/position-handler.js',
-      'src/shape-handler.js'];
+      'src/shape-handler.js',
+      'src/property-names.js',
+  ];
 
   var liteMinifillSrc = [
       'src/animation-node.js',
@@ -44,12 +46,16 @@
       'src/color-handler.js',
       'src/dimension-handler.js',
       'src/box-handler.js',
-      'src/transform-handler.js'];
+      'src/transform-handler.js',
+      'src/property-names.js',
+  ];
 
 
   var sharedSrc = [
       'src/timing-utilities.js',
-      'src/normalize-keyframes.js'];
+      'src/normalize-keyframes.js',
+      'src/deprecation.js',
+  ];
 
   var maxifillSrc = [
       'src/timeline.js',
@@ -60,6 +66,7 @@
 
   var minifillTest = [
       'test/js/animation-node.js',
+      'test/js/apply-preserving-inline-style.js',
       'test/js/box-handler.js',
       'test/js/color-handler.js',
       'test/js/dimension-handler.js',
