@@ -9,3 +9,5 @@ class Volunteer(models.Model):
   last_name = models.CharField(max_length=30)
   location = models.OneToOneField(Location)
 
+  def __unicode__(self):
+    return u"%s %s" % (self.first_name, self.last_name)
