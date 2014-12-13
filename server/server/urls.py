@@ -6,6 +6,7 @@ from server.main import views
 
 router = routers.DefaultRouter()
 router.register(r'volunteers', views.VolunteerViewSet)
+router.register(r'volunteer_groups', views.VolunteerGroupViewSet)
 
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),

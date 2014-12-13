@@ -1,6 +1,6 @@
-from server.main.models import Volunteer, Location
+from server.main.models import Volunteer, VolunteerGroup, Location
 from rest_framework import viewsets, status
-from server.main.serializers import VolunteerSerializer
+from server.main.serializers import VolunteerSerializer, VolunteerGroupSerializer
 from server.main.event_bus import EventBus, EventBusLogger
 from server.main.web_notifier import WebNotifier
 
@@ -56,3 +56,10 @@ class VolunteerViewSet(EventViewSet):
   serializer_class = VolunteerSerializer
   event_key = "volunteer"
 
+class VolunteerGroupViewSet(EventViewSet):
+  """
+  API endpoint for volunteer groups
+  """
+  queryset = VolunteerGroup.objects.all()
+  serializer_class = VolunteerGroupSerializer
+  event_key = "volunteerGroup"
