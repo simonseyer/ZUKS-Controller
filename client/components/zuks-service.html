@@ -1,42 +1,55 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 
-<polymer-element name="zuks-service" attributes="volunteers">
+<polymer-element name="zuks-service" attributes="volunteers volunteerGroups">
   <template>
     <style>
     :host {
       display: none;
     }
     </style>
-    <core-ajax id="volunteers"
-      auto
-      url="http://localhost:8000/volunteers/?format=json"
-      on-core-response="{{volunteersLoaded}}"
-      handleAs="json">
-    </core-ajax>
   </template>
   <script>
   Polymer({
     volunteers: [],
+    volunteerGroups: [],
     ws: null,
     created: function() {
       this.initWebSocket();
-    },
-    addVolunteer: function(volunteer) {
       var self = this;
-      $.ajax({
-        url:"http://localhost:8000/volunteers/",
-        type:"POST",
-        data:JSON.stringify(volunteer),
-        contentType:"application/json; charset=utf-8",
-        dataType:"json",
-        success: function(data){
-
-        }
+      this.get('volunteerGroups', function(response) {
+        self.volunteerGroups = [];
+        self.volunteers = [];
+        $(response).each(function() {
+          var group = this;
+          self.get('volunteerGroups/' + this.id + "/members", function(resp) {
+            group.members = resp;
+            self.volunteerGroups = self.volunteerGroups.concat(group);
+            self.volunteers = self.volunteers.concat(resp);
+          });
+        })
       });
     },
-    volunteersLoaded: function() {
-      this.volunteers = this.$.volunteers.response.slice(0);
+    post: function(type, object) {
+      $.ajax({
+        url:"http://localhost:8000/" + type + "/",
+        type:"POST",
+        data:JSON.stringify(object),
+        contentType:"application/json; charset=utf-8",
+        dataType:"json"
+      });
+    },
+    get: function(url, callback) {
+      $.ajax({
+        url:"http://localhost:8000/" + url + "/",
+        type:"GET",
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+        success: callback
+      });
+    },
+    addVolunteer: function(volunteer) {
+      this.post('volunteers', volunteer);
     },
     initWebSocket: function() {
       var self = this;

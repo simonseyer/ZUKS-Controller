@@ -1,8 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 
-<polymer-element name="zuks-volunteer-list" attributes="volunteers">
+<polymer-element name="zuks-volunteer-list" attributes="volunteerGroups">
   <template>
     <style>
     :host {
@@ -11,25 +14,63 @@
       overflow: scroll;
     }
 
-    .song-entry-container {
-      background-color: white;
-      margin: 5px;
-      padding: 10px;
-      min-width: 200px;
+    core-list {
+      height: calc(100% - 30px);
+      width: 300px;
+      
+    }
+
+    .item {
+      height: 70px;
+      padding-right: 20px;
+      padding-left: 20px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    .container, paper-shadow {
+      height: 100%;
+    }
+
+    .divider {
+      color: #888;
+      padding-left: 20px;
+      padding-top: 10px;
+    }
+
+    .content {
+      padding-left: 10px; 
     }
 
     </style>
-    
-    <template repeat="{{volunteer in volunteers}}">
-      <div class="song-entry-container" layout horizontal center>
-        <paper-shadow z="1"></paper-shadow>
-        <div>{{volunteer.first_name}} {{volunteer.last_name}}</div>
-      </div>
-    </template>
+
+    <core-list data="{{volunteers}}" groups="{{volunteerGroups}}" height="70" >
+      <template>
+        <div divider class="divider">{{groupModel.name}}</div>
+        <div class="item">
+          <paper-shadow>
+            <div horizontal layout center class="container">
+            <div class="content">{{model.first_name}} {{model.last_name}}</div>
+          </div>
+          <paper-ripple fit></paper-ripple>
+          </paper-shadow>
+        </div>
+      </template>
+    </core-list>
 
   </template>
   <script>
   Polymer({
+    volunteers: [],
+    volunteerGroupsChanged: function(oldValue, newValue) {
+      var volunteers = [];
+      $(newValue).each(function() {
+        volunteers.push(this.members);
+      });
+      this.volunteers = volunteers;
+      console.log(this.volunteerGroups);
+      console.log(this.volunteers);
+    },
   });
   </script>
 </polymer-element>
