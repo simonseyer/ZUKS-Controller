@@ -1,5 +1,7 @@
 from server.main.models import Volunteer, VolunteerGroup, Location
 from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import detail_route
 from server.main.serializers import VolunteerSerializer, VolunteerGroupSerializer
 from server.main.event_bus import EventBus, EventBusLogger
 from server.main.web_notifier import WebNotifier
@@ -63,3 +65,9 @@ class VolunteerGroupViewSet(EventViewSet):
   queryset = VolunteerGroup.objects.all()
   serializer_class = VolunteerGroupSerializer
   event_key = "volunteerGroup"
+
+  @detail_route()
+  def members(self, request, pk=None):
+    volunteers = self.get_object().members.all()
+    serializer = VolunteerSerializer(volunteers, many=True)
+    return Response(serializer.data)
