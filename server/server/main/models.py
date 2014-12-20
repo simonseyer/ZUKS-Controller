@@ -11,7 +11,7 @@ class Location(models.Model):
   longitude = models.DecimalField(decimal_places=18, max_digits=20)
 
   def __str__(self):
-    return u"%d %d" % (self.latitude, self.longitude)
+    return "%d %d" % (self.latitude, self.longitude)
 
 class Volunteer(models.Model):
   first_name = models.CharField(max_length=30)
@@ -20,4 +20,4 @@ class Volunteer(models.Model):
   group = models.ForeignKey(VolunteerGroup, null=True, related_name='member')
 
   def __str__(self):
-    return u"%s %s" % (self.first_name, self.last_name)
+    return "%s %s" % (self.first_name, self.last_name)
