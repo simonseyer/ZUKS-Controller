@@ -13,9 +13,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Location',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
-                ('latitude', models.DecimalField(max_digits=11, decimal_places=8)),
-                ('longitude', models.DecimalField(max_digits=11, decimal_places=8)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
+                ('latitude', models.DecimalField(max_digits=20, decimal_places=18)),
+                ('longitude', models.DecimalField(max_digits=20, decimal_places=18)),
             ],
             options={
             },
@@ -24,13 +24,34 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Volunteer',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('first_name', models.CharField(max_length=30)),
                 ('last_name', models.CharField(max_length=30)),
-                ('location', models.OneToOneField(to='main.Location')),
             ],
             options={
             },
             bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='VolunteerGroup',
+            fields=[
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
+                ('name', models.CharField(max_length=30)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='volunteer',
+            name='group',
+            field=models.ForeignKey(related_name='members', to='main.VolunteerGroup', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='volunteer',
+            name='location',
+            field=models.OneToOneField(to='main.Location'),
+            preserve_default=True,
         ),
     ]
