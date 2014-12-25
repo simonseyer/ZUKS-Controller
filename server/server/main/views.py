@@ -36,8 +36,12 @@ class EventViewSet(viewsets.ModelViewSet):
 
   def fire_response(self, event, response):
     '''
-    Creates a new event and publishes that event
-    to the global default_event_bus.
+    Fires an event, based on the event name
+    and a reponse object.
+
+    The event is only fired, when the status_code
+    of the response indicates that the request
+    was successfully processed.
 
     As prefix for the event name the class variable
     event_key is used.
@@ -48,7 +52,18 @@ class EventViewSet(viewsets.ModelViewSet):
     '''
     if status.is_success(response.status_code):
       key = "%s_%s" % (self.__class__.event_key, event)
-      default_event_bus(key, response.data)
+      self.fire(key, response.data)
+
+  def fire(self, key, data): 
+    '''
+    Publishes a new event to the global 
+    default_event_bus.
+
+    Keyword arguments:
+    key -- the event key
+    data -- the data to publish
+    '''
+    default_event_bus(key, data)
 
 class VolunteerViewSet(EventViewSet):
   """
