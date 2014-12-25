@@ -29,6 +29,9 @@ class EventViewSet(viewsets.ModelViewSet):
     self.fire(response, 'update')
     return response
 
+  def destroy(self, request, *args, **kwargs):
+    response = super().destroy(request, *args, **kwargs)
+    self.fire(response, 'delete')
     return response
 
   def fire(self, response, event):
