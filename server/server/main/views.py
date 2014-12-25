@@ -19,19 +19,16 @@ class EventViewSet(viewsets.ModelViewSet):
   default_event_bus.
   '''
 
-  def create(self, request):
-    response = super().create(request)
+  def create(self, request, *args, **kwargs):
+    response = super().create(request, *args, **kwargs)
     self.fire(response, 'create')
     return response
 
-  def update(self, request, pk=None):
-    response = super().update(request)
+  def update(self, request, *args, **kwargs):
+    response = super().update(request, *args, **kwargs)
     self.fire(response, 'update')
     return response
 
-  def partial_update(self, request, pk=None):
-    response = super().partial_update(request)
-    self.fire(response, 'update')
     return response
 
   def fire(self, response, event):
