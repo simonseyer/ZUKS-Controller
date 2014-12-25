@@ -2,7 +2,7 @@ from server.main.models import Volunteer, VolunteerGroup, Location
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
-from server.main.serializers import VolunteerSerializer, VolunteerGroupSerializer
+from server.main.serializers import VolunteerSerializer, LocationSerializer, VolunteerGroupSerializer
 from server.main.event_bus import EventBus, EventBusLogger
 from server.main.web_notifier import WebNotifier
 
@@ -72,6 +72,24 @@ class VolunteerViewSet(EventViewSet):
   queryset = Volunteer.objects.all()
   serializer_class = VolunteerSerializer
   event_key = "volunteer"
+
+class LocationViewSet(EventViewSet):
+  """
+  API endpoint for locations
+  """
+  queryset = Location.objects.all()
+  serializer_class = LocationSerializer
+  event_key = "volunteer"
+
+  def fire(self, key, data):
+    '''
+    Fires an volunteer dataset, when the location
+    was changed.
+    '''
+    location = Location.objects.get(id=data['id'])
+    volunteer = location.volunteer
+    volunteer_data = VolunteerSerializer(volunteer).data
+    super().fire(key, volunteer_data)
 
 class VolunteerGroupViewSet(EventViewSet):
   """
