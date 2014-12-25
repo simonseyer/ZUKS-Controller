@@ -21,20 +21,20 @@ class EventViewSet(viewsets.ModelViewSet):
 
   def create(self, request, *args, **kwargs):
     response = super().create(request, *args, **kwargs)
-    self.fire(response, 'create')
+    self.fire_response('create', response)
     return response
 
   def update(self, request, *args, **kwargs):
     response = super().update(request, *args, **kwargs)
-    self.fire(response, 'update')
+    self.fire_response('update', response)
     return response
 
   def destroy(self, request, *args, **kwargs):
     response = super().destroy(request, *args, **kwargs)
-    self.fire(response, 'delete')
+    self.fire_response('delete', response)
     return response
 
-  def fire(self, response, event):
+  def fire_response(self, event, response):
     '''
     Creates a new event and publishes that event
     to the global default_event_bus.
@@ -43,8 +43,8 @@ class EventViewSet(viewsets.ModelViewSet):
     event_key is used.
 
     Keyword arguments:
-    response -- the reponse after of the crud function
     event -- the event name, used to create the event_key
+    response -- the reponse object
     '''
     if status.is_success(response.status_code):
       key = "%s_%s" % (self.__class__.event_key, event)
