@@ -33,8 +33,16 @@
             }
           });
         },
-        group_create: function(group) {
+        volunteerGroup_create: function(group) {
           this.volunteerGroups.push(group);
+        },
+        volunteerGroup_update: function(group) {
+          $(self.volunteerGroups).each(function() {
+            if (this.id == group.id) {
+              $.extend(this, group)
+              return;
+            }
+          });
         }
       };
       this.$.ws.initWebSocket();
@@ -64,6 +72,9 @@
     },
     addGroup: function(group) {
       this.$.rest.post('volunteerGroups', group);
+    },
+    updateGroup: function(group) {
+      this.$.rest.put('volunteerGroups', group);
     }
   });
   </script>

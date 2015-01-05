@@ -36,11 +36,15 @@
     .divider {
       color: #888;
       padding-left: 20px;
-      padding-top: 10px;
+      padding-top: 15px;
     }
 
     .content {
-      padding-left: 10px; 
+      padding-left: 10px;
+    }
+
+    .devider paper-button {
+      margin:0;
     }
 
     </style>
@@ -49,7 +53,7 @@
 
     <core-list data="{{volunteers}}" groups="{{volunteerGroups}}" height="70" >
       <template>
-        <div divider class="divider">{{groupModel.name}}</div>
+        <div divider class="divider"><paper-button on-click="{{updateGroup}}">{{groupModel.name}}</paper-button></div>
         <div class="item">
           <paper-shadow>
             <div horizontal layout center class="container">
@@ -61,7 +65,7 @@
       </template>
     </core-list>
 
-    <paper-action-dialog heading="Gruppe hinzufügen" id="addGroup" backdrop="true">
+    <paper-action-dialog heading="Gruppe {{actionName}}" id="addGroup" backdrop="true">
         <paper-input-decorator label="Name">
           <input is="core-input" value="{{group.name}}" autofocus />
         </paper-input-decorator>
@@ -83,10 +87,21 @@
     },
     addGroup: function() {
       this.group = {name: "", members: []};
+      this.actionName = "hinzufügen";
+      this.$.addGroup.open();
+    },
+    updateGroup: function(event) {
+      console.log(event.target.templateInstance.model.groupModel);
+      this.group = $.extend(true,{},event.target.templateInstance.model.groupModel);
+      this.actionName = "aktualisieren";
       this.$.addGroup.open();
     },
     saveGroup: function() {
-      this.fire("group-added", this.group);
+      if (this.group.id) {
+        this.fire("group-updated", this.group);
+      } else {
+        this.fire("group-added", this.group);
+      }
     }
   });
   </script>
