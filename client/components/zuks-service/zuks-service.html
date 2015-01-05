@@ -1,0 +1,61 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<script src="../bower_components/require/build/require.js"></script>
+
+<polymer-element name="zuks-service" attributes="volunteers volunteerGroups">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+  </template>
+  <script>
+  Polymer({
+    volunteers: [],
+    volunteerGroups: [],
+    rest: require("rest_client"),
+    ws: require("webservice-client"),
+    created: function() {
+      ws.event_handler = self.event_handler;
+      ws.initWebSocket();
+
+      rest.errorHandler = this.handleError;
+
+      this.init();
+    },
+    init: function() {
+      var self = this;
+      rest.get('volunteerGroups', function(response) {
+        self.volunteerGroups = [];
+        self.volunteers = [];
+        $(response).each(function() {
+          var group = this;
+          self.get('volunteerGroups/' + this.id + "/members", function(resp) {
+            group.members = resp;
+            self.volunteerGroups = self.volunteerGroups.concat(group);
+            self.volunteers = self.volunteers.concat(resp);
+          });
+        })
+      });
+    },
+    handleError: function(response, status, error) {
+      this.fire('error', {status: status, msg: error});
+    },
+    addVolunteer: function(volunteer) {
+      rest.post('volunteers', volunteer);
+    },
+    event_handler: {
+      volunteer_create: function(self, volunteer) {
+        self.volunteers.push(volunteer);
+        $(self.volunteerGroups).each(function() {
+          if (this.id == volunteer.group) {
+            this.members.push(volunteer);
+            return;
+          }
+        });
+      }
+    }
+  });
+  </script>
+</polymer-element>
