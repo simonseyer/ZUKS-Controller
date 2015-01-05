@@ -21,4 +21,4 @@ class VolunteerSerializer(serializers.ModelSerializer):
 class VolunteerGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = VolunteerGroup
-        fields = ('name', 'id', 'members')
+        fields = ('name', 'id')
