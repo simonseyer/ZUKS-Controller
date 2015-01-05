@@ -1,6 +1,7 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
-<script src="../bower_components/require/build/require.js"></script>
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="zuks-rest.html">
+<link rel="import" href="zuks-ws.html">
 
 <polymer-element name="zuks-service" attributes="volunteers volunteerGroups">
   <template>
@@ -9,29 +10,42 @@
       display: none;
     }
     </style>
+
+    <zuks-rest id="rest"></zuks-rest>
+    <zuks-ws id="ws"></zuks-ws>
+
   </template>
   <script>
   Polymer({
     volunteers: [],
     volunteerGroups: [],
-    rest: require("rest_client"),
-    ws: require("webservice-client"),
-    created: function() {
-      ws.event_handler = self.event_handler;
-      ws.initWebSocket();
+    ready: function() {
+      this.$.rest.errorHandler = this.handleError;
 
-      rest.errorHandler = this.handleError;
+      var self = this;
+      this.$.ws.event_handler = {
+        volunteer_create: function(volunteer) {
+          self.volunteers.push(volunteer);
+          $(self.volunteerGroups).each(function() {
+            if (this.id == volunteer.group) {
+              this.members.push(volunteer);
+              return;
+            }
+          });
+        }
+      };
+      this.$.ws.initWebSocket();
 
       this.init();
     },
     init: function() {
       var self = this;
-      rest.get('volunteerGroups', function(response) {
+      this.$.rest.get('volunteerGroups', function(response) {
         self.volunteerGroups = [];
         self.volunteers = [];
         $(response).each(function() {
           var group = this;
-          self.get('volunteerGroups/' + this.id + "/members", function(resp) {
+          self.$.rest.get('volunteerGroups/' + this.id + "/members", function(resp) {
             group.members = resp;
             self.volunteerGroups = self.volunteerGroups.concat(group);
             self.volunteers = self.volunteers.concat(resp);
@@ -43,18 +57,7 @@
       this.fire('error', {status: status, msg: error});
     },
     addVolunteer: function(volunteer) {
-      rest.post('volunteers', volunteer);
-    },
-    event_handler: {
-      volunteer_create: function(self, volunteer) {
-        self.volunteers.push(volunteer);
-        $(self.volunteerGroups).each(function() {
-          if (this.id == volunteer.group) {
-            this.members.push(volunteer);
-            return;
-          }
-        });
-      }
+      this.$.rest.post('volunteers', volunteer);
     }
   });
   </script>
