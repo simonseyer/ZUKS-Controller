@@ -13,15 +13,18 @@
     root_url: "http://localhost:8000/",
     errorHandler: null,
     put: function(type, object) {
-      this.send(type, object, "PUT");
+      if (!object.id) {
+        console.warn("Object has to have a id to be able to PUT it.")
+      }
+      this.send(type + "/" + object.id, object, "PUT");
     },
     post: function(type, object) {
       this.send(type, object, "POST");
     },
-    send: function(type, object, method) {
+    send: function(url, object, method) {
       var self = this;
       $.ajax({
-        url:self.root_url + type + "/",
+        url:self.root_url + url + "/",
         type:method,
         data:JSON.stringify(object),
         contentType:"application/json; charset=utf-8",
