@@ -1,10 +1,10 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
-<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../bower_components/core-list/core-list.html">
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 
 <polymer-element name="zuks-volunteer-list" attributes="volunteerGroups">
   <template>
@@ -16,7 +16,7 @@
     }
 
     core-list {
-      height: calc(100% - 30px);
+      height: calc(100% - 60px);
       width: 300px;
       
     }
@@ -45,6 +45,8 @@
 
     </style>
 
+    <paper-button raised on-click="{{addGroup}}">Neue Gruppe</paper-button>
+
     <core-list data="{{volunteers}}" groups="{{volunteerGroups}}" height="70" >
       <template>
         <div divider class="divider">{{groupModel.name}}</div>
@@ -59,6 +61,15 @@
       </template>
     </core-list>
 
+    <paper-action-dialog heading="Gruppe hinzufügen" id="addGroup" backdrop="true">
+        <paper-input-decorator label="Name">
+          <input is="core-input" value="{{group.name}}" autofocus />
+        </paper-input-decorator>
+
+        <paper-button affirmative>Abbrechen</paper-button>
+        <paper-button affirmative on-click="{{saveGroup}}">Speichern</paper-button>
+    </paper-action-dialog>
+
   </template>
   <script>
   Polymer({
@@ -70,6 +81,13 @@
       });
       this.volunteers = volunteers;
     },
+    addGroup: function() {
+      this.group = {name: "", members: []};
+      this.$.addGroup.open();
+    },
+    saveGroup: function() {
+      this.fire("group-added", this.group);
+    }
   });
   </script>
 </polymer-element>

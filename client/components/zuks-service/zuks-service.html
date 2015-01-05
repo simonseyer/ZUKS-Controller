@@ -32,6 +32,9 @@
               return;
             }
           });
+        },
+        group_create: function(group) {
+          this.volunteerGroups.push(group);
         }
       };
       this.$.ws.initWebSocket();
@@ -58,6 +61,9 @@
     },
     addVolunteer: function(volunteer) {
       this.$.rest.post('volunteers', volunteer);
+    },
+    addGroup: function(group) {
+      this.$.rest.post('volunteerGroups', group);
     }
   });
   </script>
