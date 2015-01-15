@@ -34,7 +34,7 @@
           });
         },
         volunteerGroup_create: function(oldGroup, group) {
-          self.volunteerGroups.push(group);
+          self.handleNewGroup(self, group);
         },
         volunteerGroup_update: function(oldGroup, group) {
           $(self.volunteerGroups).each(function() {
@@ -55,13 +55,15 @@
         self.volunteerGroups = [];
         self.volunteers = [];
         $(response).each(function() {
-          var group = this;
-          self.$.rest.get('volunteerGroups/' + this.id + "/members", function(resp) {
-            group.members = resp;
-            self.volunteerGroups = self.volunteerGroups.concat(group);
-            self.volunteers = self.volunteers.concat(resp);
-          });
+          self.handleNewGroup(self, this);
         })
+      });
+    },
+    handleNewGroup: function(self, group) {
+      self.$.rest.get('volunteerGroups/' + group.id + "/members", function(resp) {
+        group.members = resp;
+        self.volunteerGroups = self.volunteerGroups.concat(group);
+        self.volunteers = self.volunteers.concat(resp);
       });
     },
     handleError: function(response, status, error) {
