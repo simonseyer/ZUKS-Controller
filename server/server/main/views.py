@@ -25,16 +25,18 @@ class EventViewSet(viewsets.ModelViewSet):
     return response
 
   def update(self, request, *args, **kwargs):
+    originalResponse = self.retrieve(request, request.data['id'])
     response = super().update(request, *args, **kwargs)
-    self.fire_response('update', response)
+    self.fire_response('update', response, originalResponse.data)
     return response
 
   def destroy(self, request, *args, **kwargs):
+    originalResponse = self.retrieve(request, request.data['id'])
     response = super().destroy(request, *args, **kwargs)
-    self.fire_response('delete', response)
+    self.fire_response('delete', response, originalResponse.data)
     return response
 
-  def fire_response(self, event, response):
+  def fire_response(self, event, response, original={}):
     '''
     Fires an event, based on the event name
     and a reponse object.
@@ -49,10 +51,11 @@ class EventViewSet(viewsets.ModelViewSet):
     Keyword arguments:
     event -- the event name, used to create the event_key
     response -- the reponse object
+    original -- the data before the executed operation was applied
     '''
     if status.is_success(response.status_code):
       key = "%s_%s" % (self.__class__.event_key, event)
-      self.fire(key, response.data)
+      self.fire(key, {'old': original, 'new': response.data})
 
   def fire(self, key, data): 
     '''
@@ -86,7 +89,7 @@ class LocationViewSet(EventViewSet):
     Fires an volunteer dataset, when the location
     was changed.
     '''
-    location = Location.objects.get(id=data['id'])
+    location = Location.objects.get(id=data['new']['id'])
     volunteer = location.volunteer
     volunteer_data = VolunteerSerializer(volunteer).data
     super().fire(key, volunteer_data)

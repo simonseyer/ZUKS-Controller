@@ -57,12 +57,11 @@ class WebNotifier:
 
     Keyword arguments:
     key   -- the key, that identifies the event
-    value -- a value, that is passed to the handler. Has to be serializable to JSON:
+    value -- a dictonary that is passed to the handler. Has to be serializable to JSON.
     '''
-    jsonContent = {
-      'event' : key,
-      'data' : value
-    }
+    jsonContent = {'event' : key}
+    jsonContent.update(value)
+
     jsonData = json.dumps(jsonContent, default=WebNotifier.decimal_default)
     self.websocket_service.send(jsonData)
 
