@@ -91,8 +91,7 @@
       this.$.addGroup.open();
     },
     updateGroup: function(event) {
-      console.log(event.target.templateInstance.model.groupModel);
-      this.group = $.extend(true,{},event.target.templateInstance.model.groupModel);
+      this.group = $.extend(true, {}, event.target.templateInstance.model.groupModel);
       this.actionName = "aktualisieren";
       this.$.addGroup.open();
     },
