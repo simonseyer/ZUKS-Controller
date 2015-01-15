@@ -5,6 +5,10 @@
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 
 <polymer-element name="zuks-volunteer-list" attributes="volunteerGroups">
   <template>
@@ -54,7 +58,7 @@
     <core-list data="{{volunteers}}" groups="{{volunteerGroups}}" height="70" >
       <template>
         <div divider class="divider"><paper-button on-click="{{updateGroup}}">{{groupModel.name}}</paper-button></div>
-        <div class="item">
+        <div class="item" on-click="{{showVolunteerDetails}}">
           <paper-shadow>
             <div horizontal layout center class="container">
             <div class="content">{{model.first_name}} {{model.last_name}}</div>
@@ -70,14 +74,30 @@
           <input is="core-input" value="{{group.name}}" autofocus />
         </paper-input-decorator>
 
+        <paper-button dismissive>Abbrechen</paper-button>
+        <paper-button affirmative default on-click="{{saveGroup}}">Speichern</paper-button>
+    </paper-action-dialog>
+
+    <paper-action-dialog heading="{{volunteer.first_name}} {{volunteer.last_name}}" id="volunteerDetail">
+        <paper-dropdown-menu label="Gruppe">
+            <paper-dropdown layered class="dropdown">
+                <core-menu class="menu">
+                    <template repeat="{{group in volunteerGroups}}">
+                        <paper-item>{{group.name}}</paper-item>
+                    </template>
+                </core-menu>
+            </paper-dropdown>
+        </paper-dropdown-menu>
+
         <paper-button affirmative>Abbrechen</paper-button>
-        <paper-button affirmative on-click="{{saveGroup}}">Speichern</paper-button>
+        <paper-button affirmative on-click="{{saveVolunteer}}">Speichern</paper-button>
     </paper-action-dialog>
 
   </template>
   <script>
   Polymer({
     volunteers: [],
+    volunteer: null,
     volunteerGroupsChanged: function(oldValue, newValue) {
       var volunteers = [];
       $(newValue).each(function() {
@@ -101,6 +121,13 @@
       } else {
         this.fire("group-added", this.group);
       }
+    },
+    showVolunteerDetails: function(event) {
+      this.volunteer = $.extend(true, {}, event.target.templateInstance.model.model);
+      this.$.volunteerDetail.open();
+    },
+    saveVolunteer: function(event) {
+      this.fire("volunteer-updated", this.group);
     }
   });
   </script>
