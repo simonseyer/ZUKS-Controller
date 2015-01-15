@@ -33,8 +33,8 @@
             }
           });
         },
-          this.volunteerGroups.push(group);
         volunteerGroup_create: function(oldGroup, group) {
+          self.volunteerGroups.push(group);
         },
         volunteerGroup_update: function(oldGroup, group) {
           $(self.volunteerGroups).each(function() {
