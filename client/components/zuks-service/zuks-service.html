@@ -24,7 +24,7 @@
 
       var self = this;
       this.$.ws.event_handler = {
-        volunteer_create: function(volunteer) {
+        volunteer_create: function(oldVolunteer, volunteer) {
           self.volunteers.push(volunteer);
           $(self.volunteerGroups).each(function() {
             if (this.id == volunteer.group) {
@@ -33,10 +33,10 @@
             }
           });
         },
-        volunteerGroup_create: function(group) {
           this.volunteerGroups.push(group);
+        volunteerGroup_create: function(oldGroup, group) {
         },
-        volunteerGroup_update: function(group) {
+        volunteerGroup_update: function(oldGroup, group) {
           $(self.volunteerGroups).each(function() {
             if (this.id == group.id) {
               $.extend(this, group)
