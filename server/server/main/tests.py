@@ -81,10 +81,10 @@ class WebNotifierTestCase(TestCase):
     dataObject = json.loads(self.data)
 
     self.assertEqual(dataObject['event'], 'test')
-    self.assertEqual(dataObject['data'], None)
+    self.assertEqual(len(dataObject), 1)
 
   def test_simple_message(self):
-    self.event_bus('test', 'test-data')
+    self.event_bus('test', {'data' : 'test-data'})
 
     dataObject = json.loads(self.data)
 
@@ -102,7 +102,7 @@ class WebNotifierTestCase(TestCase):
 
     self.event_bus('test', test_data)
 
-    dataObject = json.loads(self.data)['data']
+    dataObject = json.loads(self.data)
 
     self.assertEqual(dataObject['a']['b'], 'nested')
     self.assertEqual(dataObject['b'], 1)
