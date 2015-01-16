@@ -60,7 +60,8 @@ class WebNotifier:
     value -- a dictonary that is passed to the handler. Has to be serializable to JSON.
     '''
     jsonContent = {'event' : key}
-    jsonContent.update(value)
+    if value:
+      jsonContent.update(value)
 
     jsonData = json.dumps(jsonContent, default=WebNotifier.decimal_default)
     self.websocket_service.send(jsonData)
