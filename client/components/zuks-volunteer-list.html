@@ -55,7 +55,7 @@
 
     <paper-button raised on-click="{{addGroup}}">Neue Gruppe</paper-button>
 
-    <core-list data="{{volunteers}}" groups="{{volunteerGroups}}" height="70" >
+    <core-list data="{{volunteerGroups | flattenGroup}}" groups="{{volunteerGroups}}" height="70" >
       <template>
         <div divider class="divider"><paper-button on-click="{{updateGroup}}">{{groupModel.name}}</paper-button></div>
         <div class="item" on-click="{{showVolunteerDetails}}">
@@ -96,14 +96,13 @@
   </template>
   <script>
   Polymer({
-    volunteers: [],
     volunteer: null,
-    volunteerGroupsChanged: function(oldValue, newValue) {
+    flattenGroup: function(groupList) {
       var volunteers = [];
-      $(newValue).each(function() {
+      $(groupList).each(function() {
         volunteers.push(this.members);
       });
-      this.volunteers = volunteers;
+      return volunteers;
     },
     addGroup: function() {
       this.group = {name: "", members: []};
