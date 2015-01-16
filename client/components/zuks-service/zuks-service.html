@@ -20,9 +20,12 @@
     volunteers: [],
     volunteerGroups: [],
     ready: function() {
-      this.$.rest.errorHandler = this.handleError;
-
       var self = this;
+
+      this.$.rest.errorHandler = function(response, status, error) {
+        self.fire('error', {status: status, msg: error});
+      };
+
       this.$.ws.event_handler = {
         volunteer_create: function(oldVolunteer, volunteer) {
           self.volunteers.push(volunteer);
@@ -65,9 +68,6 @@
         self.volunteerGroups = self.volunteerGroups.concat(group);
         self.volunteers = self.volunteers.concat(resp);
       });
-    },
-    handleError: function(response, status, error) {
-      this.fire('error', {status: status, msg: error});
     },
     addVolunteer: function(volunteer) {
       this.$.rest.post('volunteers', volunteer);
