@@ -26,7 +26,7 @@
     <div class="container" layout horizontal>
       <zuks-map flex volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}"></zuks-map>
       <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
-      on-group-updated="{{groupUpdated}}"></zuks-volunteer-list>
+      on-group-updated="{{groupUpdated}}" on-volunteer-updated="{{volunteerUpdated}}"></zuks-volunteer-list>
     </div>
 
     <paper-action-dialog heading="Freiwilligen hinzufügen" id="addVolunteer" backdrop="true">
@@ -57,11 +57,14 @@
     saveVolunteer: function() {
       this.$.service.addVolunteer(this.volunteer);
     },
-    groupAdded: function(group) {
-      this.$.service.addGroup(group.detail);
+    groupAdded: function(event) {
+      this.$.service.addGroup(event.detail);
     },
-    groupUpdated: function(group) {
-      this.$.service.updateGroup(group.detail);
+    groupUpdated: function(event) {
+      this.$.service.updateGroup(event.detail);
+    },
+    volunteerUpdated: function(event) {
+      this.$.service.updateVolunteer(event.detail);
     }
   });
   </script>
