@@ -36,13 +36,29 @@
             }
           });
         },
+        volunteer_update: function(oldVolunteer, volunteer) {
+          $(self.volunteerGroups).each(function(groupIndex, group) {
+            if (group.id == oldVolunteer.group) {
+              $(group.members).each(function(volunteerIndex) {
+                if (this.id == volunteer.id) {
+                  $.extend(this, volunteer);
+                  group.members.splice(volunteerIndex, 1);
+                  return;
+                }
+              });
+            }
+            if (this.id == volunteer.group) {
+              this.members.push(volunteer);
+            }
+          });
+        },
         volunteerGroup_create: function(oldGroup, group) {
           self.handleNewGroup(self, group);
         },
         volunteerGroup_update: function(oldGroup, group) {
           $(self.volunteerGroups).each(function() {
             if (this.id == group.id) {
-              $.extend(this, group)
+              $.extend(this, group);
               return;
             }
           });
@@ -71,6 +87,9 @@
     },
     addVolunteer: function(volunteer) {
       this.$.rest.post('volunteers', volunteer);
+    },
+    updateVolunteer: function(volunteer) {
+      this.$.rest.put('volunteers', volunteer);
     },
     addGroup: function(group) {
       this.$.rest.post('volunteerGroups', group);
