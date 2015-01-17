@@ -40,6 +40,11 @@
           longitude: e.detail.latlng.lng
         });
       }
+    },
+    showVolunteer: function(volunteer) {
+      var loc = L.latLng(volunteer.location.latitude,volunteer.location.longitude);
+      var zoom = 16;
+      this.$.map.map.setView(loc, zoom);
     }
   });
   </script>
