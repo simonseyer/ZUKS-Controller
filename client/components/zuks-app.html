@@ -24,9 +24,10 @@
     <zuks-service volunteers="{{volunteers}}" volunteerGroups="{{volunteerGroups}}" id="service"></zuks-service>
     
     <div class="container" layout horizontal>
-      <zuks-map flex volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}"></zuks-map>
+      <zuks-map flex id="map" volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}"></zuks-map>
       <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
-      on-group-updated="{{groupUpdated}}" on-volunteer-updated="{{volunteerUpdated}}"></zuks-volunteer-list>
+      on-group-updated="{{groupUpdated}}" on-volunteer-updated="{{volunteerUpdated}}" 
+      on-volunteer-selected="{{volunteerSelected}}"></zuks-volunteer-list>
     </div>
 
     <paper-action-dialog heading="Freiwilligen hinzufügen" id="addVolunteer" backdrop="true">
@@ -45,6 +46,9 @@
   </template>
   <script>
   Polymer({
+    volunteerSelected: function(event) {
+      this.$.map.showVolunteer(event.detail);
+    },
     volunteerAdded: function(volunteerLocation) {
       this.volunteer = {
         first_name: "",

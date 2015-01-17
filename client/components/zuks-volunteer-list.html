@@ -78,7 +78,7 @@
         <paper-button affirmative default on-click="{{saveGroup}}">Speichern</paper-button>
     </paper-action-dialog>
 
-    <paper-action-dialog heading="{{volunteer.first_name}} {{volunteer.last_name}}" id="volunteerDetail">
+    <paper-action-dialog heading="{{volunteer.first_name}} {{volunteer.last_name}}" id="volunteerDetail" autoCloseDisabled="true">
         <paper-dropdown-menu label="Gruppe">
             <paper-dropdown layered class="dropdown">
                 <core-menu class="menu" valueattr="id" selected="{{volunteer.group}}">
@@ -121,8 +121,12 @@
       }
     },
     showVolunteerDetails: function(event) {
-      this.volunteer = $.extend(true, {}, event.target.templateInstance.model.model);
+      this.showVolunteer(event.target.templateInstance.model.model);
+    },
+    showVolunteer: function(volunteer) {
+      this.volunteer = $.extend(true, {}, volunteer);
       this.$.volunteerDetail.open();
+      this.fire("volunteer-selected", this.volunteer);
     },
     saveVolunteer: function(event) {
       this.fire("volunteer-updated", this.volunteer);
