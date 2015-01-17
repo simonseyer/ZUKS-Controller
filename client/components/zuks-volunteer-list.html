@@ -81,7 +81,7 @@
     <paper-action-dialog heading="{{volunteer.first_name}} {{volunteer.last_name}}" id="volunteerDetail">
         <paper-dropdown-menu label="Gruppe">
             <paper-dropdown layered class="dropdown">
-                <core-menu class="menu" selectedItem="{{selectedGroup}}">
+                <core-menu class="menu" valueattr="id" selected="{{volunteer.group}}">
                     <template repeat="{{group in volunteerGroups}}">
                         <paper-item>{{group.name}}</paper-item>
                     </template>
@@ -125,7 +125,6 @@
       this.$.volunteerDetail.open();
     },
     saveVolunteer: function(event) {
-      this.volunteer.group = this.selectedGroup.templateInstance.model.group.id;
       this.fire("volunteer-updated", this.volunteer);
     }
   });
