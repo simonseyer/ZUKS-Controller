@@ -53,9 +53,7 @@
 
     </style>
 
-    <paper-button raised on-click="{{addGroup}}">Neue Gruppe</paper-button>
-
-    <core-list data="{{volunteerGroups | flattenGroup}}" groups="{{volunteerGroups}}" height="70" >
+    <core-list data="{{volunteerGroups | flattenGroup}}" groups="{{volunteerGroups}}" height="70" id="volunteerList">
       <template>
         <div divider class="divider"><paper-button on-click="{{updateGroup}}">{{groupModel.name}}</paper-button></div>
         <div class="item" on-click="{{showVolunteerDetails}}">
@@ -78,7 +76,7 @@
         <paper-button affirmative default on-click="{{saveGroup}}">Speichern</paper-button>
     </paper-action-dialog>
 
-    <paper-action-dialog heading="{{volunteer.first_name}} {{volunteer.last_name}}" id="volunteerDetail" autoCloseDisabled="true">
+    <paper-action-dialog heading="{{volunteer.first_name}} {{volunteer.last_name}}" id="volunteerDetail" autoCloseDisabled="true" on-core-overlay-position="{{layoutVolunteerOverlay}}">
         <paper-dropdown-menu label="Gruppe">
             <paper-dropdown layered class="dropdown">
                 <core-menu class="menu" valueattr="id" selected="{{volunteer.group}}">
@@ -92,6 +90,8 @@
         <paper-button affirmative>Abbrechen</paper-button>
         <paper-button affirmative on-click="{{saveVolunteer}}">Speichern</paper-button>
     </paper-action-dialog>
+
+    <paper-button raised on-click="{{addGroup}}">Neue Gruppe</paper-button>
 
   </template>
   <script>
@@ -127,6 +127,16 @@
       this.volunteer = $.extend(true, {}, volunteer);
       this.$.volunteerDetail.open();
       this.fire("volunteer-selected", this.volunteer);
+    },
+    layoutVolunteerOverlay: function(event) {
+      var target = $(event.target);
+      var list = $(this.$.volunteerList);
+
+      target.css('top', $('.item', list).css('padding-top'));
+      target.css('right', list.css('width'));
+      target.css('margin', 0);
+
+      event.target.dimensions.position = {v: 'top', h: 'right'};
     },
     saveVolunteer: function(event) {
       this.fire("volunteer-updated", this.volunteer);
