@@ -26,7 +26,7 @@
     <div class="container" layout horizontal>
       <zuks-map flex id="map" volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}"></zuks-map>
       <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
-      on-group-updated="{{groupUpdated}}" on-volunteer-updated="{{volunteerUpdated}}" 
+      on-group-updated="{{groupUpdated}}" on-volunteers-updated="{{volunteersUpdated}}" 
       on-volunteer-selected="{{volunteerSelected}}"></zuks-volunteer-list>
     </div>
 
@@ -46,9 +46,6 @@
   </template>
   <script>
   Polymer({
-    volunteerSelected: function(event) {
-      this.$.map.showVolunteer(event.detail);
-    },
     volunteerAdded: function(volunteerLocation) {
       this.volunteer = {
         first_name: "",
@@ -67,8 +64,11 @@
     groupUpdated: function(event) {
       this.$.service.updateGroup(event.detail);
     },
-    volunteerUpdated: function(event) {
-      this.$.service.updateVolunteer(event.detail);
+    volunteersUpdated: function(event) {
+      var self = this;
+      $(event.detail).each(function() {
+        self.$.service.updateVolunteer(this);
+      });
     }
   });
   </script>

@@ -10,7 +10,7 @@
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 
-<polymer-element name="zuks-volunteer-list" attributes="volunteerGroups">
+<polymer-element name="zuks-volunteer-list" attributes="volunteerGroups selectedVolunteers">
   <template>
     <style>
     :host {
@@ -33,6 +33,10 @@
       padding-bottom: 5px;
     }
 
+    .item.selected .container {
+      background: #eee;
+    }
+
     .container, paper-shadow {
       height: 100%;
     }
@@ -53,15 +57,15 @@
 
     </style>
 
-    <core-list data="{{volunteerGroups | flattenGroup}}" groups="{{volunteerGroups}}" height="70" id="volunteerList">
+    <core-list data="{{volunteerGroups | flattenGroup}}" groups="{{volunteerGroups}}" multi selection="{{selectedVolunteers}}" id="volunteerList" selectionenabled>
       <template>
         <div divider class="divider"><paper-button on-click="{{updateGroup}}">{{groupModel.name}}</paper-button></div>
-        <div class="item" on-click="{{showVolunteerDetails}}">
+        <div class="item {{ {selected: selected} | tokenList }}">
           <paper-shadow>
             <div horizontal layout center class="container">
-            <div class="content">{{model.first_name}} {{model.last_name}}</div>
-          </div>
-          <paper-ripple fit></paper-ripple>
+              <div class="content">{{model.first_name}} {{model.last_name}}</div>
+            </div>
+            <paper-ripple fit></paper-ripple>
           </paper-shadow>
         </div>
       </template>
@@ -76,12 +80,19 @@
         <paper-button affirmative default on-click="{{saveGroup}}">Speichern</paper-button>
     </paper-action-dialog>
 
-    <paper-action-dialog heading="{{volunteer.first_name}} {{volunteer.last_name}}" id="volunteerDetail" autoCloseDisabled="true" on-core-overlay-position="{{layoutVolunteerOverlay}}">
+    <paper-action-dialog heading="{{selectedVolunteers.length > 1 ? selectedVolunteers.length + ' Helfer ausgewählt' : selectedVolunteers[0].first_name + ' ' + selectedVolunteers[0].last_name}}" id="volunteerDetail" autoCloseDisabled="true" on-core-overlay-position="{{layoutVolunteerOverlay}}" on-core-overlay-close-completed="{{volunteerOverlayClosed}}">
+        <template if="{{selectedVolunteers.length > 1}}">
+          <div>
+            <template repeat="{{volunteer, i in selectedVolunteers}}">
+              <span>{{volunteer.first_name}} {{volunteer.last_name}}{{(i < selectedVolunteers.length - 1) ? ',' : ''}}</span>
+            </template>
+          </div>
+        </template>
         <paper-dropdown-menu label="Gruppe">
             <paper-dropdown layered class="dropdown">
-                <core-menu class="menu" valueattr="id" selected="{{volunteer.group}}">
+                <core-menu class="menu" valueattr="gid" selected="{{selectedGroup}}">
                     <template repeat="{{group in volunteerGroups}}">
-                        <paper-item>{{group.name}}</paper-item>
+                        <paper-item gid="{{group.id}}">{{group.name}}</paper-item>
                     </template>
                 </core-menu>
             </paper-dropdown>
@@ -120,13 +131,23 @@
         this.fire("group-added", this.group);
       }
     },
-    showVolunteerDetails: function(event) {
-      this.showVolunteer(event.target.templateInstance.model.model);
+    selectedVolunteersChanged: function(oldVal, newVal) {
+      if (this.selectedVolunteers.length > 0) {
+        if (this.selectedVolunteers.length > 1) {
+          this.selectedGroup = '';
+        } else {
+          this.selectedGroup = this.selectedVolunteers[0].group;
+        }
+        console.log(this.selectedGroup);
+        this.$.volunteerDetail.open();
+      } else {
+        this.$.volunteerDetail.close();
+      }
     },
-    showVolunteer: function(volunteer) {
-      this.volunteer = $.extend(true, {}, volunteer);
-      this.$.volunteerDetail.open();
-      this.fire("volunteer-selected", this.volunteer);
+    volunteerOverlayClosed: function(event) {
+      if (event.target === this.$.volunteerDetail) {
+        this.$.volunteerList.clearSelection(); 
+      }
     },
     layoutVolunteerOverlay: function(event) {
       var target = $(event.target);
@@ -135,11 +156,19 @@
       target.css('top', $('.item', list).css('padding-top'));
       target.css('right', list.css('width'));
       target.css('margin', 0);
+      target.css('max-width', '280px');
 
       event.target.dimensions.position = {v: 'top', h: 'right'};
     },
     saveVolunteer: function(event) {
-      this.fire("volunteer-updated", this.volunteer);
+      var self = this;
+      var editableVolunteers = [];
+      $(this.selectedVolunteers).each(function() {
+        var copiedVolunteer = $.extend(true, {}, this);
+        copiedVolunteer.group = self.selectedGroup;
+        editableVolunteers.push(copiedVolunteer);
+      });
+      this.fire("volunteers-updated", editableVolunteers);
     }
   });
   </script>
