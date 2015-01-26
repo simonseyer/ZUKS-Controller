@@ -1182,6 +1182,20 @@ the following abstract API:
     },
 
     /**
+     * Select the list item that represents the given data.
+     * 
+     * @method selectData
+     * @param {Object} data
+     */
+    selectData: function(data) {
+      if (!this.selectionEnabled || !data) {
+        return;
+      }
+      // TODO: unsafe, it has to be checked, if the data is in the data
+      this.$.selection.select(data);
+    },
+
+    /**
      * Set the selected state of the list item at the given index.
      *
      * @method setItemSelected
@@ -1193,6 +1207,21 @@ the following abstract API:
       if (data) {
         this.$.selection.setItemSelected(data, isSelected);
       }
+    },
+
+    /**
+     * Set the selected state of the list item that represents the given data.
+     *
+     * @method setDataSelected
+     * @param {Object} data 
+     * @param {boolean} isSelected 
+     */
+    setDataSelected: function(data, isSelected) {
+      if (!data) {
+        return;
+      }
+      // TODO: unsafe, it has to be checked, if the data is in the data
+      this.$.selection.setItemSelected(data, isSelected);
     },
 
     indexesForData: function(data) {
@@ -1297,6 +1326,21 @@ the following abstract API:
       }
       this._resetIndex(index);
       this.refresh();
+    },
+
+    /**
+     * Scroll to an item that represents the given data.
+     *
+     * @method scrollToData
+     * @param {Object} data
+     */
+    scrollToData: function(data) {
+      if (data) {
+        var index = this.indexesForData(data);
+        if (data.virtual >= 0) {
+          this.scrollToItem(index.virtual);
+        }
+      }
     }
 
   }, Polymer.CoreResizable));
