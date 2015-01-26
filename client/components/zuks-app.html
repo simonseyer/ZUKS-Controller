@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/core-pages/core-pages.html">
+<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
 
 <link rel="import" href="zuks-service/zuks-service.html">
 <link rel="import" href="zuks-map.html">
@@ -23,16 +24,21 @@
     }
 
     paper-tabs::shadow #selectionBar {
-      background-color: #4d9eff;
+      background-color: #ec7217;
     }
     paper-tabs paper-tab::shadow #ink {
-      color: #4d9eff;
+      color: #ec7217;
     }
      
-    paper-tabs {
+    paper-tabs, core-toolbar {
       width: 300px;
+      background-color: #4d9eff;
+      color: white;
     }
 
+    paper-tabs {
+      font-weight: 800;
+    }
     </style>
     
     <zuks-service volunteers="{{volunteers}}" volunteerGroups="{{volunteerGroups}}" id="service"></zuks-service>
@@ -41,6 +47,9 @@
       <zuks-map flex id="map" volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}" selectedVolunteers="{{selectedVolunteers}}" on-volunteer-select="{{volunteerSelected}}"></zuks-map>
       
       <div vertical layout>
+        <core-toolbar>
+          <div flex>ZUKS</div>
+        </core-toolbar>
         <paper-tabs selected="{{selectedTab}}">
           <paper-tab>
             Helfer
