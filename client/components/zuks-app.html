@@ -2,6 +2,8 @@
 <link rel="import" href="../bower_components/paper-dialog/paper-action-dialog.html">
 <link rel="import" href="../bower_components/paper-input/paper-input-decorator.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/core-pages/core-pages.html">
 
 <link rel="import" href="zuks-service/zuks-service.html">
 <link rel="import" href="zuks-map.html">
@@ -19,15 +21,41 @@
       background-color: #fff;
     }
 
+    paper-tabs::shadow #selectionBar {
+      background-color: #4d9eff;
+    }
+    paper-tabs paper-tab::shadow #ink {
+      color: #4d9eff;
+    }
+     
+    paper-tabs {
+      width: 300px;
+    }
+
     </style>
     
     <zuks-service volunteers="{{volunteers}}" volunteerGroups="{{volunteerGroups}}" id="service"></zuks-service>
     
     <div class="container" layout horizontal>
       <zuks-map flex id="map" volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}" selectedVolunteers="{{selectedVolunteers}}" on-volunteer-select="{{volunteerSelected}}"></zuks-map>
-      <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
-      on-group-updated="{{groupUpdated}}" on-volunteers-updated="{{volunteersUpdated}}" 
-      on-volunteer-selected="{{volunteerSelected}}" selectedVolunteers="{{selectedVolunteers}}" id="list"></zuks-volunteer-list>
+      
+      <div vertical layout>
+        <paper-tabs selected="{{selectedTab}}">
+          <paper-tab>
+            Helfer
+          </paper-tab>
+          <paper-tab>
+            Gruppen
+          </paper-tab>
+        </paper-tabs>
+        
+        <core-pages selected="{{selectedTab}}" flex>
+          <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
+        on-group-updated="{{groupUpdated}}" on-volunteers-updated="{{volunteersUpdated}}" 
+        on-volunteer-selected="{{volunteerSelected}}" selectedVolunteers="{{selectedVolunteers}}" id="list"></zuks-volunteer-list>
+            <div>Gruppen</div>
+        </core-pages>
+      </div>
     </div>
 
     <paper-action-dialog heading="Freiwilligen hinzufügen" id="addVolunteer" backdrop="true">
@@ -46,6 +74,9 @@
   </template>
   <script>
   Polymer({
+    ready: function() {
+      this.selectedTab = 0;
+    },
     volunteerAdded: function(volunteerLocation) {
       this.volunteer = {
         first_name: "",
