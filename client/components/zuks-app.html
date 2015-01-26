@@ -24,10 +24,10 @@
     <zuks-service volunteers="{{volunteers}}" volunteerGroups="{{volunteerGroups}}" id="service"></zuks-service>
     
     <div class="container" layout horizontal>
-      <zuks-map flex id="map" volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}"></zuks-map>
+      <zuks-map flex id="map" volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}" selectedVolunteers="{{selectedVolunteers}}" on-volunteer-select="{{volunteerSelected}}"></zuks-map>
       <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
       on-group-updated="{{groupUpdated}}" on-volunteers-updated="{{volunteersUpdated}}" 
-      on-volunteer-selected="{{volunteerSelected}}"></zuks-volunteer-list>
+      on-volunteer-selected="{{volunteerSelected}}" selectedVolunteers="{{selectedVolunteers}}" id="list"></zuks-volunteer-list>
     </div>
 
     <paper-action-dialog heading="Freiwilligen hinzufügen" id="addVolunteer" backdrop="true">
@@ -69,6 +69,9 @@
       $(event.detail).each(function() {
         self.$.service.updateVolunteer(this);
       });
+    },
+    volunteerSelected: function(event) {
+      this.$.list.selectVolunteer(event.detail);
     }
   });
   </script>

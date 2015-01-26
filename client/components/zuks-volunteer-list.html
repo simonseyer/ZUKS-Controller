@@ -131,14 +131,18 @@
         this.fire("group-added", this.group);
       }
     },
-    selectedVolunteersChanged: function(oldVal, newVal) {
+    selectVolunteer: function(volunteer) {
+      this.$.volunteerList.selectData(volunteer);
+      this.$.volunteerList.scrollToData(volunteer);
+    },
+    selectedVolunteersChanged: function(changes) {
       if (this.selectedVolunteers.length > 0) {
         if (this.selectedVolunteers.length > 1) {
           this.selectedGroup = '';
         } else {
           this.selectedGroup = this.selectedVolunteers[0].group;
         }
-        console.log(this.selectedGroup);
+
         this.$.volunteerDetail.open();
       } else {
         this.$.volunteerDetail.close();
@@ -146,7 +150,7 @@
     },
     volunteerOverlayClosed: function(event) {
       if (event.target === this.$.volunteerDetail) {
-        this.$.volunteerList.clearSelection(); 
+        this.$.volunteerList.clearSelection();
       }
     },
     layoutVolunteerOverlay: function(event) {

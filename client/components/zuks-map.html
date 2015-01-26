@@ -1,7 +1,10 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
+<link rel="import" href="../bower_components/core-style/core-style.html">
 
-<polymer-element name="zuks-map" attributes="volunteers">
+<script src="../bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
+
+<polymer-element name="zuks-map" attributes="volunteers selectedVolunteers">
   <template>
     <style>
     :host {
@@ -21,18 +24,24 @@
       zoom="14"
       id="map"
       on-contextmenu="{{clickedRight}}">
+        <core-style id="map-style">
+          <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
+          <link rel="stylesheet" href="../bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
+        </core-style>
         <template repeat="{{volunteer in volunteers}}">
           <leaflet-marker longitude="{{volunteer.location.longitude}}" 
-                        latitude="{{volunteer.location.latitude}}">
-            {{volunteer.first_name}} {{volunteer.last_name}}
+                        latitude="{{volunteer.location.latitude}}"
+                        on-click="{{volunteerSelected}}"
+                        icon="{{volunteer.selected | iconForState}}">
           </leaflet-marker>
         </template>
-        
     </leaflet-map>
 
   </template>
   <script>
   Polymer({
+    hilightMarker: L.AwesomeMarkers.icon({markerColor: 'red'}),
+    defaultMarker: L.AwesomeMarkers.icon({markerColor: 'blue'}),
     clickedRight: function(e) {
       if (e.detail && e.detail.latlng) {
         this.fire('volunteer-added', {
@@ -41,10 +50,25 @@
         });
       }
     },
-    showVolunteer: function(volunteer) {
-      var loc = L.latLng(volunteer.location.latitude,volunteer.location.longitude);
-      var zoom = 16;
-      this.$.map.map.setView(loc, zoom);
+    selectedVolunteersChanged: function(changes) {
+      var self = this;
+      $(changes).each(function(changeI, change) {
+          $(change.removed).each(function() {
+            this.selected = false;
+          });
+          if (change.addedCount > 0) {
+            for(var i=0; i < change.addedCount; i++) {
+              self.selectedVolunteers[change.index + i].selected = true;
+            }
+          }
+      });
+    },
+    volunteerSelected: function(event) {
+      var volunteer = event.target.templateInstance.model.volunteer;
+      this.fire('volunteer-select', volunteer);
+    },
+    iconForState: function(state) {
+      return state ? this.hilightMarker : this.defaultMarker;
     }
   });
   </script>
