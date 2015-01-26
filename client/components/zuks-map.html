@@ -50,9 +50,11 @@
         });
       }
     },
-    selectedVolunteersChanged: function(changes) {
+    selectedVolunteersChanged: function(changes, newVal) {
       var self = this;
-      $(changes).each(function(changeI, change) {
+      if (newVal == undefined) {
+        // Array updated
+        $(changes).each(function(changeI, change) {
           $(change.removed).each(function() {
             this.selected = false;
           });
@@ -61,7 +63,16 @@
               self.selectedVolunteers[change.index + i].selected = true;
             }
           }
-      });
+        });
+      } else {
+        // Array replaced
+        $(changes).each(function() {
+          this.selected = false;
+        });
+        $(newVal).each(function() {
+          this.selected = true;
+        });
+      }
     },
     volunteerSelected: function(event) {
       var volunteer = event.target.templateInstance.model.volunteer;
