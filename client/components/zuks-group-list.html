@@ -1,0 +1,94 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+
+<polymer-element name="zuks-group-list" attributes="volunteerGroups">
+  <template>
+    <style>
+    :host {
+      display: block;
+      height: 100%;
+      overflow: scroll;
+    }
+
+    core-list {
+      height: calc(100% - 60px);
+    }
+
+    .item {
+      height: 70px;
+      padding-right: 20px;
+      padding-left: 20px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    .item.selected .container {
+      background: #eee;
+    }
+
+    .container, paper-shadow {
+      height: 100%;
+    }
+
+    .content {
+      padding-left: 10px;
+    }
+
+    </style>
+
+    <core-list data="{{volunteerGroups}}" selectionenabled on-core-activate="{{groupSelected}}" id="list">
+      <template>
+        <div class="item {{ {selected: selected} | tokenList }}">
+          <paper-shadow>
+            <div horizontal layout center class="container">
+              <div class="content">{{model.name}}</div>
+            </div>
+            <paper-ripple fit></paper-ripple>
+          </paper-shadow>
+        </div>
+      </template>
+    </core-list>
+
+    <paper-action-dialog heading="Gruppe {{actionName}}" id="addGroup" backdrop="true" on-core-overlay-close-completed="{{groupDialogClosed}}">
+        <paper-input-decorator label="Name">
+          <input is="core-input" value="{{group.name}}" autofocus />
+        </paper-input-decorator>
+
+        <paper-button dismissive>Abbrechen</paper-button>
+        <paper-button affirmative default on-click="{{saveGroup}}">Speichern</paper-button>
+    </paper-action-dialog>
+
+    <paper-button raised on-click="{{addGroup}}">Neue Gruppe</paper-button>
+
+  </template>
+  <script>
+  Polymer({
+    groupSelected: function(event) {
+      this.group = $.extend(true, {}, event.detail.data);
+      this.actionName = "aktualisieren";
+      this.$.addGroup.open();
+    },
+    addGroup: function() {
+      this.group = {name: "", members: []};
+      this.actionName = "hinzufügen";
+      this.$.addGroup.open();
+    },
+    saveGroup: function() {
+      if (this.group.id) {
+        this.fire("group-updated", this.group);
+      } else {
+        this.fire("group-added", this.group);
+      }
+    },
+    groupDialogClosed: function() {
+      this.$.list.clearSelection();
+    }
+  });
+  </script>
+</polymer-element>

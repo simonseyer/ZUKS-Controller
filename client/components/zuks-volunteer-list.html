@@ -1,5 +1,4 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
 <link rel="import" href="../bower_components/core-list/core-list.html">
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
@@ -16,11 +15,10 @@
     :host {
       display: block;
       height: 100%;
-      overflow: scroll;
     }
 
     core-list {
-      height: calc(100% - 60px);
+      height: 100%;
     }
 
     .item {
@@ -57,7 +55,9 @@
 
     <core-list data="{{volunteerGroups | flattenGroup}}" groups="{{volunteerGroups}}" multi selection="{{selectedVolunteers}}" id="volunteerList" selectionenabled>
       <template>
-        <div divider class="divider"><paper-button on-click="{{updateGroup}}">{{groupModel.name}}</paper-button></div>
+        <div divider class="divider">
+          {{groupModel.name}}
+        </div>
         <div class="item {{ {selected: selected} | tokenList }}">
           <paper-shadow>
             <div horizontal layout center class="container">
@@ -68,15 +68,6 @@
         </div>
       </template>
     </core-list>
-
-    <paper-action-dialog heading="Gruppe {{actionName}}" id="addGroup" backdrop="true">
-        <paper-input-decorator label="Name">
-          <input is="core-input" value="{{group.name}}" autofocus />
-        </paper-input-decorator>
-
-        <paper-button dismissive>Abbrechen</paper-button>
-        <paper-button affirmative default on-click="{{saveGroup}}">Speichern</paper-button>
-    </paper-action-dialog>
 
     <paper-action-dialog heading="{{selectedVolunteers.length > 1 ? selectedVolunteers.length + ' Helfer ausgewählt' : selectedVolunteers[0].first_name + ' ' + selectedVolunteers[0].last_name}}" id="volunteerDetail" autoCloseDisabled="true" on-core-overlay-position="{{layoutVolunteerOverlay}}" on-core-overlay-close-completed="{{volunteerOverlayClosed}}">
         <template if="{{selectedVolunteers.length > 1}}">
@@ -100,8 +91,6 @@
         <paper-button affirmative on-click="{{saveVolunteer}}">Speichern</paper-button>
     </paper-action-dialog>
 
-    <paper-button raised on-click="{{addGroup}}">Neue Gruppe</paper-button>
-
   </template>
   <script>
   Polymer({
@@ -111,23 +100,6 @@
         volunteers.push(this.members);
       });
       return volunteers;
-    },
-    addGroup: function() {
-      this.group = {name: "", members: []};
-      this.actionName = "hinzufügen";
-      this.$.addGroup.open();
-    },
-    updateGroup: function(event) {
-      this.group = $.extend(true, {}, event.target.templateInstance.model.groupModel);
-      this.actionName = "aktualisieren";
-      this.$.addGroup.open();
-    },
-    saveGroup: function() {
-      if (this.group.id) {
-        this.fire("group-updated", this.group);
-      } else {
-        this.fire("group-added", this.group);
-      }
     },
     selectVolunteer: function(volunteer) {
       this.$.volunteerList.selectData(volunteer);

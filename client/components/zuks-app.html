@@ -8,6 +8,7 @@
 <link rel="import" href="zuks-service/zuks-service.html">
 <link rel="import" href="zuks-map.html">
 <link rel="import" href="zuks-volunteer-list.html">
+<link rel="import" href="zuks-group-list.html">
 
 <polymer-element name="zuks-app">
   <template>
@@ -53,7 +54,8 @@
           <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
         on-group-updated="{{groupUpdated}}" on-volunteers-updated="{{volunteersUpdated}}" 
         on-volunteer-selected="{{volunteerSelected}}" selectedVolunteers="{{selectedVolunteers}}" id="list"></zuks-volunteer-list>
-            <div>Gruppen</div>
+            <zuks-group-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
+        on-group-updated="{{groupUpdated}}"></zuks-group-list>
         </core-pages>
       </div>
     </div>
