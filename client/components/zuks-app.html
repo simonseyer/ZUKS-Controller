@@ -5,6 +5,8 @@
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/core-pages/core-pages.html">
 <link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/core-icons/core-icons.html">
 
 <link rel="import" href="zuks-service/zuks-service.html">
 <link rel="import" href="zuks-map.html">
@@ -49,6 +51,8 @@
       <div vertical layout>
         <core-toolbar>
           <div flex>ZUKS</div>
+          <!-- use `group-add` icon -->
+          <paper-icon-button icon="add" on-tap="{{createGroup}}"></paper-icon-button>
         </core-toolbar>
         <paper-tabs selected="{{selectedTab}}">
           <paper-tab>
@@ -64,7 +68,7 @@
         on-group-updated="{{groupUpdated}}" on-volunteers-updated="{{volunteersUpdated}}" 
         on-volunteer-selected="{{volunteerSelected}}" selectedVolunteers="{{selectedVolunteers}}" id="list"></zuks-volunteer-list>
             <zuks-group-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
-        on-group-updated="{{groupUpdated}}"></zuks-group-list>
+        on-group-updated="{{groupUpdated}}" id="groupList"></zuks-group-list>
         </core-pages>
       </div>
     </div>
@@ -114,6 +118,9 @@
     },
     volunteerSelected: function(event) {
       this.$.list.selectVolunteer(event.detail);
+    },
+    createGroup: function() {
+      this.$.groupList.addGroup();
     }
   });
   </script>
