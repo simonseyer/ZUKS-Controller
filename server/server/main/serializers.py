@@ -39,7 +39,7 @@ class VolunteerSerializer(serializers.ModelSerializer):
         depth = 1
 
     def create(self, validated_data):
-        location = LocationHandler.create(validated_data)
+        location = LocationHandler.create(validated_data.pop('location'))
         volunteer = Volunteer.objects.create(location=location, **validated_data)
         return volunteer
 
@@ -68,12 +68,13 @@ class POICategorySerializer(serializers.ModelSerializer):
 class POISerializer(serializers.ModelSerializer):
     '''Handles POI object serialization'''
     category = serializers.PrimaryKeyRelatedField(queryset=POICategory.objects.all())
+    location = LocationSerializer()
     class Meta:
         model = POI
         depth = 1
 
     def create(self, validated_data):
-        location = LocationHandler.create(validated_data)
+        location = LocationHandler.create(validated_data.pop('location'))
         poi = POI.objects.create(location=location, **validated_data)
         return poi
 
