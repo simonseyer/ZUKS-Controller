@@ -1,0 +1,67 @@
+[
+  {
+    "model": "main.POICategory",
+    "pk": 1,
+    "fields": {
+      "name": "Verpflegung",
+      "icon": "cutlery"
+    }
+  },
+  {
+    "model": "main.POICategory",
+    "pk": 2,
+    "fields": {
+      "name": "Unterkunft",
+      "icon": "bed"
+    }
+  },
+  {
+    "model": "main.POICategory",
+    "pk": 3,
+    "fields": {
+      "name": "Parken",
+      "icon": "road"
+    }
+  },
+  {
+    "model": "main.POICategory",
+    "pk": 4,
+    "fields": {
+      "name": "Medzinische Versorgung",
+      "icon": "plus"
+    }
+  },
+  {
+    "model": "main.POICategory",
+    "pk": 5,
+    "fields": {
+      "name": "Ausbildung",
+      "icon": "education"
+    }
+  },
+  {
+    "model": "main.POICategory",
+    "pk": 6,
+    "fields": {
+      "name": "Stützpunkt",
+      "icon": "home"
+    }
+  },
+  {
+    "model": "main.POICategory",
+    "pk": 7,
+    "fields": {
+      "name": "Sammelpunkt",
+      "icon": "flag"
+    }
+  },
+  {
+    "model": "main.POICategory",
+    "pk": 8,
+    "fields": {
+      "name": "Warnung",
+      "icon": "warning-sign"
+    }
+  }
+]
+
