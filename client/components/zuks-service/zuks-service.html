@@ -53,6 +53,7 @@
           $.extend(v, volunteer);
         },
         volunteerGroup_create: function(oldGroup, group) {
+          group.members = [];
           self.volunteerGroups.values.push(group);
         },
         volunteerGroup_update: function(oldGroup, group) {
@@ -60,7 +61,13 @@
           $.extend(g, group);
         },
         poi_create: function(oldPOI, poi) {
-          self.pois.push(poi);
+          self.pois.values.push(poi);
+          var category = self.poiCategories.get(poi.category);
+          if (category) {
+            category.pois.push(poi);
+          } else {
+            console.warn("Missing category ", poi.category);
+          }
         },
         poi_update: function(oldPOI, poi) {
           if (oldPOI.category != poi.category) {
@@ -85,9 +92,8 @@
 
       self.$.rest.get('volunteerGroups', function(response) {
         response.forEach(function(group) {
-          group.members = [];
+          self._eventHandler.volunteerGroup_create(null, group);
         });
-        self.volunteerGroups.values = response;
 
         self.$.rest.get('volunteers', function(response) {
           response.forEach(function(volunteer) {
@@ -97,10 +103,16 @@
       });
 
       this.$.rest.get('poiCategories', function(response) {
+        response.forEach(function(category) {
+          category.pois = [];
+        });
         self.poiCategories.values = response;
-      });
-      this.$.rest.get('pois', function(response) {
-        self.pois.values = response;
+
+        self.$.rest.get('pois', function(response) {
+          response.forEach(function(poi) {
+            self._eventHandler.poi_create(null, poi);
+          });
+        });
       });
     },
     addVolunteer: function(volunteer) {
