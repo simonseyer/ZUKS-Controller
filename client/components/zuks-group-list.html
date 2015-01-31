@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
 
 <polymer-element name="zuks-group-list" attributes="volunteerGroups">
   <template>
@@ -55,10 +56,8 @@
       </template>
     </core-list>
 
-    <paper-action-dialog heading="Gruppe {{actionName}}" id="addGroup" backdrop="true" on-core-overlay-close-completed="{{groupDialogClosed}}">
-        <paper-input-decorator label="Name">
-          <input is="core-input" value="{{group.name}}" autofocus />
-        </paper-input-decorator>
+    <paper-action-dialog heading="Gruppe {{actionName}}" id="addGroup" backdrop on-core-overlay-close-completed="{{groupDialogClosed}}">
+        <paper-input label="Name" autofocus floatingLabel value="{{group.name}}"></paper-input>
 
         <paper-button dismissive>Abbrechen</paper-button>
         <paper-button affirmative default on-click="{{saveGroup}}" style="color:#4d9eff">Speichern</paper-button>
