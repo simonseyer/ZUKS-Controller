@@ -21,3 +21,20 @@ class Volunteer(models.Model):
 
   def __str__(self):
     return "%s %s" % (self.first_name, self.last_name)
+
+class POICategory(models.Model):
+  name = models.CharField(max_length=60)
+  icon = models.CharField(max_length=20)
+
+  def __str__(self):
+    return  self.name
+
+class POI(models.Model):
+  name = models.CharField(max_length=60)
+  description = models.TextField()
+  location = models.OneToOneField(Location)
+  address = models.TextField()
+  category = models.ForeignKey(POICategory)
+
+  def __str__(self):
+    return "%s [%s]" % (self.name, self.category.name)
