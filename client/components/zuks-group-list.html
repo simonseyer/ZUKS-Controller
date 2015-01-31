@@ -42,7 +42,7 @@
 
     </style>
 
-    <core-list data="{{volunteerGroups}}" selectionenabled on-core-activate="{{groupSelected}}" id="list">
+    <core-list data="{{volunteerGroups.values}}" selectionenabled on-core-activate="{{groupSelected}}" id="list">
       <template>
         <div class="item {{ {selected: selected} | tokenList }}">
           <paper-shadow>

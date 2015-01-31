@@ -15,10 +15,11 @@
     <zuks-ws id="ws"></zuks-ws>
 
   </template>
+  <script type="text/javascript" src="IndexedArray.js"></script>
   <script>
   Polymer({
-    volunteers: [],
-    volunteerGroups: [],
+    volunteers: new IndexedArray('id'),
+    volunteerGroups: new IndexedArray('id'),
     ready: function() {
       var self = this;
 
@@ -28,40 +29,28 @@
 
       this.$.ws.event_handler = {
         volunteer_create: function(oldVolunteer, volunteer) {
-          self.volunteers.push(volunteer);
-          $(self.volunteerGroups).each(function() {
-            if (this.id == volunteer.group) {
-              this.members.push(volunteer);
-              return;
-            }
-          });
+          self.volunteers.values.push(volunteer);
+          var group = self.volunteerGroups.get(volunteer.group);
+          group.members.push(volunteer);
         },
         volunteer_update: function(oldVolunteer, volunteer) {
-          $(self.volunteerGroups).each(function(groupIndex, group) {
-            if (group.id == oldVolunteer.group) {
-              $(group.members).each(function(volunteerIndex) {
-                if (this.id == volunteer.id) {
-                  $.extend(this, volunteer);
-                  group.members.splice(volunteerIndex, 1);
-                  return;
-                }
-              });
-            }
-            if (this.id == volunteer.group) {
-              this.members.push(volunteer);
-            }
-          });
+          if (oldVolunteer.group != volunteer.group) {
+            var oldGroup = self.volunteerGroups.get(oldVolunteer.group);
+            self.spliceModel(oldGroup.members, oldVolunteer);
+
+            var newGroup = self.volunteerGroups.get(volunteer.group);
+            newGroup.members.push(volunteer);
+          }
+
+          var v = self.volunteers.get(volunteer.id);
+          $.extend(v, volunteer);
         },
         volunteerGroup_create: function(oldGroup, group) {
           self.handleNewGroup(self, group);
         },
         volunteerGroup_update: function(oldGroup, group) {
-          $(self.volunteerGroups).each(function() {
-            if (this.id == group.id) {
-              $.extend(this, group);
-              return;
-            }
-          });
+          var g = self.volunteerGroups.get(group.id);
+          $.extend(g, group);
         }
       };
       this.$.ws.initWebSocket();
@@ -71,8 +60,8 @@
     init: function() {
       var self = this;
       this.$.rest.get('volunteerGroups', function(response) {
-        self.volunteerGroups = [];
-        self.volunteers = [];
+        self.volunteerGroups.values = [];
+        self.volunteers.values = [];
         $(response).each(function() {
           self.handleNewGroup(self, this);
         })
@@ -81,8 +70,8 @@
     handleNewGroup: function(self, group) {
       self.$.rest.get('volunteerGroups/' + group.id + "/members", function(resp) {
         group.members = resp;
-        self.volunteerGroups = self.volunteerGroups.concat(group);
-        self.volunteers = self.volunteers.concat(resp);
+        self.volunteerGroups.values = self.volunteerGroups.values.concat(group);
+        self.volunteers.values = self.volunteers.values.concat(resp);
       });
     },
     addVolunteer: function(volunteer) {
@@ -96,6 +85,20 @@
     },
     updateGroup: function(group) {
       this.$.rest.put('volunteerGroups', group);
+    },
+    indexOfModel: function(array, object) {
+      for (var i=0; i < array.length; i++) {
+        if (array[i].id == object.id) {
+          return i;
+        }
+      }
+      return -1;
+    },
+    spliceModel: function(array, object) {
+      var index = this.indexOfModel(array, object);
+      if (index >= 0) {
+        array.splice(index, 1);
+      }
     }
   });
   </script>

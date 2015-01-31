@@ -28,7 +28,7 @@
           <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
           <link rel="stylesheet" href="../bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
         </core-style>
-        <template repeat="{{volunteer in volunteers}}">
+        <template repeat="{{volunteer in volunteers.values}}">
           <leaflet-marker longitude="{{volunteer.location.longitude}}" 
                         latitude="{{volunteer.location.latitude}}"
                         on-click="{{volunteerSelected}}"
