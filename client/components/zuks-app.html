@@ -12,6 +12,7 @@
 <link rel="import" href="zuks-map.html">
 <link rel="import" href="zuks-volunteer-list.html">
 <link rel="import" href="zuks-group-list.html">
+<link rel="import" href="zuks-poi-list.html">
 
 <polymer-element name="zuks-app">
   <template>
@@ -43,7 +44,7 @@
     }
     </style>
     
-    <zuks-service volunteers="{{volunteers}}" volunteerGroups="{{volunteerGroups}}" id="service"></zuks-service>
+    <zuks-service volunteers="{{volunteers}}" volunteerGroups="{{volunteerGroups}}" poiCategories="{{poiCategories}}" id="service"></zuks-service>
     
     <div class="container" layout horizontal>
       <zuks-map flex id="map" volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}" selectedVolunteers="{{selectedVolunteers}}" on-volunteer-select="{{volunteerSelected}}"></zuks-map>
@@ -53,6 +54,7 @@
           <div flex>ZUKS</div>
           <!-- use `group-add` icon -->
           <paper-icon-button icon="social:group-add" on-tap="{{createGroup}}"></paper-icon-button>
+          <paper-icon-button icon="add" on-tap="{{createPOI}}"></paper-icon-button>
         </core-toolbar>
         <paper-tabs selected="{{selectedTab}}">
           <paper-tab>
@@ -61,14 +63,19 @@
           <paper-tab>
             Gruppen
           </paper-tab>
+          <paper-tab>
+            Orte
+          </paper-tab>
         </paper-tabs>
         
         <core-pages selected="{{selectedTab}}" flex>
           <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
-        on-group-updated="{{groupUpdated}}" on-volunteers-updated="{{volunteersUpdated}}" 
-        on-volunteer-selected="{{volunteerSelected}}" selectedVolunteers="{{selectedVolunteers}}" id="list"></zuks-volunteer-list>
-            <zuks-group-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
-        on-group-updated="{{groupUpdated}}" id="groupList"></zuks-group-list>
+          on-group-updated="{{groupUpdated}}" on-volunteers-updated="{{volunteersUpdated}}" 
+          on-volunteer-selected="{{volunteerSelected}}" selectedVolunteers="{{selectedVolunteers}}" id="list"></zuks-volunteer-list>
+          <zuks-group-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
+          on-group-updated="{{groupUpdated}}" id="groupList"></zuks-group-list>
+          <zuks-poi-list poiCategories="{{poiCategories}}" on-poi-create="{{poiCreated}}" 
+          on-poi-update="{{poiUpdated}}" id="poiList"></zuks-group-list>
         </core-pages>
       </div>
     </div>
@@ -122,6 +129,15 @@
     },
     createGroup: function() {
       this.$.groupList.addGroup();
+    },
+    poiCreated: function(event) {
+      this.$.service.addPOI(event.detail);
+    },
+    poiUpdated: function(event) {
+      this.$.service.updatePOI(event.detail);
+    },
+    createPOI: function() {
+      this.$.poiList.createPOI();
     }
   });
   </script>
