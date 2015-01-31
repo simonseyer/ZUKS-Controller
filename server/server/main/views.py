@@ -1,8 +1,8 @@
-from server.main.models import Volunteer, VolunteerGroup, Location
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
-from server.main.serializers import VolunteerSerializer, LocationSerializer, VolunteerGroupSerializer
+from server.main.models import *
+from server.main.serializers import *
 from server.main.event_bus import EventBus, EventBusLogger
 from server.main.web_notifier import WebNotifier
 
@@ -107,3 +107,18 @@ class VolunteerGroupViewSet(EventViewSet):
     volunteers = self.get_object().members.all()
     serializer = VolunteerSerializer(volunteers, many=True)
     return Response(serializer.data)
+
+class POIViewSet(EventViewSet):
+  """
+  API endpoint for POIs
+  """
+  queryset = POI.objects.all()
+  serializer_class = POISerializer
+  event_key = "poi"
+
+class POICategoryViewSet(viewsets.ReadOnlyModelViewSet):
+  """
+  API endpoint for POI categories
+  """
+  queryset = POICategory.objects.all()
+  serializer_class = POICategorySerializer

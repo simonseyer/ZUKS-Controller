@@ -8,6 +8,8 @@ router = routers.DefaultRouter()
 router.register(r'volunteers', views.VolunteerViewSet)
 router.register(r'volunteerGroups', views.VolunteerGroupViewSet)
 router.register(r'locations', views.LocationViewSet)
+router.register(r'pois', views.POIViewSet)
+router.register(r'poiCategories', views.POICategoryViewSet)
 
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
