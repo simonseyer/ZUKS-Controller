@@ -20,6 +20,7 @@
   Polymer({
     volunteers: new IndexedArray('id'),
     volunteerGroups: new IndexedArray('id'),
+    _eventHandler: null,
     ready: function() {
       var self = this;
 
@@ -27,11 +28,15 @@
         self.fire('error', {status: status, msg: error});
       };
 
-      this.$.ws.event_handler = {
+      this._eventHandler = {
         volunteer_create: function(oldVolunteer, volunteer) {
           self.volunteers.values.push(volunteer);
           var group = self.volunteerGroups.get(volunteer.group);
-          group.members.push(volunteer);
+          if (group) {
+            group.members.push(volunteer);
+          } else {
+            console.warn("Missing group ", volunteer.group);
+          }
         },
         volunteer_update: function(oldVolunteer, volunteer) {
           if (oldVolunteer.group != volunteer.group) {
@@ -46,32 +51,33 @@
           $.extend(v, volunteer);
         },
         volunteerGroup_create: function(oldGroup, group) {
-          self.handleNewGroup(self, group);
+          self.volunteerGroups.values.push(group);
         },
         volunteerGroup_update: function(oldGroup, group) {
           var g = self.volunteerGroups.get(group.id);
           $.extend(g, group);
         }
       };
+      this.$.ws.event_handler = this._eventHandler;
       this.$.ws.initWebSocket();
 
       this.init();
     },
     init: function() {
       var self = this;
-      this.$.rest.get('volunteerGroups', function(response) {
-        self.volunteerGroups.values = [];
-        self.volunteers.values = [];
-        $(response).each(function() {
-          self.handleNewGroup(self, this);
-        })
+
+      self.$.rest.get('volunteerGroups', function(response) {
+        response.forEach(function(group) {
+          group.members = [];
+        });
+        self.volunteerGroups.values = response;
+
+        self.$.rest.get('volunteers', function(response) {
+          response.forEach(function(volunteer) {
+            self._eventHandler.volunteer_create(null, volunteer);
+          });
+        });
       });
-    },
-    handleNewGroup: function(self, group) {
-      self.$.rest.get('volunteerGroups/' + group.id + "/members", function(resp) {
-        group.members = resp;
-        self.volunteerGroups.values = self.volunteerGroups.values.concat(group);
-        self.volunteers.values = self.volunteers.values.concat(resp);
       });
     },
     addVolunteer: function(volunteer) {
