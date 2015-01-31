@@ -69,7 +69,7 @@
       </template>
     </core-list>
 
-    <paper-action-dialog heading="{{selectedVolunteers.length > 1 ? selectedVolunteers.length + ' Helfer ausgewählt' : selectedVolunteers[0].first_name + ' ' + selectedVolunteers[0].last_name}}" id="volunteerDetail" autoCloseDisabled="true" on-core-overlay-position="{{layoutVolunteerOverlay}}" on-core-overlay-close-completed="{{volunteerOverlayClosed}}">
+    <paper-action-dialog heading="{{selectedVolunteers.length > 1 ? selectedVolunteers.length + ' Helfer ausgewählt' : selectedVolunteers[0].first_name + ' ' + selectedVolunteers[0].last_name}}" id="volunteerDetail" autoCloseDisabled on-core-overlay-position="{{layoutVolunteerOverlay}}" on-core-overlay-close-completed="{{volunteerOverlayClosed}}">
         <template if="{{selectedVolunteers.length > 1}}">
           <div>
             <template repeat="{{volunteer, i in selectedVolunteers}}">
