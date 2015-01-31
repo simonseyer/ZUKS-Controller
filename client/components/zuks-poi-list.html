@@ -1,0 +1,162 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<polymer-element name="zuks-poi-list" attributes="poiCategories selectedPOI">
+  <template>
+    <style>
+    :host {
+      display: block;
+      height: 100%;
+    }
+
+    core-list {
+      height: 100%;
+    }
+
+    .item {
+      height: 70px;
+      padding-right: 20px;
+      padding-left: 20px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    .item.selected .container {
+      background: #eee;
+    }
+
+    .container, paper-shadow {
+      height: 100%;
+    }
+
+    .divider {
+      color: #888;
+      padding-left: 20px;
+      padding-top: 15px;
+    }
+
+    .content {
+      padding-left: 10px;
+    }
+
+    .devider paper-button {
+      margin:0;
+    }
+
+    </style>
+
+    <core-list data="{{poiCategories.values | flattenGroup}}" groups="{{poiCategories.values}}" selection="{{selectedPOI}}" id="poiList" selectionenabled>
+      <template>
+        <div divider class="divider">
+          {{groupModel.name}}
+        </div>
+        <div class="item {{ {selected: selected} | tokenList }}">
+          <paper-shadow>
+            <div horizontal layout center class="container">
+              <div class="content">{{model.name}}</div>
+            </div>
+            <paper-ripple fit></paper-ripple>
+          </paper-shadow>
+        </div>
+      </template>
+    </core-list>
+
+    <paper-action-dialog heading="{{editablePOI.name.length > 0 ? editablePOI.name : 'Ort hinzufügen'}}" id="poiDetail" autoCloseDisabled?="{{editablePOI.id}}" backdrop?="{{!editablePOI.id}}" on-core-overlay-position="{{layoutPOIOverlay}}" on-core-overlay-close-completed="{{poiOverlayClosed}}" vertical layout>
+        <div flex>
+        <paper-input label="Name" autofocus floatingLabel value="{{editablePOI.name}}">
+        </paper-input>
+        </div>
+
+        <paper-dropdown-menu  label="Kategorie">
+            <paper-dropdown layered class="dropdown">
+                <core-menu class="menu" valueattr="cid" selected="{{editablePOI.category}}">
+                    <template repeat="{{category in poiCategories.values}}">
+                        <paper-item cid="{{category.id}}">{{category.name}}</paper-item>
+                    </template>
+                </core-menu>
+            </paper-dropdown>
+        </paper-dropdown-menu>
+
+        <paper-input-decorator floatingLabel label="Beschreibung">
+          <textarea value="{{editablePOI.description}}" rows="3"></textarea>
+        </paper-input-decorator>
+
+        <paper-input-decorator floatingLabel label="Adresse">
+          <textarea value="{{editablePOI.address}}" rows="3"></textarea>
+        </paper-input-decorator>
+
+        <paper-button affirmative>Abbrechen</paper-button>
+        <paper-button affirmative on-click="{{savePOI}}" style="color:#4d9eff">Speichern</paper-button>
+    </paper-action-dialog>
+
+  </template>
+  <script>
+  Polymer({
+    editablePOI: null,
+    flattenGroup: function(categoryList) {
+      var pois = [];
+              console.log(categoryList);
+      categoryList.forEach(function(category) {
+
+        pois.push(category.pois);
+      });
+      return pois;
+    },
+    selectPOI: function(poi) {
+      this.$.poiList.selectData(poi);
+      this.$.poiList.scrollToData(poi);
+    },
+    createPOI: function() {
+      this.editablePOI = {
+        name: '', description: '', 
+        address: '', category: -1,
+        location: {latitude: 0, longitude: 0}
+      };
+      this.$.poiDetail.open();
+    },
+    selectedPOIChanged: function(changes) {
+      if (this.selectedPOI) {
+        editablePOI = $.extend({}, this.selectedPOI);
+        console.log(editablePOI);
+        this.$.poiDetail.open();
+      } else {
+        this.$.poiDetail.close();
+      }
+    },
+    poiOverlayClosed: function(event) {
+      if (event.target === this.$.poiDetail) {
+        this.$.poiList.clearSelection();
+      }
+    },
+    layoutPOIOverlay: function(event) {
+      if (this.editablePOI.id) {
+        var target = $(event.target);
+        var list = $(this.$.poiList);
+
+        target.css('top', $('.item', list).css('padding-top'));
+        target.css('right', list.css('width'));
+        target.css('margin', 0);
+        target.css('max-width', '280px');
+
+        event.target.dimensions.position = {v: 'top', h: 'right'};
+      }
+    },
+    savePOI: function(event) {
+      if (this.editablePOI.id) {
+        this.fire("poi-update", this.editablePOI);
+      } else {
+        this.fire("poi-create", this.editablePOI);
+      }
+    }
+  });
+  </script>
+</polymer-element>
