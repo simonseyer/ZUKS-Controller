@@ -3,7 +3,7 @@
 <link rel="import" href="zuks-rest.html">
 <link rel="import" href="zuks-ws.html">
 
-<polymer-element name="zuks-service" attributes="volunteers volunteerGroups">
+<polymer-element name="zuks-service" attributes="volunteers volunteerGroups pois poiCategories">
   <template>
     <style>
     :host {
@@ -20,6 +20,8 @@
   Polymer({
     volunteers: new IndexedArray('id'),
     volunteerGroups: new IndexedArray('id'),
+    pois: new IndexedArray('id'),
+    poiCategories: new IndexedArray('id'),
     _eventHandler: null,
     ready: function() {
       var self = this;
@@ -56,6 +58,21 @@
         volunteerGroup_update: function(oldGroup, group) {
           var g = self.volunteerGroups.get(group.id);
           $.extend(g, group);
+        },
+        poi_create: function(oldPOI, poi) {
+          self.pois.push(poi);
+        },
+        poi_update: function(oldPOI, poi) {
+          if (oldPOI.category != poi.category) {
+            var oldCategory = self.poiCategories.get(oldPOI.category);
+            self.spliceModel(oldCategory.pois, oldPOI);
+
+            var newPOI = self.poiCategories.get(poi.category);
+            newPOI.pois.push(poi);
+          }
+
+          var p = self.pois.get(poi.id);
+          $.extend(p, poi);
         }
       };
       this.$.ws.event_handler = this._eventHandler;
@@ -78,6 +95,12 @@
           });
         });
       });
+
+      this.$.rest.get('poiCategories', function(response) {
+        self.poiCategories.values = response;
+      });
+      this.$.rest.get('pois', function(response) {
+        self.pois.values = response;
       });
     },
     addVolunteer: function(volunteer) {
@@ -91,6 +114,12 @@
     },
     updateGroup: function(group) {
       this.$.rest.put('volunteerGroups', group);
+    },
+    addPOI: function(poi) {
+      this.$.rest.post('pois', poi);
+    },
+    updatePOI: function(group) {
+      this.$.rest.put('pois', poi);
     },
     indexOfModel: function(array, object) {
       for (var i=0; i < array.length; i++) {
