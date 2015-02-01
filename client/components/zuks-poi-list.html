@@ -76,7 +76,7 @@
         </paper-input>
         </div>
 
-        <paper-dropdown-menu  label="Kategorie">
+        <paper-dropdown-menu label="Kategorie">
             <paper-dropdown layered class="dropdown">
                 <core-menu class="menu" valueattr="cid" selected="{{editablePOI.category}}">
                     <template repeat="{{category in poiCategories.values}}">
@@ -125,8 +125,7 @@
     },
     selectedPOIChanged: function(changes) {
       if (this.selectedPOI) {
-        editablePOI = $.extend({}, this.selectedPOI);
-        console.log(editablePOI);
+        this.editablePOI = $.extend({}, this.selectedPOI);
         this.$.poiDetail.open();
       } else {
         this.$.poiDetail.close();
