@@ -139,17 +139,15 @@
       }
     },
     layoutPOIOverlay: function(event) {
-      if (this.editablePOI.id) {
-        var target = $(event.target);
-        var list = $(this.$.poiList);
+      var target = $(event.target);
+      var list = $(this.$.poiList);
 
-        target.css('top', $('.item', list).css('padding-top'));
-        target.css('right', list.css('width'));
-        target.css('margin', 0);
-        target.css('max-width', '280px');
+      target.css('top', $('.item', list).css('padding-top'));
+      target.css('right', list.css('width'));
+      target.css('margin', 0);
+      target.css('max-width', '280px');
 
-        event.target.dimensions.position = {v: 'top', h: 'right'};
-      }
+      event.target.dimensions.position = {v: 'top', h: 'right'};
     },
     savePOI: function(event) {
       if (this.editablePOI.id) {
