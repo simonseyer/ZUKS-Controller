@@ -71,6 +71,7 @@
     </core-list>
 
     <paper-action-dialog heading="{{editablePOI.name.length > 0 ? editablePOI.name : 'Ort hinzufügen'}}" id="poiDetail" autoCloseDisabled?="{{editablePOI.id}}" backdrop?="{{!editablePOI.id}}" on-core-overlay-position="{{layoutPOIOverlay}}" on-core-overlay-close-completed="{{poiOverlayClosed}}" vertical layout>
+      <template if="{{editablePOI}}">
         <div flex>
         <paper-input label="Name" autofocus floatingLabel value="{{editablePOI.name}}">
         </paper-input>
@@ -96,6 +97,7 @@
 
         <paper-button dismissive>Abbrechen</paper-button>
         <paper-button affirmative on-click="{{savePOI}}" style="color:#4d9eff">Speichern</paper-button>
+      </template>
     </paper-action-dialog>
 
   </template>
