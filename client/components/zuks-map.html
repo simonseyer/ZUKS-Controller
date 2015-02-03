@@ -9,6 +9,7 @@
 
 <link rel="import" href="marker-icon/leaflet-marker-icon.html">
 <link rel="import" href="geo-search/geo-search.html">
+<link rel="import" href="geo-search/reverse-geo-search.html">
 
 <polymer-element name="zuks-map" attributes="volunteers selectedVolunteers pois poiCategories selectedPOI">
   <template>
@@ -96,6 +97,12 @@
 
     <!-- Location API-->
     <geo-search address="{{searchValue}}" results="{{locationResults}}"></geo-search>
+    <template if="{{freehandLocation}}">
+      <reverse-geo-search latitude="{{freehandLocation.latitude}}" 
+                         longitude="{{freehandLocation.longitude}}" 
+                           result="{{freehandLocation.lookup}}">
+      </reverse-geo-search>
+    </template>
     
     <!-- Leaflet map-->
     <leaflet-map
@@ -139,6 +146,16 @@
           </leaflet-marker>
           <leaflet-marker-icon icon="flag" leafletIcon="{{location.leafletIcon}}" 
           iconClass="{{index==selectedIndex ? 'selected' : ''}}"></leaflet-marker-icon>
+
+        <template if="{{freehandLocation}}">
+          <leaflet-marker longitude="{{freehandLocation.longitude}}" 
+                           latitude="{{freehandLocation.latitude}}"
+                               icon="{{freehandLeafletIcon}}">
+          </leaflet-marker>
+          <leaflet-marker-icon icon="flag" 
+                        leafletIcon="{{freehandLeafletIcon}}" 
+                          iconClass="selected">
+          </leaflet-marker-icon>
         </template>
 
         <paper-fab id="submitFab" icon="done" on-click="{{submitSearch}}"></paper-fab>
@@ -164,9 +181,16 @@
       </template>
 
       <!-- Selected result, when search field is not focused-->
-      <template if="{{!searchFieldFocused && selectedIndex >= 0}}">
+      <template if="{{(!searchFieldFocused && selectedIndex >= 0) || freehandLocation}}">
         <ul id="suggestions">
-          <li selected>{{locationResults[selectedIndex].display_name}}</li>
+          <li selected>
+            <template if="{{!searchFieldFocused && selectedIndex >= 0}}">
+              {{locationResults[selectedIndex].display_name}}
+            </template>
+            <template if="{{freehandLocation}}">
+              {{freehandLocation.lookup.display_name}}
+            </template>
+          </li>
         </ul>
       </template>
 
@@ -183,16 +207,9 @@
     selectedIndex: -1,
     searchMode: false,
     savedMapBounds: null,
-    clickedRight: function(e) {
-      /*if (e.detail && e.detail.latlng) {
-        this.fire('volunteer-added', {
-          latitude: e.detail.latlng.lat,
-          longitude: e.detail.latlng.lng
-        });
-      }*/
-      if (e.detail && e.detail.latlng) {
-        this.searchMode = !this.searchMode;
-      }
+    freehandLocation: null,
+    observe: {
+      'freehandLocation.lookup' : 'checkValidity'
     },
     selectedVolunteersChanged: function(changes, newVal) {
       var self = this;
@@ -251,6 +268,7 @@
         // Restore the original map view
         this.$.map.map.fitBounds(this.savedMapBounds);
         this.locationResults = [];
+        this.freehandLocation = null;
         this.searchValue = "";
         this.$.searchOverlay.close();
       }
@@ -282,26 +300,57 @@
     },
     selectedIndexChanged: function() {
       if (this.selectedIndex >= 0) {
+        // Reset freehand location
+        this.freehandLocation = null;
         var result = this.locationResults[this.selectedIndex];
         var latLng = L.latLng(result.lat, result.lon);
         this.$.map.map.setView(latLng, 10, {animate: true});
       }
-      $(this.$.submitFab).toggleClass('valid', this.selectedIndex >= 0);
+      this.checkValidity();
     },
     searchResultSelected: function(event) {
       this.selectedIndex = event.target.templateInstance.model.index;
     },
-    submitSearch: function() {
-      var selectedLocation = this.locationResults[this.selectedIndex];
-      var result = {
+    clickedRight: function(event) {
+      if (this.searchMode && event.detail && event.detail.latlng) {
+        this.freehandLocation = {
+          latitude: event.detail.latlng.lat,
+          longitude: event.detail.latlng.lng,
+          lookup: {display_name: 'Lade Adresse...'}
+        };
+        this.selectedIndex = -1;
+        this.checkValidity();
+      }
+    },
+    checkValidity: function() {
+      // The freehandLocation is valid after the address lookup
+      var valid = this.selectedIndex >= 0 || (this.freehandLocation && 
+                                              this.freehandLocation.lookup.lat);
+      $(this.$.submitFab).toggleClass('valid', !!valid);
+      return !!valid;
+    },
+    getSelectedLocation: function() {
+      var selectedLocation;
+      if (this.selectedIndex >= 0) {
+        selectedLocation = this.locationResults[this.selectedIndex];
+      } else if (this.freehandLocation) {
+        selectedLocation = this.freehandLocation.lookup;
+      } else {
+        return null;
+      }
+      return {
         location: {
           latitude: selectedLocation.lat,
           longitude: selectedLocation.lon
         },
         address: selectedLocation.display_name
       };
-      this.fire('search-finish', result);
-      this.searchMode = false;
+    },
+    submitSearch: function() {
+      if (this.checkValidity()) {
+        this.fire('search-finish', this.getSelectedLocation());
+        this.searchMode = false;
+      }
     },
     abortSearch: function() {
       this.fire('search-finish');
