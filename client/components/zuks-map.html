@@ -5,7 +5,7 @@
 
 <link rel="import" href="marker-icon/leaflet-marker-icon.html">
 
-<polymer-element name="zuks-map" attributes="volunteers selectedVolunteers">
+<polymer-element name="zuks-map" attributes="volunteers selectedVolunteers pois poiCategories selectedPOI">
   <template>
     <style>
     :host {
@@ -44,6 +44,14 @@
                         icon="{{volunteer.leafletIcon}}">
           </leaflet-marker>
           <leaflet-marker-icon icon="maps:place" leafletIcon="{{volunteer.leafletIcon}}" iconClass="{{volunteer.selected ? 'selected' : ''}}"></leaflet-marker-icon>
+        </template>
+        <template repeat="{{poi in pois.values}}">
+          <leaflet-marker longitude="{{poi.location.longitude}}" 
+                        latitude="{{poi.location.latitude}}"
+                        on-click="{{poiSelected}}"
+                        icon="{{poi.leafletIcon}}">
+          </leaflet-marker>
+          <leaflet-marker-icon icon="{{iconForPOI(poi)}}" leafletIcon="{{poi.leafletIcon}}" iconClass="{{poi.selected ? 'selected' : ''}}"></leaflet-marker-icon>
         </template>
     </leaflet-map>
 
@@ -86,6 +94,21 @@
       var volunteer = event.target.templateInstance.model.volunteer;
       this.fire('volunteer-select', volunteer);
     },
+    selectedPOIChanged: function(oldVal, newVal) {
+      if (oldVal) {
+        oldVal.selected = false;
+      }
+      if (newVal) {
+        newVal.selected = true;
+      }
+    },
+    poiSelected: function(event) {
+      var poi = event.target.templateInstance.model.poi;
+      this.fire('poi-select', poi);
+    },
+    iconForPOI: function(poi) {
+      return poi ? this.poiCategories.get(poi.category).icon : '';
+    }
   });
   </script>
 </polymer-element>
