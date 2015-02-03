@@ -2,8 +2,13 @@
 <link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
 <link rel="import" href="../bower_components/core-style/core-style.html">
 <link rel="import" href="../bower_components/core-icons/maps-icons.html">
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../bower_components/core-a11y-keys/core-a11y-keys.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 
 <link rel="import" href="marker-icon/leaflet-marker-icon.html">
+<link rel="import" href="geo-search/geo-search.html">
 
 <polymer-element name="zuks-map" attributes="volunteers selectedVolunteers pois poiCategories selectedPOI">
   <template>
@@ -11,12 +16,71 @@
     :host {
       display: block;
       height: 100%;
+      transition: 0.15s;
+      overflow: hidden;
     }
 
     leaflet-map {
       width: 100%;
       height: 100%;
     }
+
+    :host(.search) {
+      transform: translate(150px, 5%);
+      height: 90%;
+      z-index: 100;
+      box-shadow: 0 0 20px #333;
+    }
+
+    #submitFab {
+      position: absolute;
+      right: 32px;
+      bottom: -60px;
+      background-color: green;
+      transition: bottom 0.3s;
+    }
+
+    #submitFab.valid {
+      bottom: 38px;
+    }
+
+    #searchOverlay {
+      width: 40%;
+      background-color: white;
+      overflow: visible;
+    }
+
+    #searchOverlay /deep/ paper-input-decorator {
+      margin: 0 16px 0 16px;
+    }
+
+    #searchOverlay /deep/ input::-webkit-calendar-picker-indicator {
+      display: none;
+    }
+
+    #searchOverlay /deep/ ul#suggestions {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      transition: max-height 1s;
+    }
+
+    #searchOverlay /deep/ ul#suggestions li {
+      padding: 10px 16px 6px 16px;
+      cursor: pointer;
+      line-height: 1.2em;
+    }
+
+    #searchOverlay /deep/ ul#suggestions li[selected],
+    #searchOverlay /deep/ ul#suggestions li:hover {
+      background-color: #4d9eff;
+      color: white;
+    }
+
+    #searchOverlay paper-shadow {
+      pointer-events: none;
+    }
+
     </style>
 
     <core-style id="map-style">
@@ -29,41 +93,105 @@
         }
       </style>
     </core-style>
+
+    <!-- Location API-->
+    <geo-search address="{{searchValue}}" results="{{locationResults}}"></geo-search>
     
+    <!-- Leaflet map-->
     <leaflet-map
       longitude="8.238611"
       latitude="50.083056"
       zoom="14"
       id="map"
-      on-contextmenu="{{clickedRight}}">
+      on-contextmenu="{{clickedRight}}"
+      zoomControl="false">
         
-        <template repeat="{{volunteer in volunteers.values}}">
-          <leaflet-marker longitude="{{volunteer.location.longitude}}" 
-                        latitude="{{volunteer.location.latitude}}"
-                        on-click="{{volunteerSelected}}"
-                        icon="{{volunteer.leafletIcon}}">
-          </leaflet-marker>
-          <leaflet-marker-icon icon="maps:place" leafletIcon="{{volunteer.leafletIcon}}" iconClass="{{volunteer.selected ? 'selected' : ''}}"></leaflet-marker-icon>
+        <template if="{{!searchMode}}">
+          <!-- Volunteer markers-->
+          <template repeat="{{volunteer in volunteers.values}}">
+            <leaflet-marker longitude="{{volunteer.location.longitude}}" 
+                          latitude="{{volunteer.location.latitude}}"
+                          on-click="{{volunteerSelected}}"
+                          icon="{{volunteer.leafletIcon}}">
+            </leaflet-marker>
+            <leaflet-marker-icon icon="maps:place" leafletIcon="{{volunteer.leafletIcon}}" 
+            iconClass="{{volunteer.selected ? 'selected' : ''}}"></leaflet-marker-icon>
+          </template>
+
+          <!-- POI markers-->
+          <template repeat="{{poi in pois.values}}">
+            <leaflet-marker longitude="{{poi.location.longitude}}" 
+                          latitude="{{poi.location.latitude}}"
+                          on-click="{{poiSelected}}"
+                          icon="{{poi.leafletIcon}}">
+            </leaflet-marker>
+            <leaflet-marker-icon icon="{{iconForPOI(poi)}}" leafletIcon="{{poi.leafletIcon}}" 
+            iconClass="{{poi.selected ? 'selected' : ''}}"></leaflet-marker-icon>
+          </template>
         </template>
-        <template repeat="{{poi in pois.values}}">
-          <leaflet-marker longitude="{{poi.location.longitude}}" 
-                        latitude="{{poi.location.latitude}}"
-                        on-click="{{poiSelected}}"
-                        icon="{{poi.leafletIcon}}">
+
+        <!-- Search result markers-->
+        <template repeat="{{location, index in locationResults}}">
+          <leaflet-marker longitude="{{location.lon}}" 
+                        latitude="{{location.lat}}"
+                        
+                        icon="{{location.leafletIcon}}">
           </leaflet-marker>
-          <leaflet-marker-icon icon="{{iconForPOI(poi)}}" leafletIcon="{{poi.leafletIcon}}" iconClass="{{poi.selected ? 'selected' : ''}}"></leaflet-marker-icon>
+          <leaflet-marker-icon icon="flag" leafletIcon="{{location.leafletIcon}}" 
+          iconClass="{{index==selectedIndex ? 'selected' : ''}}"></leaflet-marker-icon>
         </template>
+
+        <paper-fab id="submitFab" icon="done" on-click="{{submitSearch}}"></paper-fab>
+
     </leaflet-map>
 
+    <!-- Search-->
+    <core-overlay id="searchOverlay" transition="core-transition-top" 
+    on-core-overlay-position="{{layoutSearchOverlay}}" autoCloseDisabled on-keydown="{{searchKeyDown}}">
+
+      <paper-input-decorator label="Ort suchen...">
+          <input type="text" autofocus list="locations" value="{{searchValue}}" 
+          on-focus="{{searchedFieldFocused}}" on-blur="{{searchFieldBlurred}}">
+      </paper-input-decorator>
+
+      <!-- Autocompletion list, only visible when search field is focused -->
+      <template if="{{searchFieldFocused}}">
+        <ul id="suggestions">
+          <template repeat="{{location, index in locationResults}}">
+            <li selected?="{{selectedIndex == index}}" on-mousedown="{{searchResultSelected}}"><span>{{location.display_name}}</span></li>
+          </template>
+        </ul>
+      </template>
+
+      <!-- Selected result, when search field is not focused-->
+      <template if="{{!searchFieldFocused && selectedIndex >= 0}}">
+        <ul id="suggestions">
+          <li selected>{{locationResults[selectedIndex].display_name}}</li>
+        </ul>
+      </template>
+
+      <core-a11y-keys keys="pagedown down" on-keys-pressed="{{incrementSelection}}"></core-a11y-keys>
+      <core-a11y-keys keys="pageup up" on-keys-pressed="{{decrementSelection}}"></core-a11y-keys>
+      <core-a11y-keys keys="Enter" on-keys-pressed="{{submitSearch}}"></core-a11y-keys>
+      <paper-shadow z="3" fit></paper-shadow>
+    </core-overlay>
+
+    <core-a11y-keys keys="esc" on-keys-pressed="{{abortSearch}}"></core-a11y-keys>
   </template>
   <script>
   Polymer({
+    selectedIndex: -1,
+    searchMode: false,
+    savedMapBounds: null,
     clickedRight: function(e) {
-      if (e.detail && e.detail.latlng) {
+      /*if (e.detail && e.detail.latlng) {
         this.fire('volunteer-added', {
           latitude: e.detail.latlng.lat,
           longitude: e.detail.latlng.lng
         });
+      }*/
+      if (e.detail && e.detail.latlng) {
+        this.searchMode = !this.searchMode;
       }
     },
     selectedVolunteersChanged: function(changes, newVal) {
@@ -108,6 +236,73 @@
     },
     iconForPOI: function(poi) {
       return poi ? this.poiCategories.get(poi.category).icon : '';
+    },
+    /* Search section */
+    startSearch: function() {
+
+    },
+    searchModeChanged: function() {
+      $(this).toggleClass('search', this.searchMode);
+      if (this.searchMode) {
+        // Save the original map bounds
+        this.savedMapBounds = this.$.map.map.getBounds();
+        this.$.searchOverlay.open();
+      } else {
+        // Restore the original map view
+        this.$.map.map.fitBounds(this.savedMapBounds);
+        this.locationResults = [];
+        this.searchValue = "";
+        this.$.searchOverlay.close();
+      }
+    },
+    layoutSearchOverlay: function(event) {
+      var target = event.target;
+      target.style.top = '16px';
+      target.style.left = '16px';
+      target.dimensions.position = {v: 'top', h: 'left'};
+    },
+    locationResultsChanged: function() {
+      this.selectedIndex = -1;
+    },
+    searchedFieldFocused: function() {
+      this.searchFieldFocused = true;
+    },
+    searchFieldBlurred: function(event) {
+      this.searchFieldFocused = false;
+    },
+    decrementSelection: function(event) {
+      if (this.selectedIndex >= 0) {
+        this.selectedIndex -= 1;
+      }
+    },
+    incrementSelection: function(event) {
+      if (this.selectedIndex < this.locationResults.length - 1) {
+        this.selectedIndex += 1;
+      }
+    },
+    selectedIndexChanged: function() {
+      if (this.selectedIndex >= 0) {
+        var result = this.locationResults[this.selectedIndex];
+        var latLng = L.latLng(result.lat, result.lon);
+        this.$.map.map.setView(latLng, 10, {animate: true});
+      }
+      $(this.$.submitFab).toggleClass('valid', this.selectedIndex >= 0);
+    },
+    searchResultSelected: function(event) {
+      this.selectedIndex = event.target.templateInstance.model.index;
+    },
+    submitSearch: function() {
+      var selectedLocation = this.locationResults[this.selectedIndex];
+      var result = {
+        latitude: selectedLocation.lat,
+        longitude: selectedLocation.lon,
+        address: selectedLocation.display_name
+      };
+      this.fire('search-finish', result);
+      this.searchMode = false;
+    },
+    abortSearch: function() {
+      this.searchMode = false;
     }
   });
   </script>
