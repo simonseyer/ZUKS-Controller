@@ -305,7 +305,7 @@
         this.freehandLocation = null;
         var result = this.locationResults[this.selectedIndex];
         var latLng = L.latLng(result.lat, result.lon);
-        this.$.map.map.setView(latLng, 10, {animate: true});
+        this.$.map.map.setView(latLng, 17, {animate: true});
       }
       this.checkValidity();
     },
