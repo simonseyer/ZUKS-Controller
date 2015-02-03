@@ -10,6 +10,8 @@
 <link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-icons/maps-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 <polymer-element name="zuks-poi-list" attributes="poiCategories selectedPOI">
   <template>
@@ -104,8 +106,10 @@
         </paper-input-decorator>
 
         <paper-input-decorator floatingLabel label="Adresse">
-          <textarea value="{{editablePOI.address}}" rows="3"></textarea>
+          <textarea readonly value="{{editablePOI.address}}" rows="3"></textarea>
         </paper-input-decorator>
+
+        <paper-icon-button icon="maps:my-location" on-click="{{changeLocation}}"></paper-icon-button>
 
         <paper-button dismissive>Abbrechen</paper-button>
         <paper-button affirmative on-click="{{savePOI}}" style="color:#4d9eff">Speichern</paper-button>
@@ -165,6 +169,17 @@
       } else {
         this.fire("poi-create", this.editablePOI);
       }
+    },
+    changeLocation: function() {
+      this.$.poiDetail.close();
+      this.fire("location-request");
+    },
+    submitLocation: function(locationResult) {
+      if (locationResult) {
+        this.editablePOI.location = locationResult.location;
+        this.editablePOI.address = locationResult.address;
+      }
+      this.$.poiDetail.open();
     }
   });
   </script>

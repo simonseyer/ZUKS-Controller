@@ -47,7 +47,7 @@
     <zuks-service volunteers="{{volunteers}}" volunteerGroups="{{volunteerGroups}}" pois="{{pois}}" poiCategories="{{poiCategories}}" id="service"></zuks-service>
     
     <div class="container" layout horizontal>
-      <zuks-map flex id="map" volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}" selectedVolunteers="{{selectedVolunteers}}" on-volunteer-select="{{volunteerSelected}}" pois="{{pois}}" poiCategories="{{poiCategories}}" selectedPOI="{{selectedPOI}}" on-poi-select="{{poiSelected}}"></zuks-map>
+      <zuks-map flex id="map" volunteers="{{volunteers}}" on-volunteer-added="{{volunteerAdded}}" selectedVolunteers="{{selectedVolunteers}}" on-volunteer-select="{{volunteerSelected}}" pois="{{pois}}" poiCategories="{{poiCategories}}" selectedPOI="{{selectedPOI}}" on-poi-select="{{poiSelected}}" on-search-finish="{{locationSearchFinished}}"></zuks-map>
       
       <div vertical layout>
         <core-toolbar>
@@ -75,7 +75,7 @@
           <zuks-group-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
           on-group-updated="{{groupUpdated}}" id="groupList"></zuks-group-list>
           <zuks-poi-list poiCategories="{{poiCategories}}" selectedPOI="{{selectedPOI}}" on-poi-create="{{poiCreated}}" 
-          on-poi-update="{{poiUpdated}}" id="poiList"></zuks-group-list>
+          on-poi-update="{{poiUpdated}}" on-location-request="{{locationRequested}}" id="poiList"></zuks-group-list>
         </core-pages>
       </div>
     </div>
@@ -141,6 +141,12 @@
     },
     poiSelected: function(event) {
       this.$.poiList.selectPOI(event.detail);
+    },
+    locationRequested: function() {
+      this.$.map.startSearch();
+    },
+    locationSearchFinished: function(event) {
+      this.$.poiList.submitLocation(event.detail);
     }
   });
   </script>
