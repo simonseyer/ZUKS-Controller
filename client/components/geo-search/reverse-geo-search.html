@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<polymer-element name="geo-search" attributes="location address timeout">
+<polymer-element name="reverse-geo-search" attributes="latitude longitude result delay">
   <template>
     <style>
     :host {
@@ -22,21 +22,29 @@
     delayChanged: function() {
       this.throtteledUpdate = $.throttle(this.delay, this.updateResults);
     },
+    observe: {
+      latitude: 'locationChanged',
+      longitude: 'locationChanged'
+    },
     locationChanged: function() {
       this.throtteledUpdate();
     },
     updateResults: function() {
+      if (!this.latitude || !this.longitude) {
+        return;
+      }
+
       var self = this;
       $.get(
         this.root_url, 
         {
           format: 'json',
-          lat: this.location.latitude,
-          lon: this.location.longitude,
+          lat: this.latitude,
+          lon: this.longitude,
           email: this.email
         }, 
         function(data) {
-          self.address = data;
+          self.result = data;
         }, 'json');
     }
   });
