@@ -294,8 +294,10 @@
     submitSearch: function() {
       var selectedLocation = this.locationResults[this.selectedIndex];
       var result = {
-        latitude: selectedLocation.lat,
-        longitude: selectedLocation.lon,
+        location: {
+          latitude: selectedLocation.lat,
+          longitude: selectedLocation.lon
+        },
         address: selectedLocation.display_name
       };
       this.fire('search-finish', result);
