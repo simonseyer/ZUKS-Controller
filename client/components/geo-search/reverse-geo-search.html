@@ -1,0 +1,44 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<polymer-element name="geo-search" attributes="location address timeout">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+  </template>
+  <script type="text/javascript" src="../../bower_components/jquery-throttle-debounce/jquery.ba-throttle-debounce.min.js"></script>
+  <script>
+  Polymer({
+    root_url: "http://nominatim.openstreetmap.org/reverse",
+    email: "simon.seyer@zuks.org",
+    format: "json",
+    delay: 1000,
+    throtteledUpdate: null,
+    ready: function() {
+      this.delayChanged();
+    },
+    delayChanged: function() {
+      this.throtteledUpdate = $.throttle(this.delay, this.updateResults);
+    },
+    locationChanged: function() {
+      this.throtteledUpdate();
+    },
+    updateResults: function() {
+      var self = this;
+      $.get(
+        this.root_url, 
+        {
+          format: 'json',
+          lat: this.location.latitude,
+          lon: this.location.longitude,
+          email: this.email
+        }, 
+        function(data) {
+          self.address = data;
+        }, 'json');
+    }
+  });
+  </script>
+</polymer-element>
