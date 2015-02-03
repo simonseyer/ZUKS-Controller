@@ -1,6 +1,6 @@
-Django==1.7.1
-certifi==14.05.14
-django-cors-headers==0.13
-djangorestframework==2.4.4
-requests==2.5.0
+certifi==14.5.14
+Django==1.7.4
+django-cors-headers==1.0.0
+djangorestframework==3.0.4
+requests==2.5.1
 tornado==4.0.2
