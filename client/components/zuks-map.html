@@ -117,35 +117,42 @@
           <!-- Volunteer markers-->
           <template repeat="{{volunteer in volunteers.values}}">
             <leaflet-marker longitude="{{volunteer.location.longitude}}" 
-                          latitude="{{volunteer.location.latitude}}"
-                          on-click="{{volunteerSelected}}"
-                          icon="{{volunteer.leafletIcon}}">
+                             latitude="{{volunteer.location.latitude}}"
+                             on-click="{{volunteerSelected}}"
+                                 icon="{{volunteer.leafletIcon}}">
             </leaflet-marker>
-            <leaflet-marker-icon icon="maps:place" leafletIcon="{{volunteer.leafletIcon}}" 
-            iconClass="{{volunteer.selected ? 'selected' : ''}}"></leaflet-marker-icon>
+            <leaflet-marker-icon icon="maps:place" 
+                          leafletIcon="{{volunteer.leafletIcon}}" 
+                            iconClass="{{volunteer.selected ? 'selected' : ''}}">
+            </leaflet-marker-icon>
           </template>
 
           <!-- POI markers-->
           <template repeat="{{poi in pois.values}}">
             <leaflet-marker longitude="{{poi.location.longitude}}" 
-                          latitude="{{poi.location.latitude}}"
-                          on-click="{{poiSelected}}"
-                          icon="{{poi.leafletIcon}}">
+                             latitude="{{poi.location.latitude}}"
+                             on-click="{{poiSelected}}"
+                                 icon="{{poi.leafletIcon}}">
             </leaflet-marker>
-            <leaflet-marker-icon icon="{{iconForPOI(poi)}}" leafletIcon="{{poi.leafletIcon}}" 
-            iconClass="{{poi.selected ? 'selected' : ''}}"></leaflet-marker-icon>
+            <leaflet-marker-icon icon="{{iconForPOI(poi)}}" 
+                          leafletIcon="{{poi.leafletIcon}}" 
+                            iconClass="{{poi.selected ? 'selected' : ''}}">
+            </leaflet-marker-icon>
           </template>
         </template>
 
         <!-- Search result markers-->
         <template repeat="{{location, index in locationResults}}">
           <leaflet-marker longitude="{{location.lon}}" 
-                        latitude="{{location.lat}}"
-                        
-                        icon="{{location.leafletIcon}}">
+                           latitude="{{location.lat}}"
+                           on-click="{{searchResultSelected}}"
+                               icon="{{location.leafletIcon}}">
           </leaflet-marker>
-          <leaflet-marker-icon icon="flag" leafletIcon="{{location.leafletIcon}}" 
-          iconClass="{{index==selectedIndex ? 'selected' : ''}}"></leaflet-marker-icon>
+          <leaflet-marker-icon icon="flag" 
+                        leafletIcon="{{location.leafletIcon}}" 
+                          iconClass="{{index==selectedIndex ? 'selected' : ''}}">
+          </leaflet-marker-icon>
+        </template>
 
         <template if="{{freehandLocation}}">
           <leaflet-marker longitude="{{freehandLocation.longitude}}" 
@@ -175,7 +182,9 @@
       <template if="{{searchFieldFocused}}">
         <ul id="suggestions">
           <template repeat="{{location, index in locationResults}}">
-            <li selected?="{{selectedIndex == index}}" on-mousedown="{{searchResultSelected}}"><span>{{location.display_name}}</span></li>
+            <li selected?="{{selectedIndex == index}}" on-mousedown="{{searchResultSelected}}">
+              <span>{{location.display_name}}</span>
+            </li>
           </template>
         </ul>
       </template>
