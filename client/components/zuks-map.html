@@ -304,6 +304,7 @@
       this.searchMode = false;
     },
     abortSearch: function() {
+      this.fire('search-finish');
       this.searchMode = false;
     }
   });
