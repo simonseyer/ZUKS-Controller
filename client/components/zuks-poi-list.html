@@ -174,10 +174,10 @@
     },
     changeLocation: function() {
       this.$.poiDetail.close();
-      this.fire("location-request");
+      this.fire("location-request", this.editablePOI.location);
     },
     submitLocation: function(locationResult) {
-      if (locationResult) {
+      if (locationResult && locationResult.location) {
         this.editablePOI.location = locationResult.location;
         this.editablePOI.address = locationResult.address;
       }

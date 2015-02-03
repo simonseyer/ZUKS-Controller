@@ -265,8 +265,12 @@
       return poi ? this.poiCategories.get(poi.category).icon : '';
     },
     /* Search section */
-    startSearch: function() {
+    startSearch: function(oldLocation) {
       this.searchMode = true;
+      if (oldLocation) {
+        this.setFreehandLocation(oldLocation.latitude, 
+                                 oldLocation.longitude)
+      }
     },
     searchModeChanged: function() {
       $(this).toggleClass('search', this.searchMode);
@@ -323,14 +327,18 @@
     },
     clickedRight: function(event) {
       if (this.searchMode && event.detail && event.detail.latlng) {
-        this.freehandLocation = {
-          latitude: event.detail.latlng.lat,
-          longitude: event.detail.latlng.lng,
-          lookup: {display_name: 'Lade Adresse...'}
-        };
+        this.setFreehandLocation(event.detail.latlng.lat, 
+                                 event.detail.latlng.lng);
         this.selectedIndex = -1;
         this.checkValidity();
       }
+    },
+    setFreehandLocation: function(latitude, longitude) {
+      this.freehandLocation = {
+        latitude: latitude,
+        longitude: longitude,
+        lookup: {display_name: 'Lade Adresse...'}
+      };
     },
     checkValidity: function() {
       // The freehandLocation is valid after the address lookup

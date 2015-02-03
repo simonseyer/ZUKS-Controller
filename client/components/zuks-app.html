@@ -141,8 +141,12 @@
     poiSelected: function(event) {
       this.$.poiList.selectPOI(event.detail);
     },
-    locationRequested: function() {
-      this.$.map.startSearch();
+    locationRequested: function(event) {
+      if (event.detail && event.detail.latitude) {
+        this.$.map.startSearch(event.detail);
+      } else {
+        this.$.map.startSearch();
+      }
     },
     locationSearchFinished: function(event) {
       this.$.poiList.submitLocation(event.detail);
