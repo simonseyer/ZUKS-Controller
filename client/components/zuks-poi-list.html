@@ -9,6 +9,7 @@
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
 
 <polymer-element name="zuks-poi-list" attributes="poiCategories selectedPOI">
   <template>
@@ -53,12 +54,18 @@
       margin:0;
     }
 
+    #poiList core-icon {
+      color: #505353; 
+      margin-right: 12px;
+    }
+
     </style>
 
     <core-list data="{{poiCategories.values | flattenGroup}}" groups="{{poiCategories.values}}" selection="{{selectedPOI}}" id="poiList" selectionenabled>
       <template>
-        <div divider class="divider">
-          {{groupModel.name}}
+        <div divider class="divider" horizontal layout center>
+          <core-icon icon="{{groupModel.icon}}"></core-icon>
+          <div flex>{{groupModel.name}}</div>
         </div>
         <div class="item {{ {selected: selected} | tokenList }}">
           <paper-shadow>
@@ -83,7 +90,10 @@
             <paper-dropdown layered class="dropdown">
                 <core-menu class="menu" valueattr="cid" selected="{{editablePOI.category}}">
                     <template repeat="{{category in poiCategories.values}}">
-                        <paper-item cid="{{category.id}}">{{category.name}}</paper-item>
+                        <paper-item cid="{{category.id}}" horizontal layout center>
+                          <core-icon icon="{{category.icon}}" style="color: #505353; margin-right: 12px"></core-icon>
+                          <div flex>{{category.name}}</div>
+                        </paper-item>
                     </template>
                 </core-menu>
             </paper-dropdown>
