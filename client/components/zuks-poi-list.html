@@ -105,11 +105,13 @@
           <textarea value="{{editablePOI.description}}" rows="3"></textarea>
         </paper-input-decorator>
 
-        <paper-input-decorator floatingLabel label="Adresse">
-          <textarea readonly value="{{editablePOI.address}}" rows="3"></textarea>
-        </paper-input-decorator>
-
-        <paper-icon-button icon="maps:my-location" on-click="{{changeLocation}}"></paper-icon-button>
+        <div horizontal layout>
+          <paper-input-decorator floatingLabel label="Adresse">
+            <textarea readonly value="{{editablePOI.address}}" rows="3"></textarea>
+          </paper-input-decorator>
+          <paper-icon-button icon="maps:my-location" style="margin: auto; padding-top: 20px;" on-click="{{changeLocation}}">
+          </paper-icon-button>
+        </div>
 
         <paper-button dismissive>Abbrechen</paper-button>
         <paper-button affirmative on-click="{{savePOI}}" style="color:#4d9eff">Speichern</paper-button>
