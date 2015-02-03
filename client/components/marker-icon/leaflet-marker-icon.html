@@ -1,0 +1,105 @@
+
+<!--
+`leaflet-marker-icon` is an adapter for the `marker-icon` that allows
+easy integration into leaflet maps. The `leafletIcon` parameter could
+be directly bound to any leaflet element accepting icons (for example
+a leaflet marker).
+
+When using a leaflet web component, it is even simpler to bind the
+`marker-icon` to an marker, for example.
+
+Example:
+
+    <leaflet-marker longitude="{{longitude}}" latitude="{{latitude}}" icon="{{icon}}">
+      <leaflet-marker-icon icon="maps:place" leafletIcon="{{icon}}"></leaflet-marker-icon>
+    </leaflet-marker>
+
+To style the `marker-icon`, the `iconClass` could be set and then referenced in the styles.
+Please note, that the `marker-icon` element is moved into the map hirachie and is not
+necessarily available under the `leaflet-marker-icon`.
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../../bower_components/core-resizable/core-resizable.html">
+
+<link rel="import" href="marker-icon.html">
+
+<polymer-element name="leaflet-marker-icon" attributes="src icon alt iconClass leafletIcon">
+  <template>
+    <style>
+    :host {
+      display: none;
+      width: 48px;
+      height: 48px;
+    }
+    </style>
+
+    <marker-icon id="marker" src="{{src}}" icon="{{icon}}" alt="{{alt}}"></marker-icon>
+
+  </template>
+  <script>
+  L.MarkerIcon = L.Icon.extend({
+    initialize: function (options) {
+      this.options = options;
+    },
+    _createIcon: function (name, oldIcon) {
+      // Doesn't support shadows for now
+      if (name == 'shadow') {
+        return null;
+      }
+
+      // icon contains the reference to the marker-icon component above
+      var marker = this.options.icon;
+      this._setIconStyles(marker, name);
+      return marker;
+    }
+  });
+
+  Polymer(Polymer.mixin({
+    attached: function () {
+      this.resizableAttachedHandler();
+    },
+    detached:function(){
+      this.resizableDetachedHandler();
+    },
+    eventDelegates: {
+        'core-resize': 'updateIcon'
+    },
+    observe: {
+      icon: 'updateIcon',
+      src: 'updateIcon',
+      alt: 'updateIcon',
+      iconClass: 'updateIcon'
+    },
+    /*
+    Update the leaflet icon, when any of 
+    the components input parameters has changed.
+    */
+    updateIcon: function() {
+      // Get the size of this element
+      var style = getComputedStyle(this);
+      var width = parseInt(style.width, 10);
+      var height = parseInt(style.height, 10);
+
+      // Minimum size, because aspect ratio is preserved
+      var iconSize = Math.min(width, height);
+      // Padding above and below the icon
+      var iconPaddingY = (height - iconSize) / 2;
+      // Inner vertical padding of the icon (inside the svg)
+      var iconInnerPadding = 0.08 * iconSize;
+      // The lowest point of the icon
+      var iconBottom = iconPaddingY + iconSize - iconInnerPadding;
+
+      // Create a leaflet compatible icon
+      this.leafletIcon = new L.MarkerIcon({
+        icon: this.$.marker,
+        iconSize: [width, height],
+        iconAnchor: [width / 2, iconBottom],
+        popupAnchor: [0, -iconSize],
+        className: this.iconClass
+      });
+    }
+  }, Polymer.CoreResizable));
+  </script>
+</polymer-element>

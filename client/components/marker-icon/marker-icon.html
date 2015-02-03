@@ -1,0 +1,75 @@
+<!--
+`marker-icon` renders a map marker with an icon inside. 
+
+For the embedded icon an `core-icon` component is used. This allows to use 
+the exisiting infrastructure like `core-iconset`, which allows to define
+custom icon sets, and `core-icons`, which offers a predefined set of icons.
+
+The parameters of this component are equal to the one of `core-icon` and 
+are directly mapped to the embedded icon.
+
+One special case is the `maps:place` icon, which is already a marker as itself
+and is not embedded into another marker.
+
+# Styling
+By setting the `color` style of this component, the background color of the marker
+is defined.
+
+To change the foreground color (the color of the embedded icon), the `color` property
+of the `.foreground` selector inside of this component has to be adjusted.
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+
+<polymer-element name="marker-icon" attributes="src icon alt">
+  <template>
+    <style>
+    :host {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      vertical-align: middle;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    .marker * {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .background {
+      fill: currentcolor;
+    }
+
+    .foreground {
+      transform: scale(0.38);
+      transform-origin: 50% 35%;
+      color: white;
+    }
+    </style>
+
+    <core-iconset-svg id="marker-icon" iconSize="24">
+      <svg><defs>
+        <g id="bg">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+        </g>
+      </defs></svg>
+    </core-iconset-svg>
+
+    <span class="marker">
+      <!-- maps:place is already a complete marker, so only the icon is displaced full sized without background -->
+      <template if="{{icon != 'maps:place'}}">
+        <core-icon class="background" icon="marker-icon:bg"></core-icon>
+      </template>
+      <core-icon class="{{icon == 'maps:place' ? 'background' : 'foreground'}}" src="{{src}}" icon="{{icon}}" alt="{{alt}}">
+      </core-icon>
+    </span>
+
+  </template>
+  <script>
+  Polymer();
+  </script>
+</polymer-element>
