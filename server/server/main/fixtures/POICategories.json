@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "name": "Verpflegung",
-      "icon": "cutlery"
+      "icon": "maps:local-restaurant"
     }
   },
   {
@@ -12,7 +12,7 @@
     "pk": 2,
     "fields": {
       "name": "Unterkunft",
-      "icon": "bed"
+      "icon": "maps:hotel"
     }
   },
   {
@@ -20,15 +20,15 @@
     "pk": 3,
     "fields": {
       "name": "Parken",
-      "icon": "road"
+      "icon": "maps:local-parking"
     }
   },
   {
     "model": "main.POICategory",
     "pk": 4,
     "fields": {
-      "name": "Medzinische Versorgung",
-      "icon": "plus"
+      "name": "Medizinische Versorgung",
+      "icon": "maps:local-hospital"
     }
   },
   {
@@ -36,7 +36,7 @@
     "pk": 5,
     "fields": {
       "name": "Ausbildung",
-      "icon": "education"
+      "icon": "maps:local-library"
     }
   },
   {
@@ -60,7 +60,7 @@
     "pk": 8,
     "fields": {
       "name": "Warnung",
-      "icon": "warning-sign"
+      "icon": "warning"
     }
   }
 ]
