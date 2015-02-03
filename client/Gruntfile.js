@@ -8,8 +8,17 @@ module.exports = function(grunt) {
           livereload: true
         }
       }     
+    },
+    vulcanize: {
+      default: {
+        options: {},
+        files: {
+          'build.html': 'index.html'
+        }
+      }
     }
   });
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-vulcanize');
   grunt.loadNpmTasks('grunt-devtools');
 };

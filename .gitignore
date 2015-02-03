@@ -9,3 +9,4 @@ eggs
 parts
 src/*.egg-info
 *.sqlite3
+build.html
