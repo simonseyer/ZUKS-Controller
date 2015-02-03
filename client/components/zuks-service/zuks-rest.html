@@ -14,7 +14,7 @@
     errorHandler: null,
     put: function(type, object) {
       if (!object.id) {
-        console.warn("Object has to have a id to be able to PUT it.")
+        console.warn("Object has to have an id to be able to PUT it.")
       }
       this.send(type + "/" + object.id, object, "PUT");
     },
