@@ -1,8 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
 <link rel="import" href="../bower_components/core-style/core-style.html">
+<link rel="import" href="../bower_components/core-icons/maps-icons.html">
 
-<script src="../bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
+<link rel="import" href="marker-icon/leaflet-marker-icon.html">
 
 <polymer-element name="zuks-map" attributes="volunteers selectedVolunteers">
   <template>
@@ -17,6 +18,17 @@
       height: 100%;
     }
     </style>
+
+    <core-style id="map-style">
+      <style>
+        marker-icon {
+          color: #4d9eff;
+        }
+        marker-icon.selected {
+          color: #ec7217;
+        }
+      </style>
+    </core-style>
     
     <leaflet-map
       longitude="8.238611"
@@ -24,24 +36,20 @@
       zoom="14"
       id="map"
       on-contextmenu="{{clickedRight}}">
-        <core-style id="map-style">
-          <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
-          <link rel="stylesheet" href="../bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
-        </core-style>
+        
         <template repeat="{{volunteer in volunteers.values}}">
           <leaflet-marker longitude="{{volunteer.location.longitude}}" 
                         latitude="{{volunteer.location.latitude}}"
                         on-click="{{volunteerSelected}}"
-                        icon="{{volunteer.selected | iconForState}}">
+                        icon="{{volunteer.leafletIcon}}">
           </leaflet-marker>
+          <leaflet-marker-icon icon="maps:place" leafletIcon="{{volunteer.leafletIcon}}" iconClass="{{volunteer.selected ? 'selected' : ''}}"></leaflet-marker-icon>
         </template>
     </leaflet-map>
 
   </template>
   <script>
   Polymer({
-    hilightMarker: L.AwesomeMarkers.icon({markerColor: 'red'}),
-    defaultMarker: L.AwesomeMarkers.icon({markerColor: 'blue'}),
     clickedRight: function(e) {
       if (e.detail && e.detail.latlng) {
         this.fire('volunteer-added', {
@@ -78,9 +86,6 @@
       var volunteer = event.target.templateInstance.model.volunteer;
       this.fire('volunteer-select', volunteer);
     },
-    iconForState: function(state) {
-      return state ? this.hilightMarker : this.defaultMarker;
-    }
   });
   </script>
 </polymer-element>
