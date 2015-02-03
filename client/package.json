@@ -1,9 +1,9 @@
 {
-
-    "name": "ZUKSControllerClient",
-    "devDependencies": {
-      "grunt": "~0.4.0",
-      "grunt-contrib-watch": "~0.5.0",
-      "grunt-devtools": "~0.2.0"
-    }
+  "name": "ZUKSControllerClient",
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-watch": "~0.5.0",
+    "grunt-devtools": "~0.2.0",
+    "grunt-vulcanize": "^0.6.1"
+  }
 }
