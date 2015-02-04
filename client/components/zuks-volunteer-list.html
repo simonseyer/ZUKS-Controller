@@ -56,9 +56,17 @@
       margin:0;
     }
 
+    #volunteerDetail {
+      margin: 0;
+      max-width: 280px;
+      margin-top: 4px;
+    }
     </style>
 
-    <core-list data="{{volunteerGroups.values | flattenGroup}}" groups="{{volunteerGroups.values}}" multi selection="{{selectedVolunteers}}" id="volunteerList" selectionenabled>
+    <core-list data="{{volunteerGroups.values | flattenGroup}}" 
+             groups="{{volunteerGroups.values}}"  
+          selection="{{selectedVolunteers}}" selectionenabled multi
+                 id="volunteerList">
       <template>
         <div divider class="divider">
           {{groupModel.name}}
@@ -74,11 +82,18 @@
       </template>
     </core-list>
 
-    <paper-action-dialog heading="{{selectedVolunteers.length > 1 ? selectedVolunteers.length + ' Helfer ausgewählt' : selectedVolunteers[0].first_name + ' ' + selectedVolunteers[0].last_name}}" id="volunteerDetail" autoCloseDisabled on-core-overlay-position="{{layoutVolunteerOverlay}}" on-core-overlay-close-completed="{{volunteerOverlayClosed}}" layered="false">
+    <paper-action-dialog heading="{{selectedVolunteers.length > 1 ? selectedVolunteers.length + ' Helfer ausgewählt' : selectedVolunteers[0].first_name + ' ' + selectedVolunteers[0].last_name}}" 
+        on-core-overlay-position="{{layoutVolunteerOverlay}}" 
+ on-core-overlay-close-completed="{{volunteerOverlayClosed}}"
+                          layered="false"
+                              id="volunteerDetail" autoCloseDisabled>
         <template if="{{selectedVolunteers.length > 1}}">
           <div>
             <template repeat="{{volunteer, i in selectedVolunteers}}">
-              <span>{{volunteer.first_name}} {{volunteer.last_name}}{{(i < selectedVolunteers.length - 1) ? ',' : ''}}</span>
+              <span>
+                {{volunteer.first_name}} {{volunteer.last_name}}
+                {{(i < selectedVolunteers.length - 1) ? ',' : ''}}
+              </span>
             </template>
           </div>
         </template>
@@ -98,7 +113,7 @@
         </paper-dropdown-menu>
 
         <paper-button dismissive>Abbrechen</paper-button>
-        <paper-button affirmative on-click="{{saveVolunteer}}" style="color:#4d9eff">Speichern</paper-button>
+        <paper-button class="tintText" on-click="{{saveVolunteer}}" affirmative>Speichern</paper-button>
     </paper-action-dialog>
 
   </template>
@@ -136,14 +151,9 @@
       }
     },
     layoutVolunteerOverlay: function(event) {
-      var target = $(event.target);
-      var list = $(this.$.volunteerList);
-
-      target.css('top', $('.item', list).css('padding-top'));
-      target.css('right', list.css('width'));
-      target.css('margin', 0);
-      target.css('max-width', '280px');
-
+      var thisStyle = getComputedStyle(this);
+      event.target.style.right = thisStyle.width;
+      event.target.style.top = 0;
       event.target.dimensions.position = {v: 'top', h: 'right'};
     },
     saveVolunteer: function(event) {
