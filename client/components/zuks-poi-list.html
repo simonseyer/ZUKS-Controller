@@ -184,8 +184,8 @@
       }
     },
     layoutPOIOverlay: function(event) {
-      var listStyle = getComputedStyle(this.$.poiList);
-      event.target.style.right = listStyle.width;
+      var thisStyle = getComputedStyle(this);
+      event.target.style.right = thisStyle.width;
       event.target.style.top = 0;
       event.target.dimensions.position = {v: 'top', h: 'right'};
     },
