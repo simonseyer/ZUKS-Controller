@@ -167,9 +167,9 @@
     },
     savePOI: function(event) {
       if (this.editablePOI.id) {
-        this.fire("poi-update", this.editablePOI);
+        this.fire("update", this.editablePOI);
       } else {
-        this.fire("poi-create", this.editablePOI);
+        this.fire("create", this.editablePOI);
       }
     },
     changeLocation: function() {

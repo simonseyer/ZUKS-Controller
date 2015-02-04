@@ -78,9 +78,9 @@
     },
     saveGroup: function() {
       if (this.group.id) {
-        this.fire("group-updated", this.group);
+        this.fire("update", this.group);
       } else {
-        this.fire("group-added", this.group);
+        this.fire("create", this.group);
       }
     },
     groupDialogClosed: function() {

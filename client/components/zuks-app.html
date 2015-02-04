@@ -68,13 +68,23 @@
         </paper-tabs>
         
         <core-pages selected="{{selectedTab}}" flex>
-          <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
-          on-group-updated="{{groupUpdated}}" on-volunteers-updated="{{volunteersUpdated}}" 
-          on-volunteer-selected="{{volunteerSelected}}" selectedVolunteers="{{selectedVolunteers}}" id="list"></zuks-volunteer-list>
-          <zuks-group-list volunteerGroups="{{volunteerGroups}}" on-group-added="{{groupAdded}}" 
-          on-group-updated="{{groupUpdated}}" id="groupList"></zuks-group-list>
-          <zuks-poi-list poiCategories="{{poiCategories}}" selectedPOI="{{selectedPOI}}" on-poi-create="{{poiCreated}}" 
-          on-poi-update="{{poiUpdated}}" on-location-request="{{locationRequested}}" id="poiList"></zuks-group-list>
+          <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" 
+                            selectedVolunteers="{{selectedVolunteers}}"
+                                     on-update="{{volunteersUpdated}}" 
+                                            id="list">
+          </zuks-volunteer-list>
+          <zuks-group-list volunteerGroups="{{volunteerGroups}}" 
+                                 on-create="{{groupAdded}}" 
+                                 on-update="{{groupUpdated}}" 
+                                        id="groupList">
+          </zuks-group-list>
+          <zuks-poi-list poiCategories="{{poiCategories}}" 
+                           selectedPOI="{{selectedPOI}}" 
+                             on-create="{{poiCreated}}" 
+                             on-update="{{poiUpdated}}" 
+                   on-location-request="{{locationRequested}}" 
+                                    id="poiList">
+          </zuks-group-list>
         </core-pages>
       </div>
     </div>
