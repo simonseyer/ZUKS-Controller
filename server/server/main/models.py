@@ -17,6 +17,7 @@ class Volunteer(models.Model):
   first_name = models.CharField(max_length=30)
   last_name = models.CharField(max_length=30)
   location = models.OneToOneField(Location)
+  targetLocation = models.OneToOneField(Location, blank=True, null=True, related_name='target')
   group = models.ForeignKey(VolunteerGroup, null=True, related_name='members')
 
   def __str__(self):

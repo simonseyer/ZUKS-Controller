@@ -40,7 +40,8 @@ class VolunteerSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         location = LocationHandler.create(validated_data.pop('location'))
-        volunteer = Volunteer.objects.create(location=location, **validated_data)
+        targetLocation = LocationHandler.create(validated_data.pop('targetLocation'))
+        volunteer = Volunteer.objects.create(location=location, targetLocation=targetLocation, **validated_data)
         return volunteer
 
     def update(self, instance, validated_data):
