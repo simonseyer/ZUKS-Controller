@@ -62,9 +62,27 @@
       margin-right: 12px;
     }
 
+    #poiDetail /deep/ icon.category {
+      color: #505353; 
+      margin-right: 12px;
+    }
+
+    #poiDetail /deep/ paper-icon-button.location {
+      margin: auto; 
+      padding-top: 20px;
+    }
+
+    #poiDetail {
+      margin: 0;
+      max-width: 280px;
+      margin-top: 4px;
+    }
     </style>
 
-    <core-list data="{{poiCategories.values | flattenGroup}}" groups="{{poiCategories.values}}" selection="{{selectedPOI}}" id="poiList" selectionenabled>
+    <core-list data="{{poiCategories.values | flattenGroup}}" 
+             groups="{{poiCategories.values}}" 
+          selection="{{selectedPOI}}" 
+                 id="poiList" selectionenabled>
       <template>
         <div divider class="divider" horizontal layout center>
           <core-icon icon="{{groupModel.icon}}"></core-icon>
@@ -82,11 +100,17 @@
     </core-list>
 
     
-    <paper-action-dialog heading="{{editablePOI.name.length > 0 ? editablePOI.name : 'Ort hinzufügen'}}" id="poiDetail" autoCloseDisabled="{{!!editablePOI.id}}" backdrop="{{!editablePOI.id}}" on-core-overlay-position="{{layoutPOIOverlay}}" on-core-overlay-close-completed="{{poiOverlayClosed}}" vertical layout layered="false">
+    <paper-action-dialog heading="{{editablePOI.name.length > 0 ? editablePOI.name : 'Ort hinzufügen'}}" 
+                              id="poiDetail" 
+               autoCloseDisabled="{{!!editablePOI.id}}" 
+        on-core-overlay-position="{{layoutPOIOverlay}}" 
+ on-core-overlay-close-completed="{{poiOverlayClosed}}" 
+                        backdrop="{{!editablePOI.id}}"
+                         layered="false" vertical layout >
       <template if="{{editablePOI}}">
         <div flex>
-        <paper-input label="Name" autofocus floatingLabel value="{{editablePOI.name}}">
-        </paper-input>
+          <paper-input label="Name" value="{{editablePOI.name}}" autofocus floatingLabel >
+          </paper-input>
         </div>
 
         <paper-dropdown-menu label="Kategorie">
@@ -94,7 +118,7 @@
                 <core-menu class="menu" valueattr="cid" selected="{{editablePOI.category}}">
                     <template repeat="{{category in poiCategories.values}}">
                         <paper-item cid="{{category.id}}" horizontal layout center>
-                          <core-icon icon="{{category.icon}}" style="color: #505353; margin-right: 12px"></core-icon>
+                          <core-icon icon="{{category.icon}}" class="category"></core-icon>
                           <div flex>{{category.name}}</div>
                         </paper-item>
                     </template>
@@ -102,20 +126,20 @@
             </paper-dropdown>
         </paper-dropdown-menu>
 
-        <paper-input-decorator floatingLabel label="Beschreibung">
+        <paper-input-decorator label="Beschreibung" floatingLabel>
           <textarea value="{{editablePOI.description}}" rows="3"></textarea>
         </paper-input-decorator>
 
         <div horizontal layout>
-          <paper-input-decorator floatingLabel label="Adresse">
+          <paper-input-decorator label="Adresse" floatingLabel>
             <textarea readonly value="{{editablePOI.address}}" rows="3"></textarea>
           </paper-input-decorator>
-          <paper-icon-button icon="maps:my-location" style="margin: auto; padding-top: 20px;" on-click="{{changeLocation}}">
+          <paper-icon-button icon="maps:my-location" class="location" on-click="{{changeLocation}}">
           </paper-icon-button>
         </div>
 
         <paper-button dismissive>Abbrechen</paper-button>
-        <paper-button affirmative on-click="{{savePOI}}" style="color:#4d9eff">Speichern</paper-button>
+        <paper-button class="tintText" on-click="{{savePOI}}" affirmative>Speichern</paper-button>
       </template>
     </paper-action-dialog>
 
@@ -160,14 +184,9 @@
       }
     },
     layoutPOIOverlay: function(event) {
-      var target = $(event.target);
-      var list = $(this.$.poiList);
-
-      target.css('top', $('.item', list).css('padding-top'));
-      target.css('right', list.css('width'));
-      target.css('margin', 0);
-      target.css('max-width', '280px');
-
+      var listStyle = getComputedStyle(this.$.poiList);
+      event.target.style.right = listStyle.width;
+      event.target.style.top = 0;
       event.target.dimensions.position = {v: 'top', h: 'right'};
     },
     savePOI: function(event) {
