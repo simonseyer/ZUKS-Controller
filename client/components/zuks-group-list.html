@@ -15,7 +15,7 @@
    on-core-activate="{{groupSelected}}" 
                  id="list" selectionenabled fit>
       <template>
-        <zuks-list-item class="item {{ {selected: selected} | tokenList }}">
+        <zuks-list-item class="item" selected="{{selected}}">
           {{model.name}}
         </zuks-list-item>
       </template>

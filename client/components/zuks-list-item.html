@@ -2,7 +2,7 @@
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 
-<polymer-element name="zuks-list-item">
+<polymer-element name="zuks-list-item" attributes="selected">
   <template>
     <style>
     :host {
@@ -14,24 +14,23 @@
       cursor: pointer;
     }
 
-    :host.selected .container {
-      background: #eee;
-    }
-
     .container, paper-shadow {
       height: 100%;
+    }
+
+    .container.selected {
+      background: #eee;
     }
 
     .content {
       padding-left: 10px;
     }
-
     </style>
 
     <paper-shadow>
-      <div horizontal layout center class="container">
+      <div horizontal layout center class="container {{ {selected: selected} | tokenList }}">
         <div class="content">
-        <content></content>
+          <content></content>
         </div>
       </div>
       <paper-ripple fit></paper-ripple>
