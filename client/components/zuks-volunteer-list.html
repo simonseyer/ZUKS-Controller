@@ -105,9 +105,11 @@
   Polymer({
     flattenGroup: function(groupList) {
       var volunteers = [];
-      $(groupList).each(function() {
-        volunteers.push(this.members);
-      });
+      if (groupList) {
+        groupList.forEach(function(group) {
+          volunteers.push(group.members);
+        });
+      }
       return volunteers;
     },
     selectVolunteer: function(volunteer) {
