@@ -93,6 +93,10 @@
         marker-icon.selected {
           color: #ec7217;
         }
+        marker-icon.target {
+          color: #444;
+          opacity: 0.6;
+        }
       </style>
     </core-style>
 
@@ -126,6 +130,25 @@
                           leafletIcon="{{leafletIconBindings.v[index]}}" 
                             iconClass="{{volunteer.selected ? 'selected' : ''}}">
             </leaflet-marker-icon>
+
+            <template if="{{volunteer.targetLocation && volunteer.selected}}">
+              <leaflet-marker longitude="{{volunteer.targetLocation.longitude}}" 
+                               latitude="{{volunteer.targetLocation.latitude}}"
+                                   icon="{{leafletIconBindings.t[index]}}">
+              </leaflet-marker>
+              <leaflet-marker-icon icon="flag" 
+                            leafletIcon="{{leafletIconBindings.t[index]}}" 
+                              iconClass="target">
+              </leaflet-marker-icon>
+              <leaflet-polyline color="#444" fillOpacity="0.6">
+                <leaflet-point latitude="{{volunteer.location.latitude}}"
+                              longitude="{{volunteer.location.longitude}}">
+                </leaflet-point>
+                <leaflet-point latitude="{{volunteer.targetLocation.latitude}}"
+                              longitude="{{volunteer.targetLocation.longitude}}">
+                </leaflet-point>
+              </leaflet-polyline>
+            </template>
           </template>
 
           <!-- POI markers-->
@@ -221,7 +244,7 @@
     freehandLocation: null,
     searchCallback: null,
     // Used to bind the icons inside the repeat template
-    leafletIconBindings: {v: [], p: [], l: []},
+    leafletIconBindings: {v: [], p: [], l: [], t: []},
     observe: {
       'freehandLocation.lookup' : 'checkValidity'
     },
@@ -274,9 +297,14 @@
       return poi ? this.poiCategories.get(poi.category).icon : '';
     },
     focus: function(dataList) {
-      var locations = dataList.map(function(data) {
-        return L.latLng(data.location.latitude, 
-                        data.location.longitude);
+      var locations = [];
+      dataList.forEach(function(data) {
+        locations.push(L.latLng(data.location.latitude, 
+                                data.location.longitude));
+        if (data.targetLocation) {
+          locations.push(L.latLng(data.targetLocation.latitude, 
+                                data.targetLocation.longitude));
+        }
       });
       if (locations.length == 1) {
         this.$.map.map.setView(locations[0], 17, {animate: true});
