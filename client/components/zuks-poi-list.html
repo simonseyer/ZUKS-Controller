@@ -131,8 +131,12 @@
       return pois;
     },
     selectPOI: function(poi) {
-      this.$.poiList.selectData(poi);
-      this.$.poiList.scrollToData(poi);
+      if (this.selectedPOI && this.selectedPOI.id == poi.id) {
+        this.$.poiList.clearSelection();
+      } else {
+        this.$.poiList.selectData(poi);
+        this.$.poiList.scrollToData(poi);
+      }
     },
     createPOI: function() {
       this.editablePOI = {
