@@ -64,7 +64,6 @@
       list-style: none;
       margin: 0;
       padding: 0;
-      transition: max-height 1s;
     }
 
     #searchOverlay /deep/ ul#suggestions li {
@@ -327,7 +326,9 @@
       if (this.searchMode) {
         // Save the original map bounds
         this.savedMapBounds = this.$.map.map.getBounds();
-        this.$.searchOverlay.open();
+        setTimeout(function() {
+          this.$.searchOverlay.open();
+        }.bind(this), 40)
       } else {
         // Restore the original map view
         this.$.map.map.fitBounds(this.savedMapBounds);
