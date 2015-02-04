@@ -227,7 +227,7 @@
     selectedVolunteersChanged: function(changes, newVal) {
       if (newVal == undefined) {
         // Array updated
-        changes.forEach(function(changeI, change) {
+        changes.forEach(function(change) {
           if (change.removed) {
             change.removed.forEach(function(volunteer) {
               volunteer.selected = false;
