@@ -85,6 +85,7 @@
 
         <div horizontal layout>
           <paper-icon-button icon="maps:my-location" on-click="{{locate}}"></paper-icon-button>
+          <paper-icon-button icon="maps:navigation" on-click="{{sendToLocation}}"></paper-icon-button>
         </div>
         <paper-dropdown-menu label="Gruppe">
             <paper-dropdown layered class="dropdown">
@@ -146,16 +147,35 @@
       event.target.dimensions.position = {v: 'top', h: 'right'};
     },
     saveVolunteer: function(event) {
-      var editableVolunteers = [];
-      this.selectedVolunteers.forEach(function(volunteer) {
-        var copiedVolunteer = $.extend(true, {}, volunteer);
-        copiedVolunteer.group = this.selectedGroup;
-        editableVolunteers.push(copiedVolunteer);
-      }, this);
-      this.fire("update", editableVolunteers);
+      this.applyUpdate(function(volunteer) {
+        volunteer.group = this.selectedGroup;
+      }.bind(this));
     },
     locate: function() {
       this.fire("focus-request", this.selectedVolunteers);
+    },
+    sendToLocation: function() {
+      this.$.volunteerDetail.close();
+      this.fire("location-request", {
+        callback: this.applyLocation.bind(this)
+      });
+    },
+    applyLocation: function(locationResult) {
+      this.$.volunteerDetail.open();
+      if (locationResult && locationResult.location) {
+        this.applyUpdate(function(volunteer) {
+          this.targetLocation = locationResult.location;
+        }.bind(this));
+      }
+    },
+    applyUpdate: function(changeFunction) {
+      var editableVolunteers = [];
+      this.selectedVolunteers.forEach(function(volunteer) {
+        var copiedVolunteer = $.extend(true, {}, volunteer);
+        changeFunction(copiedVolunteer);
+        editableVolunteers.push(copiedVolunteer);
+      }, this);
+      this.fire("update", editableVolunteers);
     }
   });
   </script>
