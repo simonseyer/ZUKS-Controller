@@ -264,6 +264,17 @@
     iconForPOI: function(poi) {
       return poi ? this.poiCategories.get(poi.category).icon : '';
     },
+    focus: function(dataList) {
+      var locations = dataList.map(function(data) {
+        return L.latLng(data.location.latitude, 
+                        data.location.longitude);
+      });
+      if (locations.length == 1) {
+        this.$.map.map.setView(locations[0], 17, {animate: true});
+      } else if (locations.length > 1) {
+        this.$.map.map.fitBounds(L.latLngBounds(locations));
+      }
+    },
     /* Search section */
     startSearch: function(oldLocation) {
       this.searchMode = true;

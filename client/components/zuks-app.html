@@ -71,6 +71,7 @@
           <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}" 
                             selectedVolunteers="{{selectedVolunteers}}"
                                      on-update="{{volunteersUpdated}}" 
+                              on-focus-request="{{volunteerFocusRequested}}"  
                                             id="list">
           </zuks-volunteer-list>
           <zuks-group-list volunteerGroups="{{volunteerGroups}}" 
@@ -132,6 +133,9 @@
       $(event.detail).each(function() {
         self.$.service.updateVolunteer(this);
       });
+    },
+    volunteerFocusRequested: function(event) {
+      this.$.map.focus(event.detail);
     },
     volunteerSelected: function(event) {
       this.$.list.selectVolunteer(event.detail);

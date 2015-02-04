@@ -8,6 +8,8 @@
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/core-icons/maps-icons.html">
 
 <polymer-element name="zuks-volunteer-list" attributes="volunteerGroups selectedVolunteers">
   <template>
@@ -78,6 +80,10 @@
             </template>
           </div>
         </template>
+
+        <div horizontal layout>
+          <paper-icon-button icon="maps:my-location" on-click="{{locate}}"></paper-icon-button>
+        </div>
         <paper-dropdown-menu label="Gruppe">
             <paper-dropdown layered class="dropdown">
                 <core-menu class="menu" valueattr="gid" selected="{{selectedGroup}}">
@@ -144,6 +150,9 @@
         editableVolunteers.push(copiedVolunteer);
       });
       this.fire("update", editableVolunteers);
+    },
+    locate: function() {
+      this.fire("focus-request", this.selectedVolunteers);
     }
   });
   </script>
