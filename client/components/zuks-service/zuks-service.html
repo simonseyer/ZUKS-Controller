@@ -133,6 +133,9 @@
     updatePOI: function(poi) {
       this.$.rest.put('pois', poi);
     },
+    addMessageInstruction: function(instruction) {
+      this.$.rest.post('messageInstructions', instruction);
+    },
     indexOfModel: function(array, object) {
       for (var i=0; i < array.length; i++) {
         if (array[i].id == object.id) {
