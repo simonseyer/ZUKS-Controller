@@ -10,6 +10,7 @@ router.register(r'volunteerGroups', views.VolunteerGroupViewSet)
 router.register(r'locations', views.LocationViewSet)
 router.register(r'pois', views.POIViewSet)
 router.register(r'poiCategories', views.POICategoryViewSet)
+router.register(r'messageInstructions', views.MessageInstructionViewSet)
 
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),

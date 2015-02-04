@@ -99,3 +99,10 @@ class POISerializer(serializers.ModelSerializer):
         LocationHandler.update(instance.location, validated_data.pop('location'))
 
         return instance
+
+class MessageInstructionSerializer(serializers.ModelSerializer):
+    '''Handles MessageInstruction object serialization'''
+    receiver = serializers.PrimaryKeyRelatedField(queryset=Volunteer.objects.all())
+    class Meta:
+        model = MessageInstruction
+

@@ -122,3 +122,17 @@ class POICategoryViewSet(viewsets.ReadOnlyModelViewSet):
   """
   queryset = POICategory.objects.all()
   serializer_class = POICategorySerializer
+
+class MessageInstructionViewSet(EventViewSet):
+  """
+  API endpoint for message instructions
+  """
+  queryset = MessageInstruction.objects.all()
+  serializer_class = MessageInstructionSerializer
+  event_key = "messageInstruction"
+
+  def fire(self, key, data):
+      '''
+      Append receiver id to key
+      '''
+      super().fire("%s#%i" % (key, data['new']['receiver']), data)
