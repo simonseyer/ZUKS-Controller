@@ -12,16 +12,16 @@
   Polymer({
     root_url: "http://localhost:8000/",
     errorHandler: null,
-    put: function(type, object) {
+    put: function(type, object, callback) {
       if (!object.id) {
         console.warn("Object has to have an id to be able to PUT it.")
       }
-      this.send(type + "/" + object.id, object, "PUT");
+      this.send(type + "/" + object.id, object, "PUT", callback);
     },
-    post: function(type, object) {
-      this.send(type, object, "POST");
+    post: function(type, object, callback) {
+      this.send(type, object, "POST", callback);
     },
-    send: function(url, object, method) {
+    send: function(url, object, method, callback) {
       var self = this;
       $.ajax({
         url:self.root_url + url + "/",
@@ -29,7 +29,8 @@
         data:JSON.stringify(object),
         contentType:"application/json; charset=utf-8",
         dataType:"json",
-        error: self.errorHandler
+        error: self.errorHandler,
+        success: callback
       });
     },
     get: function(url, callback) {
