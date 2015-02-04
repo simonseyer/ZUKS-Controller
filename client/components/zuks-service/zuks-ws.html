@@ -36,6 +36,11 @@
           console.warn("No handler registered for event: " + event);
         }
       };
+    },
+    send: function(message) {
+      if (this.ws) {
+        this.ws.send(message);
+      }
     }
   });
   </script>
