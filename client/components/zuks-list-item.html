@@ -1,0 +1,44 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
+
+<polymer-element name="zuks-list-item">
+  <template>
+    <style>
+    :host {
+      height: 70px;
+      padding-right: 16px;
+      padding-left: 16px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      cursor: pointer;
+    }
+
+    :host.selected .container {
+      background: #eee;
+    }
+
+    .container, paper-shadow {
+      height: 100%;
+    }
+
+    .content {
+      padding-left: 10px;
+    }
+
+    </style>
+
+    <paper-shadow>
+      <div horizontal layout center class="container">
+        <div class="content">
+        <content></content>
+        </div>
+      </div>
+      <paper-ripple fit></paper-ripple>
+    </paper-shadow>
+
+  </template>
+  <script>
+  Polymer();
+  </script>
+</polymer-element>

@@ -13,6 +13,8 @@
 <link rel="import" href="../bower_components/core-icons/maps-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
+<link rel="import" href="zuks-list-item.html">
+
 <polymer-element name="zuks-poi-list" attributes="poiCategories selectedPOI">
   <template>
     <style>
@@ -22,23 +24,6 @@
     }
 
     core-list {
-      height: 100%;
-    }
-
-    .item {
-      height: 70px;
-      padding-right: 16px;
-      padding-left: 16px;
-      padding-top: 4px;
-      padding-bottom: 4px;
-      cursor: pointer;
-    }
-
-    .item.selected .container {
-      background: #eee;
-    }
-
-    .container, paper-shadow {
       height: 100%;
     }
 
@@ -54,7 +39,7 @@
     }
 
     .devider paper-button {
-      margin:0;
+      margin: 0;
     }
 
     #poiList core-icon {
@@ -88,14 +73,9 @@
           <core-icon icon="{{groupModel.icon}}"></core-icon>
           <div flex>{{groupModel.name}}</div>
         </div>
-        <div class="item {{ {selected: selected} | tokenList }}">
-          <paper-shadow>
-            <div horizontal layout center class="container">
-              <div class="content">{{model.name}}</div>
-            </div>
-            <paper-ripple fit></paper-ripple>
-          </paper-shadow>
-        </div>
+        <zuks-list-item class="item {{ {selected: selected} | tokenList }}">
+          {{model.name}}
+        </zuks-list-item>
       </template>
     </core-list>
 

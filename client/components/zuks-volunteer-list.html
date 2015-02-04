@@ -11,6 +11,8 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/core-icons/maps-icons.html">
 
+<link rel="import" href="zuks-list-item.html">
+
 <polymer-element name="zuks-volunteer-list" attributes="volunteerGroups selectedVolunteers">
   <template>
     <style>
@@ -20,23 +22,6 @@
     }
 
     core-list {
-      height: 100%;
-    }
-
-    .item {
-      height: 70px;
-      padding-right: 16px;
-      padding-left: 16px;
-      padding-top: 4px;
-      padding-bottom: 4px;
-      cursor: pointer;
-    }
-
-    .item.selected .container {
-      background: #eee;
-    }
-
-    .container, paper-shadow {
       height: 100%;
     }
 
@@ -71,14 +56,9 @@
         <div divider class="divider">
           {{groupModel.name}}
         </div>
-        <div class="item {{ {selected: selected} | tokenList }}">
-          <paper-shadow>
-            <div horizontal layout center class="container">
-              <div class="content">{{model.first_name}} {{model.last_name}}</div>
-            </div>
-            <paper-ripple fit></paper-ripple>
-          </paper-shadow>
-        </div>
+        <zuks-list-item class="item {{ {selected: selected} | tokenList }}">
+          {{model.first_name}} {{model.last_name}}
+        </zuks-list-item>
       </template>
     </core-list>
 

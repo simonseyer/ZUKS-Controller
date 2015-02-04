@@ -8,6 +8,8 @@
 <link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 
+<link rel="import" href="zuks-list-item.html">
+
 <polymer-element name="zuks-group-list" attributes="volunteerGroups">
   <template>
     <style>
@@ -21,39 +23,13 @@
       height: 100%;
     }
 
-    .item {
-      height: 70px;
-      padding-right: 16px;
-      padding-left: 16px;
-      padding-top: 4px;
-      padding-bottom: 4px;
-      cursor: pointer;
-    }
-
-    .item.selected .container {
-      background: #eee;
-    }
-
-    .container, paper-shadow {
-      height: 100%;
-    }
-
-    .content {
-      padding-left: 10px;
-    }
-
     </style>
 
     <core-list data="{{volunteerGroups.values}}" selectionenabled on-core-activate="{{groupSelected}}" id="list">
       <template>
-        <div class="item {{ {selected: selected} | tokenList }}">
-          <paper-shadow>
-            <div horizontal layout center class="container">
-              <div class="content">{{model.name}}</div>
-            </div>
-            <paper-ripple fit></paper-ripple>
-          </paper-shadow>
-        </div>
+        <zuks-list-item class="item {{ {selected: selected} | tokenList }}">
+          {{model.name}}
+        </zuks-list-item>
       </template>
     </core-list>
 
