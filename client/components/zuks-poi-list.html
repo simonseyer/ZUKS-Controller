@@ -1,13 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-list/core-list.html">
-<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
-<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
-<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-action-dialog.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../bower_components/core-icons/maps-icons.html">
@@ -18,28 +16,11 @@
 <polymer-element name="zuks-poi-list" attributes="poiCategories selectedPOI">
   <template>
     <style>
-    :host {
-      display: block;
-      height: 100%;
-    }
-
-    core-list {
-      height: 100%;
-    }
-
     .divider {
       color: #888;
       padding-left: 16px;
       padding-top: 16px;
       padding-bottom: 4px;
-    }
-
-    .content {
-      padding-left: 12px;
-    }
-
-    .devider paper-button {
-      margin: 0;
     }
 
     #poiList core-icon {
@@ -67,7 +48,7 @@
     <core-list data="{{poiCategories.values | flattenGroup}}" 
              groups="{{poiCategories.values}}" 
           selection="{{selectedPOI}}" 
-                 id="poiList" selectionenabled>
+                 id="poiList" selectionenabled fit>
       <template>
         <div divider class="divider" horizontal layout center>
           <core-icon icon="{{groupModel.icon}}"></core-icon>
@@ -78,7 +59,6 @@
         </zuks-list-item>
       </template>
     </core-list>
-
     
     <paper-action-dialog heading="{{editablePOI.name.length > 0 ? editablePOI.name : 'Ort hinzufügen'}}" 
                               id="poiDetail" 

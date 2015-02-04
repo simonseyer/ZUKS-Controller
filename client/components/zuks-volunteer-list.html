@@ -1,13 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-list/core-list.html">
-<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
-<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
-<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-action-dialog.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/core-icons/maps-icons.html">
 
@@ -16,29 +14,12 @@
 <polymer-element name="zuks-volunteer-list" attributes="volunteerGroups selectedVolunteers">
   <template>
     <style>
-    :host {
-      display: block;
-      height: 100%;
-    }
-
-    core-list {
-      height: 100%;
-    }
-
     .divider {
       color: #888;
       padding-left: 16px;
       padding-top: 16px;
       padding-bottom: 4px;
       cursor: pointer;
-    }
-
-    .content {
-      padding-left: 10px;
-    }
-
-    .devider paper-button {
-      margin:0;
     }
 
     #volunteerDetail {
@@ -51,7 +32,7 @@
     <core-list data="{{volunteerGroups.values | flattenGroup}}" 
              groups="{{volunteerGroups.values}}"  
           selection="{{selectedVolunteers}}" selectionenabled multi
-                 id="volunteerList">
+                 id="volunteerList" fit>
       <template>
         <div divider class="divider">
           {{groupModel.name}}
