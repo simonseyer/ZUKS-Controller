@@ -115,27 +115,27 @@
         
         <template if="{{!searchMode}}">
           <!-- Volunteer markers-->
-          <template repeat="{{volunteer in volunteers.values}}">
+          <template repeat="{{volunteer, index in volunteers.values}}">
             <leaflet-marker longitude="{{volunteer.location.longitude}}" 
                              latitude="{{volunteer.location.latitude}}"
                              on-click="{{volunteerSelected}}"
-                                 icon="{{volunteer.leafletIcon}}">
+                                 icon="{{leafletIconBindings.v[index]}}">
             </leaflet-marker>
             <leaflet-marker-icon icon="maps:place" 
-                          leafletIcon="{{volunteer.leafletIcon}}" 
+                          leafletIcon="{{leafletIconBindings.v[index]}}" 
                             iconClass="{{volunteer.selected ? 'selected' : ''}}">
             </leaflet-marker-icon>
           </template>
 
           <!-- POI markers-->
-          <template repeat="{{poi in pois.values}}">
+          <template repeat="{{poi, index in pois.values}}">
             <leaflet-marker longitude="{{poi.location.longitude}}" 
                              latitude="{{poi.location.latitude}}"
                              on-click="{{poiSelected}}"
-                                 icon="{{poi.leafletIcon}}">
+                                 icon="{{leafletIconBindings.p[index]}}">
             </leaflet-marker>
             <leaflet-marker-icon icon="{{iconForPOI(poi)}}" 
-                          leafletIcon="{{poi.leafletIcon}}" 
+                          leafletIcon="{{leafletIconBindings.p[index]}}" 
                             iconClass="{{poi.selected ? 'selected' : ''}}">
             </leaflet-marker-icon>
           </template>
@@ -146,10 +146,10 @@
           <leaflet-marker longitude="{{location.lon}}" 
                            latitude="{{location.lat}}"
                            on-click="{{searchResultSelected}}"
-                               icon="{{location.leafletIcon}}">
+                               icon="{{leafletIconBindings.l[index]}}">
           </leaflet-marker>
           <leaflet-marker-icon icon="flag" 
-                        leafletIcon="{{location.leafletIcon}}" 
+                        leafletIcon="{{leafletIconBindings.l[index]}}" 
                           iconClass="{{index==selectedIndex ? 'selected' : ''}}">
           </leaflet-marker-icon>
         </template>
@@ -219,6 +219,8 @@
     savedMapBounds: null,
     freehandLocation: null,
     searchCallback: null,
+    // Used to bind the icons inside the repeat template
+    leafletIconBindings: {v: [], p: [], l: []},
     observe: {
       'freehandLocation.lookup' : 'checkValidity'
     },
