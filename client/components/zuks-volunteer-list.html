@@ -12,6 +12,21 @@
 <link rel="import" href="zuks-list-item.html">
 
 <polymer-element name="zuks-volunteer-list" attributes="volunteerGroups selectedVolunteers">
+
+  <!-- global dialog style -->
+  <style>
+    html /deep/ #volunteerDetail {
+      margin: 0;
+      max-width: 280px;
+      margin-top: 4px;
+      transition: transform 0.15s;
+    }
+
+    html /deep/ #volunteerDetail.movedAway {
+      transform: translateX(200%);
+    }
+  </style>
+
   <template>
     <style>
     .divider {
@@ -20,12 +35,6 @@
       padding-top: 16px;
       padding-bottom: 4px;
       cursor: pointer;
-    }
-
-    #volunteerDetail {
-      margin: 0;
-      max-width: 280px;
-      margin-top: 4px;
     }
     </style>
 
@@ -46,7 +55,6 @@
     <paper-action-dialog heading="{{selectedVolunteers.length > 1 ? selectedVolunteers.length + ' Helfer ausgewählt' : selectedVolunteers[0].first_name + ' ' + selectedVolunteers[0].last_name}}" 
         on-core-overlay-position="{{layoutVolunteerOverlay}}" 
  on-core-overlay-close-completed="{{volunteerOverlayClosed}}"
-                          layered="false"
                               id="volunteerDetail" autoCloseDisabled>
         <template if="{{selectedVolunteers.length > 1}}">
           <div>
@@ -126,11 +134,13 @@
       this.fire("focus-request", this.selectedVolunteers);
     },
     sendToLocation: function() {
+      this.$.volunteerDetail.classList.add('movedAway');
       this.fire("location-request", {
         callback: this.applyLocation.bind(this)
       });
     },
     applyLocation: function(locationResult) {
+      this.$.volunteerDetail.classList.remove('movedAway');
       if (locationResult && locationResult.location) {
         this.applyUpdate(function(volunteer) {
           this.targetLocation = locationResult.location;
