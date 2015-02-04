@@ -129,10 +129,9 @@
       this.$.service.updateGroup(event.detail);
     },
     volunteersUpdated: function(event) {
-      var self = this;
-      $(event.detail).each(function() {
-        self.$.service.updateVolunteer(this);
-      });
+      event.detail.forEach(function(volunteer) {
+        this.$.service.updateVolunteer(volunteer);
+      }, this);
     },
     volunteerFocusRequested: function(event) {
       this.$.map.focus(event.detail);

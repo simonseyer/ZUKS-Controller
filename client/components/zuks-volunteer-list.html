@@ -142,13 +142,12 @@
       event.target.dimensions.position = {v: 'top', h: 'right'};
     },
     saveVolunteer: function(event) {
-      var self = this;
       var editableVolunteers = [];
-      $(this.selectedVolunteers).each(function() {
-        var copiedVolunteer = $.extend(true, {}, this);
-        copiedVolunteer.group = self.selectedGroup;
+      this.selectedVolunteers.forEach(function(volunteer) {
+        var copiedVolunteer = $.extend(true, {}, volunteer);
+        copiedVolunteer.group = this.selectedGroup;
         editableVolunteers.push(copiedVolunteer);
-      });
+      }, this);
       this.fire("update", editableVolunteers);
     },
     locate: function() {

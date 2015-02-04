@@ -222,26 +222,25 @@
       'freehandLocation.lookup' : 'checkValidity'
     },
     selectedVolunteersChanged: function(changes, newVal) {
-      var self = this;
       if (newVal == undefined) {
         // Array updated
-        $(changes).each(function(changeI, change) {
-          $(change.removed).each(function() {
-            this.selected = false;
+        changes.forEach(function(changeI, change) {
+          change.removed.forEach(function(volunteer) {
+            volunteer.selected = false;
           });
           if (change.addedCount > 0) {
             for(var i=0; i < change.addedCount; i++) {
-              self.selectedVolunteers[change.index + i].selected = true;
+              this.selectedVolunteers[change.index + i].selected = true;
             }
           }
-        });
+        }, this);
       } else {
         // Array replaced
-        $(changes).each(function() {
-          this.selected = false;
+        changes.forEach(function(volunteer) {
+          volunteer.selected = false;
         });
-        $(newVal).each(function() {
-          this.selected = true;
+        newVal.forEach(function(volunteer) {
+          volunteer.selected = true;
         });
       }
     },
