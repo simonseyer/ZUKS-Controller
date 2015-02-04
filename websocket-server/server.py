@@ -1,6 +1,7 @@
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
+import json
 
 clients = set()
 
@@ -9,9 +10,18 @@ class MainHandler(tornado.web.RequestHandler):
   def post(self):
     global clients
     for client in clients:
-      client.write_message(self.request.body)
-    print("Forwarded message to %i clients: %s" % 
-          (len(clients), self.request.body))
+      if not client.uid or self.getUID() == client.uid:
+        client.write_message(self.request.body)
+
+    print("Forwarded message to clients: %s" % (self.request.body,))
+
+  def getUID(self):
+    data = json.loads(self.request.body.decode("utf-8"))
+    event = data['event']
+    try:
+      return int(event.split('#')[1])
+    except:
+      return -1
 
 class WebsocketHandler(tornado.websocket.WebSocketHandler):
 
@@ -20,15 +30,18 @@ class WebsocketHandler(tornado.websocket.WebSocketHandler):
 
   def open(self):
     global clients
+    self.uid = False
     clients.add(self)
-    print("New client has CONNECTED. Client count: %i" % 
-          (len(clients),))
+    print("New client has CONNECTED. Client count: %i" % (len(clients),))
+
+  def on_message(self, message):
+    self.uid = int(message)
+    print("Client has registered with id: %i" % (self.uid,))
 
   def on_close(self):
     global clients
     clients.remove(self)
-    print("Client has DISCONNECTED. Client count: %i" % 
-          (len(clients),))
+    print("Client has DISCONNECTED. Client count: %i" % (len(clients),))
 
 application = tornado.web.Application([
   (r"/ws", WebsocketHandler),
