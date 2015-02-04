@@ -82,7 +82,7 @@
     </core-list>
 
     
-    <paper-action-dialog heading="{{editablePOI.name.length > 0 ? editablePOI.name : 'Ort hinzufügen'}}" id="poiDetail" autoCloseDisabled="{{!!editablePOI.id}}" backdrop="{{!editablePOI.id}}" on-core-overlay-position="{{layoutPOIOverlay}}" on-core-overlay-close-completed="{{poiOverlayClosed}}" vertical layout>
+    <paper-action-dialog heading="{{editablePOI.name.length > 0 ? editablePOI.name : 'Ort hinzufügen'}}" id="poiDetail" autoCloseDisabled="{{!!editablePOI.id}}" backdrop="{{!editablePOI.id}}" on-core-overlay-position="{{layoutPOIOverlay}}" on-core-overlay-close-completed="{{poiOverlayClosed}}" vertical layout layered="false">
       <template if="{{editablePOI}}">
         <div flex>
         <paper-input label="Name" autofocus floatingLabel value="{{editablePOI.name}}">
@@ -178,7 +178,6 @@
       }
     },
     changeLocation: function() {
-      this.$.poiDetail.close();
       this.fire("location-request", {
         locationPreset: this.editablePOI.location,
         callback: this.applyLocation.bind(this)
@@ -189,7 +188,6 @@
         this.editablePOI.location = locationResult.location;
         this.editablePOI.address = locationResult.address;
       }
-      this.$.poiDetail.open();
     }
   });
   </script>
