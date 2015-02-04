@@ -157,8 +157,9 @@
       }
     },
     changeLocation: function() {
+      var loc = this.editablePOI.id ? this.editablePOI.location : null;
       this.fire("location-request", {
-        locationPreset: this.editablePOI.location,
+        locationPreset: loc,
         callback: this.applyLocation.bind(this)
       });
     },
