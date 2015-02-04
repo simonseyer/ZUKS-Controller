@@ -25,7 +25,9 @@
 
     </style>
 
-    <core-list data="{{volunteerGroups.values}}" selectionenabled on-core-activate="{{groupSelected}}" id="list">
+    <core-list data="{{volunteerGroups.values}}" 
+   on-core-activate="{{groupSelected}}" 
+                 id="list" selectionenabled>
       <template>
         <zuks-list-item class="item {{ {selected: selected} | tokenList }}">
           {{model.name}}
@@ -33,11 +35,13 @@
       </template>
     </core-list>
 
-    <paper-action-dialog heading="Gruppe {{actionName}}" id="addGroup" backdrop on-core-overlay-close-completed="{{groupDialogClosed}}">
-        <paper-input label="Name" autofocus floatingLabel value="{{group.name}}"></paper-input>
+    <paper-action-dialog heading="Gruppe {{actionName}}"
+ on-core-overlay-close-completed="{{groupDialogClosed}}"
+                              id="addGroup" backdrop>
+        <paper-input label="Name" value="{{group.name}}" autofocus floatingLabel></paper-input>
 
         <paper-button dismissive>Abbrechen</paper-button>
-        <paper-button affirmative default on-click="{{saveGroup}}" style="color:#4d9eff">Speichern</paper-button>
+        <paper-button class="tintText" on-click="{{saveGroup}}" affirmative>Speichern</paper-button>
     </paper-action-dialog>
 
   </template>
