@@ -294,7 +294,7 @@
       }
     },
     searchModeChanged: function() {
-      $(this).toggleClass('search', this.searchMode);
+      this.classList.toggle('search', this.searchMode);
       if (this.searchMode) {
         // Save the original map bounds
         this.savedMapBounds = this.$.map.map.getBounds();
@@ -365,7 +365,7 @@
       // The freehandLocation is valid after the address lookup
       var valid = this.selectedIndex >= 0 || (this.freehandLocation && 
                                               this.freehandLocation.lookup.lat);
-      $(this.$.submitFab).toggleClass('valid', !!valid);
+      this.$.submitFab.classList.toggle('valid', !!valid);
       return !!valid;
     },
     getSelectedLocation: function() {
