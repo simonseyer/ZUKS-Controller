@@ -24,12 +24,16 @@
         console.log("Recieved message: " + msg.data);
 
         object = JSON.parse(msg.data);
+        event = object.event;
+        if (event.indexOf('#') >= 0) {
+          event = event.split('#')[0];
+        }
 
-        var event_function = eval("self.event_handler." + object.event);
+        var event_function = eval("self.event_handler." + event);
         if (event_function) {
           event_function(object.old, object.new);
         } else {
-          console.warn("No handler registered for event: " + object.event);
+          console.warn("No handler registered for event: " + event);
         }
       };
     }
