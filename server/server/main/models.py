@@ -51,3 +51,23 @@ class POI(models.Model):
 
   def __str__(self):
     return "%s [%s]" % (self.name, self.category.name)
+
+class Instruction(models.Model):
+  receiver = models.ForeignKey(Volunteer)
+
+  class Meta:
+    abstract = True
+
+class LocationInstruction(Instruction):
+  location = models.OneToOneField(Location)
+  
+  def __str__(self):
+    return "Go to: %s [%s]" % (self.location, self.receiver)
+
+class MessageInstruction(Instruction):
+  subject = models.CharField(max_length=100)
+  content = models.TextField()
+  
+  def __str__(self):
+    return "%s [%s]" % (self.content, self.receiver)
+
