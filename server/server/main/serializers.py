@@ -41,7 +41,11 @@ class VolunteerSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         location = LocationHandler.create(validated_data.pop('location'))
-        targetLocation = LocationHandler.create(validated_data.pop('targetLocation'))
+        targetLocationData = validated_data.pop('targetLocation')
+        if targetLocationData:
+            targetLocation = LocationHandler.create()
+        else:
+            targetLocation = None
         volunteer = Volunteer.objects.create(location=location, targetLocation=targetLocation, **validated_data)
         return volunteer
 
