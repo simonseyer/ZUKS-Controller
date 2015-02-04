@@ -175,9 +175,12 @@
     },
     changeLocation: function() {
       this.$.poiDetail.close();
-      this.fire("location-request", this.editablePOI.location);
+      this.fire("location-request", {
+        locationPreset: this.editablePOI.location,
+        callback: this.applyLocation.bind(this)
+      });
     },
-    submitLocation: function(locationResult) {
+    applyLocation: function(locationResult) {
       if (locationResult && locationResult.location) {
         this.editablePOI.location = locationResult.location;
         this.editablePOI.address = locationResult.address;

@@ -218,6 +218,7 @@
     searchMode: false,
     savedMapBounds: null,
     freehandLocation: null,
+    searchCallback: null,
     observe: {
       'freehandLocation.lookup' : 'checkValidity'
     },
@@ -281,9 +282,11 @@
       }
     },
     /* Search section */
-    startSearch: function(oldLocation) {
+    startSearch: function(request) {
       this.searchMode = true;
-      if (oldLocation) {
+      this.searchCallback = request.callback;
+      if (request.locationPreset) {
+        var oldLocation = request.locationPreset;
         this.setFreehandLocation(oldLocation.latitude, 
                                  oldLocation.longitude)
       }
@@ -382,13 +385,18 @@
     },
     submitSearch: function() {
       if (this.checkValidity()) {
-        this.fire('search-finish', this.getSelectedLocation());
-        this.searchMode = false;
+        this.finishSearch(this.getSelectedLocation());
       }
     },
     abortSearch: function() {
-      this.fire('search-finish');
+      this.finishSearch();
+    },
+    finishSearch: function(result) {
       this.searchMode = false;
+      if (this.searchCallback) {
+        this.searchCallback(result);
+      }
+      this.fire('search-finish', result);
     }
   });
   </script>
