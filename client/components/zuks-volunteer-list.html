@@ -8,6 +8,8 @@
 <link rel="import" href="../bower_components/paper-dialog/paper-action-dialog.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/core-icons/maps-icons.html">
+<link rel="import" href="../bower_components/core-icons/communication-icons.html">
+<link rel="import" href="../bower_components/core-icons/social-icons.html">
 
 <link rel="import" href="zuks-list-item.html">
 
@@ -18,12 +20,21 @@
     html /deep/ #volunteerDetail {
       margin: 0;
       max-width: 280px;
+      width: 280px;
       margin-top: 4px;
       transition: transform 0.15s;
     }
 
     html /deep/ #volunteerDetail.movedAway {
       transform: translateX(-200%);
+    }
+
+    html /deep/ #volunteerDetail .actions :first-child {
+      padding-left: 0px;
+    }
+
+    html /deep/ #volunteerDetail paper-icon-button[active] {
+      color: #4d9eff;
     }
   </style>
 
@@ -60,34 +71,57 @@
           <div>
             <template repeat="{{volunteer, i in selectedVolunteers}}">
               <span>
-                {{volunteer.first_name}} {{volunteer.last_name}}
-                {{(i < selectedVolunteers.length - 1) ? ',' : ''}}
+                {{volunteer.first_name}} {{volunteer.last_name}}{{(i < selectedVolunteers.length - 1) ? ',' : ''}}
               </span>
             </template>
           </div>
         </template>
 
-        <div horizontal layout>
+        <div class="actions" horizontal layout>
           <paper-icon-button icon="maps:my-location" on-click="{{locate}}"></paper-icon-button>
           <paper-icon-button icon="maps:navigation" on-click="{{sendToLocation}}"></paper-icon-button>
+          <paper-icon-button icon="communication:messenger" 
+                          active?="{{mode=='compose'}}" 
+                         on-click="{{composeMessage}}">
+          </paper-icon-button>
+          <paper-icon-button icon="social:group"
+                          active?="{{mode=='edit'}}" 
+                         on-click="{{edit}}">
+          </paper-icon-button>
         </div>
-        <paper-dropdown-menu label="Gruppe">
-            <paper-dropdown layered class="dropdown">
-                <core-menu class="menu" valueattr="gid" selected="{{selectedGroup}}">
-                    <template repeat="{{group in volunteerGroups.values}}">
-                        <paper-item gid="{{group.id}}">{{group.name}}</paper-item>
-                    </template>
-                </core-menu>
-            </paper-dropdown>
-        </paper-dropdown-menu>
 
-        <paper-button dismissive>Abbrechen</paper-button>
-        <paper-button class="tintText" on-click="{{saveVolunteer}}" affirmative>Speichern</paper-button>
+        <template if="{{mode == 'edit'}}">
+          <paper-dropdown-menu label="Gruppe">
+              <paper-dropdown layered class="dropdown">
+                  <core-menu class="menu" valueattr="gid" selected="{{selectedGroup}}">
+                      <template repeat="{{group in volunteerGroups.values}}">
+                          <paper-item gid="{{group.id}}">{{group.name}}</paper-item>
+                      </template>
+                  </core-menu>
+              </paper-dropdown>
+          </paper-dropdown-menu>
+
+          <paper-button class="tintText" on-click="{{saveVolunteer}}" affirmative>Speichern</paper-button>
+        </template>
+
+        <template if="{{mode == 'compose'}}">
+          <paper-input-decorator label="Betreff">
+            <input type="text" value="{{message.subject}}" autofocus>
+          </paper-input-decorator>
+
+          <paper-input-decorator label="Nachricht" floatingLabel>
+            <textarea value="{{message.content}}" rows="3"></textarea>
+          </paper-input-decorator>
+
+          <paper-button class="tintText" on-click="{{sendMessage}}" affirmative>Senden</paper-button>
+        </template>
     </paper-action-dialog>
 
   </template>
   <script>
   Polymer({
+    mode: null,
+    message: {},
     flattenGroup: function(groupList) {
       var volunteers = [];
       if (groupList) {
@@ -126,6 +160,7 @@
       event.target.dimensions.position = {v: 'top', h: 'left'};
     },
     saveVolunteer: function(event) {
+      this.mode = null;
       this.applyUpdate(function(volunteer) {
         volunteer.group = this.selectedGroup;
       }.bind(this));
@@ -134,6 +169,7 @@
       this.fire("focus-request", this.selectedVolunteers);
     },
     sendToLocation: function() {
+      this.mode = null;
       this.$.volunteerDetail.classList.add('movedAway');
       this.fire("location-request", {
         callback: this.applyLocation.bind(this)
@@ -155,6 +191,20 @@
         editableVolunteers.push(copiedVolunteer);
       }, this);
       this.fire("update", editableVolunteers);
+    },
+    composeMessage: function() { 
+      this.mode = this.mode == 'compose' ? null : 'compose';
+    },
+    edit: function() {
+      this.mode = this.mode == 'edit' ? null : 'edit';
+    },
+    sendMessage: function() {
+      this.mode = null;
+      this.selectedVolunteers.forEach(function(volunteer) {
+        var message = $.extend(true, {}, this.message);
+        message.receiver = volunteer.id;
+        this.fire("message-instruction", message);
+      }, this);
     }
   });
   </script>

@@ -81,7 +81,8 @@
                             selectedVolunteers="{{selectedVolunteers}}"
                                      on-update="{{volunteersUpdated}}" 
                               on-focus-request="{{volunteerFocusRequested}}"
-                           on-location-request="{{locationRequested}}"  
+                           on-location-request="{{locationRequested}}"
+                        on-message-instruction="{{messageInstructionAdded}}"  
                                             id="list">
           </zuks-volunteer-list>
           <zuks-group-list volunteerGroups="{{volunteerGroups}}" 
@@ -175,6 +176,9 @@
     },
     locationRequested: function(event) {
       this.$.map.startSearch(event.detail);
+    },
+    messageInstructionAdded: function(event) {
+      this.$.service.addMessageInstruction(event.detail);
     }
   });
   </script>
