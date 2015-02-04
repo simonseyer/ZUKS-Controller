@@ -46,6 +46,18 @@
       bottom: 92px;
     }
 
+    #closeButton {
+      display: none;
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      margin: 0; 
+    }
+
+    :host(.search) #closeButton {
+      display: block;
+    }
+
     #searchOverlay {
       width: 40%;
       background-color: white;
@@ -188,6 +200,7 @@
           </leaflet-marker-icon>
         </template>
 
+        <paper-icon-button id="closeButton" icon="close" on-click="{{abortSearch}}"></paper-icon-button>
         <paper-fab id="submitFab" icon="done" on-click="{{submitSearch}}"></paper-fab>
 
     </leaflet-map>
