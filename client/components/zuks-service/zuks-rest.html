@@ -10,7 +10,7 @@
   </template>
   <script>
   Polymer({
-    root_url: "http://localhost:8000/",
+    root_url: "http://" + location.hostname + ":8000/",
     errorHandler: null,
     put: function(type, object, callback) {
       if (!object.id) {
