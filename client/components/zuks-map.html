@@ -211,8 +211,10 @@
     on-core-overlay-position="{{layoutSearchOverlay}}" autoCloseDisabled on-keydown="{{searchKeyDown}}">
 
       <paper-input-decorator label="Ort suchen...">
-          <input type="text" autofocus list="locations" value="{{searchValue}}" 
-          on-focus="{{searchedFieldFocused}}" on-blur="{{searchFieldBlurred}}">
+          <input type="text"
+                value="{{searchValue}}"   
+             on-focus="{{searchedFieldFocused}}" 
+              on-blur="{{searchFieldBlurred}}" autofocus>
       </paper-input-decorator>
 
       <!-- Autocompletion list, only visible when search field is focused -->
