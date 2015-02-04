@@ -25,10 +25,6 @@
 
   <template>
     <style>
-    :host {
-      
-    }
-
     .container {
       height: 100%;
       background-color: #fff;
@@ -50,9 +46,6 @@
     paper-tabs {
       font-weight: 800;
     }
-
-    
-
     </style>
     
     <zuks-service volunteers="{{volunteers}}" 
@@ -100,7 +93,7 @@
                            selectedPOI="{{selectedPOI}}" 
                              on-create="{{poiCreated}}" 
                              on-update="{{poiUpdated}}" 
-                   on-location-request="{{locationRequested}}" 
+                   on-location-request="{{locationRequested}}"
                                     id="poiList">
           </zuks-group-list>
         </core-pages>
