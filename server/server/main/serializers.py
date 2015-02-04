@@ -34,6 +34,7 @@ class VolunteerSerializer(serializers.ModelSerializer):
     '''Handles Volunteer object serialization'''
     group = serializers.PrimaryKeyRelatedField(queryset=VolunteerGroup.objects.all())
     location = LocationSerializer()
+    targetLocation = LocationSerializer(allow_null=True)
     class Meta:
         model = Volunteer
         depth = 1
@@ -45,12 +46,21 @@ class VolunteerSerializer(serializers.ModelSerializer):
         return volunteer
 
     def update(self, instance, validated_data):
+        LocationHandler.update(instance.location, validated_data.pop('location'))
+
+        if validated_data['targetLocation']:
+            locationData = validated_data.pop('targetLocation')
+            if instance.targetLocation:
+                LocationHandler.update(instance.targetLocation, locationData)
+            else:
+                instance.targetLocation = LocationHandler.create(locationData)
+        else:
+            instance.targetLocation = None
+
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.group = validated_data.get('group', instance.group)
         instance.save()
-
-        LocationHandler.update(instance.location, validated_data.pop('location'))
 
         return instance
 
