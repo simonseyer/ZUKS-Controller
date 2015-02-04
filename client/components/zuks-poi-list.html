@@ -36,7 +36,7 @@
     }
 
     html /deep/ #poiDetail.movedAway {
-      transform: translateX(200%);
+      transform: translateX(-200%);
     }
   </style>
 
@@ -154,9 +154,9 @@
     },
     layoutPOIOverlay: function(event) {
       var thisStyle = getComputedStyle(this);
-      event.target.style.right = thisStyle.width;
+      event.target.style.left = thisStyle.width;
       event.target.style.top = 0;
-      event.target.dimensions.position = {v: 'top', h: 'right'};
+      event.target.dimensions.position = {v: 'top', h: 'left'};
     },
     savePOI: function(event) {
       if (this.editablePOI.id) {

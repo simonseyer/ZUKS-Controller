@@ -57,15 +57,7 @@
     </zuks-service>
     
     <div class="container" layout horizontal>
-      <zuks-map flex volunteers="{{volunteers}}" 
-             selectedVolunteers="{{selectedVolunteers}}"
-                           pois="{{pois}}"
-                  poiCategories="{{poiCategories}}"
-                    selectedPOI="{{selectedPOI}}"
-            on-volunteer-select="{{volunteerSelected}}"    
-                  on-poi-select="{{poiSelected}}" 
-                             id="map">
-      </zuks-map>
+      
       
       <div vertical layout>
         <core-toolbar>
@@ -107,6 +99,16 @@
           </zuks-group-list>
         </core-pages>
       </div>
+
+      <zuks-map flex volunteers="{{volunteers}}" 
+             selectedVolunteers="{{selectedVolunteers}}"
+                           pois="{{pois}}"
+                  poiCategories="{{poiCategories}}"
+                    selectedPOI="{{selectedPOI}}"
+            on-volunteer-select="{{volunteerSelected}}"    
+                  on-poi-select="{{poiSelected}}" 
+                             id="map">
+      </zuks-map>
     </div>
 
     <paper-action-dialog heading="Freiwilligen hinzufügen" id="addVolunteer" backdrop="true">
