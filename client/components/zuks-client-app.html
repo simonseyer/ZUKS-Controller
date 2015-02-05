@@ -6,7 +6,9 @@
 <link rel="import" href="../bower_components/core-list/core-list.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/core-icons/maps-icons.html">
+<link rel="import" href="../bower_components/core-icons/social-icons.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
 
 <link rel="import" href="zuks-service/zuks-client-service.html">
 <link rel="import" href="zuks-list-item.html">
@@ -89,7 +91,23 @@
       color: #666;
       font-size: 1.2em;
     }
+
+    leaflet-map {
+      height: 300px;
+    }
+    .map paper-shadow {
+      padding: 0;
+    }
+
     </style>
+
+    <core-style id="map-style">
+      <style>
+        marker-icon {
+          color: #4d9eff;
+        }
+      </style>
+    </core-style>
 
     <zuks-client-service instructions="{{instructions}}" user="{{user}}" id="service"></zuks-client-service>
 
@@ -120,20 +138,60 @@
           <div id="emptyList">Gleich gibt's mehr Karten</div>
         </template>
         <template repeat="{{instruction, index in instructions}}">
-            <div class="item">
-              <paper-shadow>
+          <div class="item">
+            <paper-shadow>
+              <paper-icon-button icon="close" on-click="{{dismissCard}}"></paper-icon-button>
+
+              <template if="{{instruction.subject}}">
                 <h1>{{instruction.subject}}</h1>
-                <paper-icon-button icon="close" on-click="{{dismissCard}}"></paper-icon-button>
                 {{instruction.content}}
-              </paper-shadow>
-            </div>
-          </template>
+              </template>
+
+              <template if="{{instruction.location}}">
+                <leaflet-map longitude="{{user.location.longitude}}"
+                              latitude="{{user.location.latitude}}"
+                                  zoom="15"
+                           zoomControl="false">
+                  <!-- Current location -->
+                  <leaflet-marker longitude="{{user.location.longitude}}" 
+                                   latitude="{{user.location.latitude}}"
+                                       icon="{{leafletIconBindings.v[index]}}">
+                  </leaflet-marker>
+                  <leaflet-marker-icon icon="social:person" 
+                                leafletIcon="{{leafletIconBindings.v[index]}}" 
+                  </leaflet-marker-icon>
+
+                  <!-- Target location -->
+                  <leaflet-marker longitude="{{instruction.location.longitude}}" 
+                                   latitude="{{instruction.location.latitude}}"
+                                       icon="{{leafletIconBindings.t[index]}}">
+                  </leaflet-marker>
+                  <leaflet-marker-icon icon="flag" 
+                                leafletIcon="{{leafletIconBindings.t[index]}}" 
+                  </leaflet-marker-icon>
+
+                  <!-- Target path -->
+                  <leaflet-polyline color="#4d9eff" fillOpacity="0.6">
+                    <leaflet-point latitude="{{user.location.latitude}}"
+                                  longitude="{{user.location.longitude}}">
+                    </leaflet-point>
+                    <leaflet-point latitude="{{instruction.location.latitude}}"
+                                  longitude="{{instruction.location.longitude}}">
+                    </leaflet-point>
+                  </leaflet-polyline>
+                </leaflet-map>
+              </template>
+            </paper-shadow>
+          </div>
+        </template>
       </template>
+
     </core-header-panel>
 
   </template>
   <script>
   Polymer({
+    leafletIconBindings: {v: [], t: []},
     requestingLocation: false,
     ready: function() {
       this.selectedTab = 0;
