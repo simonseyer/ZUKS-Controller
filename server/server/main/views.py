@@ -76,6 +76,28 @@ class VolunteerViewSet(EventViewSet):
   serializer_class = VolunteerSerializer
   event_key = "volunteer"
 
+  def fire(self, key, data):
+    '''
+    Fire an locationInstruction when the targetLocation is changed.\
+    TODO: handle in one place. (is saved in serializer)
+    '''
+    newTarget = data['new']['targetLocation']
+    if newTarget:
+      oldTarget = data['old']['targetLocation']
+      if not oldTarget or (newTarget['latitude'] != oldTarget['latitude'] or newTarget['longitude'] != oldTarget['longitude']):
+        instructionData = {
+          'new' : {
+            'receiver' : data['new']['id'],
+            'location' : {
+              'latitude' : float(newTarget['latitude']),
+              'longitude' : float(newTarget['longitude'])
+            }
+          },
+          'old' : None
+        }
+        super().fire('locationInstruction_create#%i' % (data['new']['id'],), instructionData)
+    super().fire(key, data)
+
 class LocationViewSet(EventViewSet):
   """
   API endpoint for locations
@@ -132,7 +154,7 @@ class MessageInstructionViewSet(EventViewSet):
   event_key = "messageInstruction"
 
   def fire(self, key, data):
-      '''
-      Append receiver id to key
-      '''
-      super().fire("%s#%i" % (key, data['new']['receiver']), data)
+    '''
+    Append receiver id to key
+    '''
+    super().fire("%s#%i" % (key, data['new']['receiver']), data)
