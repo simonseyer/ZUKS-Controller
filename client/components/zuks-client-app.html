@@ -142,10 +142,12 @@
         subject: "Herzlich Willkommen",
         content: "Schön dass du bei dieser Präsentation mit machst. Schließe Karten einfach mit dem x oben rechts."
       });
-      this.instructions.unshift({
-        subject: "Wo bist du?",
-        content: "Gib doch bitte deinen Standort frei, damit wir dich auch auf dem Beamer vorne sehen. Einfach oben rechts auf das Icon drücken. DATENSCHUTZ wird bei mir groß geschrieben, versprochen!"
-      });
+      this.async(function() {
+        this.instructions.unshift({
+          subject: "Wo bist du?",
+          content: "Gib doch bitte deinen Standort frei. Einfach oben rechts auf das Icon drücken. DATENSCHUTZ wird bei mir übrigens groß geschrieben, versprochen!"
+        });
+      }, this, 4000);
     },
     register: function() {
       this.$.service.register();
