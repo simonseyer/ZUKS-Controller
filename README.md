@@ -15,6 +15,7 @@ Web application for the organisation of volunteers in Civil Support.
 - Switch to the python environment with `source venv-folder/bin/activate` _(optional)_
 - `cd server`
 - `python manage.py migrate`
+- `python manage.py loaddata POICategories`
 - `python manage.py runserver #ip#:#port#`
 
 ### Terminal II
