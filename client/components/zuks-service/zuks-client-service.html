@@ -1,0 +1,49 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="zuks-rest.html">
+<link rel="import" href="zuks-ws.html">
+
+<polymer-element name="zuks-client-service" attributes="instructions user">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+
+    <zuks-rest id="rest"></zuks-rest>
+    <zuks-ws id="ws"></zuks-ws>
+
+  </template>
+  <script>
+  Polymer({
+    instructions: [],
+    _eventHandler: null,
+    user: {},
+    ready: function() {
+      var self = this;
+
+      this.$.rest.errorHandler = function(response, status, error) {
+        self.fire('error', {status: status, msg: error});
+      };
+
+      this._eventHandler = {
+        messageInstruction_create: function(oldInstruction, instruction) {
+          self.instructions.push(instruction);
+        },
+      };
+      this.$.ws.event_handler = this._eventHandler;
+      this.$.ws.initWebSocket();
+    },
+    register: function() {
+      this.user.location = {latitude: 0, longitude: 0};
+      this.user.targetLocation = null;
+      this.user.group = 1;
+      this.$.rest.post('volunteers', this.user, function(response) {
+        this.user = response;
+        this.$.ws.send(response.id);
+      }.bind(this));
+    }
+  });
+  </script>
+</polymer-element>

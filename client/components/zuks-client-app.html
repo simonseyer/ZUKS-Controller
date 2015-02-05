@@ -1,0 +1,111 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="../bower_components/core-list/core-list.html">
+
+<link rel="import" href="zuks-service/zuks-client-service.html">
+<link rel="import" href="zuks-list-item.html">
+
+<polymer-element name="zuks-client-app">
+
+  <!-- Global styles -->
+  <style>
+    html /deep/ .tintText {
+      color: #4d9eff;
+    }
+  </style>
+
+  <template>
+    <style>
+    core-header-panel {
+      height: 100%;
+      width: 100%;
+      background-color: #fff;
+    }
+
+    .core-header {
+      background-color: #4d9eff;
+      height: 60px;
+      color: white;
+    }
+
+    .core-header img {
+      height: 40px;
+      margin: 10px;
+    }
+    
+    #login paper-input{
+      margin-left: 12px;
+      margin-right: 12px; 
+    }
+
+    #login paper-button {
+      float: right;
+    }
+
+    :host /deep/ h1 {
+      margin-top: 0;
+      font-size: 1.3em;
+    }
+
+    zuks-list-item {
+      color: #444;
+      padding: 8px;
+      padding-bottom: 0;
+    }
+
+    </style>
+
+    <zuks-client-service instructions="{{instructions}}" user="{{user}}" id="service"></zuks-client-service>
+
+    <core-header-panel mode="waterfall" fullbleed>
+      <div class="core-header" center>
+        <img src="https://www.zuks.org/static/img/logo/logo-weiss%401200.png">
+      </div>
+    
+    
+      <template if="{{user.id}}">
+        <div id="login" vertical layout>
+          <paper-input label="Vorname" value="{{user.first_name}}" autofocus floatingLabel></paper-input>
+          <paper-input label="Nachname" value="{{user.last_name}}" floatingLabel></paper-input>
+          <div>
+            <paper-button class="tintText" on-click="{{register}}">Anmelden</paper-button>
+          <div>
+        </div>
+      </template>
+
+      <template if="{{!user.id}}">
+        <core-list data="{{instructions}}" fit>
+          <template>
+            <zuks-list-item class="item">
+              <h1>{{model.subject}}</h1>
+              {{model.content}}
+            </zuks-list-item>
+          </template>
+        </core-list>
+      </template>
+    
+    </core-header-panel>
+
+  </template>
+  <script>
+  Polymer({
+    ready: function() {
+      this.selectedTab = 0;
+      CoreStyle.g.paperInput.focusedColor = '#4d9eff';
+      this.instructions.push({
+        subject: "Herzlich Willkommen",
+        content: "Schön dass du bei dieser Präsentation mit machst. Schließe Karten einfach mit dem x oben rechts."
+      });
+      this.instructions.push({
+        subject: "Wo bist du?",
+        content: "Gib doch bitte deinen Standort frei, damit wir dich auch auf dem Beamer vorne sehen. Einfach oben rechts auf das Icon drücken. DATENSCHUTZ wird bei mir groß geschrieben, versprochen!"
+      });
+    },
+    register: function() {
+      this.$.service.register();
+    }
+  });
+  </script>
+</polymer-element>
