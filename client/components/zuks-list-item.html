@@ -6,33 +6,29 @@
   <template>
     <style>
     :host {
-      height: 70px;
-      padding-right: 16px;
-      padding-left: 16px;
+      padding-left: 8px;
+      padding-right: 8px;
       padding-top: 4px;
       padding-bottom: 4px;
       cursor: pointer;
     }
 
-    .container, paper-shadow {
+    paper-shadow {
       height: 100%;
     }
 
-    .container.selected {
+    paper-shadow.selected {
       background: #eee;
     }
 
-    .content {
-      padding-left: 10px;
+    paper-shadow {
+      border-radius: 2px;
+      padding: 16px;
     }
     </style>
 
-    <paper-shadow>
-      <div horizontal layout center class="container {{ {selected: selected} | tokenList }}">
-        <div class="content">
-          <content></content>
-        </div>
-      </div>
+    <paper-shadow class="{{ {selected: selected} | tokenList }}">
+      <content></content>
       <paper-ripple fit></paper-ripple>
     </paper-shadow>
 
