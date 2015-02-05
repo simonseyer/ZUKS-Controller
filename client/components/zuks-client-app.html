@@ -116,11 +116,13 @@
     <core-header-panel mode="waterfall" fullbleed>
       <div class="core-header" center>
         <img src="https://www.zuks.org/static/img/logo/logo-weiss%401200.png">
-        <template if="{{!requestingLocation}}">
-          <paper-icon-button icon="maps:my-location" id="locationButton" on-click="{{locate}}"></core-icon-button>
-        </template>
-        <template if="{{requestingLocation}}">
-          <paper-spinner active></paper-spinner>
+        <template if="{{user.id}}">
+          <template if="{{!requestingLocation}}">
+            <paper-icon-button icon="maps:my-location" id="locationButton" on-click="{{locate}}"></core-icon-button>
+          </template>
+          <template if="{{requestingLocation}}">
+            <paper-spinner active></paper-spinner>
+          </template>
         </template>
       </div>
     
