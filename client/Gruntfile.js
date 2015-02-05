@@ -9,16 +9,35 @@ module.exports = function(grunt) {
         }
       }     
     },
-    vulcanize: {
+    mkdir: {
       default: {
-        options: {},
-        files: {
-          'build.html': 'index.html'
+        options: {
+          create: ['dist/controller', 'dist/client']
         }
       }
+    },
+    vulcanize: {
+      default: {
+        files: {
+          'dist/controller/index.long.html': 'controller.html',
+          'dist/client/index.long.html': 'client.html'
+        }
+      },
+    },
+    minifyHtml: {
+        default: {
+            files: {
+                'dist/controller/index.html': 'dist/controller/index.long.html',
+                'dist/client/index.html': 'dist/client/index.long.html'
+            }
+        }
     }
   });
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-vulcanize');
   grunt.loadNpmTasks('grunt-devtools');
+  grunt.loadNpmTasks('grunt-minify-html');
+  grunt.loadNpmTasks('grunt-mkdir');
+
+  grunt.registerTask('deploy', ['mkdir', 'vulcanize', 'minifyHtml']);
 };
