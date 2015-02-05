@@ -1,8 +1,10 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 
 <link rel="import" href="zuks-service/zuks-client-service.html">
 <link rel="import" href="zuks-list-item.html">
@@ -44,15 +46,32 @@
       float: right;
     }
 
+    .item {
+      color: #444;
+      padding: 8px;
+      padding-bottom: 0;
+    }
+
+    paper-shadow {
+      border-radius: 2px;
+      padding: 16px;
+      transition: transform 0.4s, margin-top 0.4s 0.2s;
+    }
+
     :host /deep/ h1 {
       margin-top: 0;
       font-size: 1.3em;
     }
 
-    zuks-list-item {
-      color: #444;
-      padding: 8px;
-      padding-bottom: 0;
+    paper-shadow.deleted {
+      transform: translateX(100%);
+      margin-top: -10%;
+    }
+
+    core-icon-button {
+      position: absolute;
+      top: 0;
+      right: 0;
     }
 
     </style>
@@ -76,16 +95,16 @@
       </template>
 
       <template if="{{!user.id}}">
-        <core-list data="{{instructions}}" fit>
-          <template>
-            <zuks-list-item class="item">
-              <h1>{{model.subject}}</h1>
-              {{model.content}}
-            </zuks-list-item>
+        <template repeat="{{instruction in instructions}}">
+            <div class="item">
+              <paper-shadow>
+                <h1>{{instruction.subject}}</h1>
+                <core-icon-button icon="close" on-click="{{dismissCard}}"></core-icon-button>
+                {{instruction.content}}
+              </paper-shadow>
+            </div>
           </template>
-        </core-list>
       </template>
-    
     </core-header-panel>
 
   </template>
@@ -105,6 +124,14 @@
     },
     register: function() {
       this.$.service.register();
+    },
+    dismissCard: function(event) {
+      var item = event.target.parentElement;
+      var index = event.target.templateInstance.model.index;
+      item.classList.add('deleted');
+      this.async(function() {
+        this.instructions.splice(index, 1);
+      }, this, 300);
     }
   });
   </script>
