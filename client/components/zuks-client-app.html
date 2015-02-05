@@ -57,7 +57,7 @@
     paper-shadow {
       border-radius: 2px;
       padding: 16px;
-      transition: transform 0.4s, margin-top 0.4s 0.2s;
+      transition: transform 0.4s;
     }
 
     :host /deep/ h1 {
@@ -67,7 +67,6 @@
 
     paper-shadow.deleted {
       transform: translateX(100%);
-      margin-top: -10%;
     }
 
     paper-icon-button, paper-spinner {
@@ -107,7 +106,7 @@
       </template>
 
       <template if="{{user.id}}">
-        <template repeat="{{instruction in instructions}}">
+        <template repeat="{{instruction, index in instructions}}">
             <div class="item">
               <paper-shadow>
                 <h1>{{instruction.subject}}</h1>
