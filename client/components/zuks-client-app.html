@@ -4,7 +4,9 @@
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="../bower_components/core-list/core-list.html">
-<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/core-icons/maps-icons.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 
 <link rel="import" href="zuks-service/zuks-client-service.html">
 <link rel="import" href="zuks-list-item.html">
@@ -68,10 +70,14 @@
       margin-top: -10%;
     }
 
-    core-icon-button {
+    paper-icon-button, paper-spinner {
       position: absolute;
       top: 0;
       right: 0;
+    }
+
+    #locationButton, paper-spinner {
+      padding: 16px;
     }
 
     </style>
@@ -81,10 +87,16 @@
     <core-header-panel mode="waterfall" fullbleed>
       <div class="core-header" center>
         <img src="https://www.zuks.org/static/img/logo/logo-weiss%401200.png">
+        <template if="{{!requestingLocation}}">
+          <paper-icon-button icon="maps:my-location" id="locationButton" on-click="{{locate}}"></core-icon-button>
+        </template>
+        <template if="{{requestingLocation}}">
+          <paper-spinner active></paper-spinner>
+        </template>
       </div>
     
     
-      <template if="{{user.id}}">
+      <template if="{{!user.id}}">
         <div id="login" vertical layout>
           <paper-input label="Vorname" value="{{user.first_name}}" autofocus floatingLabel></paper-input>
           <paper-input label="Nachname" value="{{user.last_name}}" floatingLabel></paper-input>
@@ -94,12 +106,12 @@
         </div>
       </template>
 
-      <template if="{{!user.id}}">
+      <template if="{{user.id}}">
         <template repeat="{{instruction in instructions}}">
             <div class="item">
               <paper-shadow>
                 <h1>{{instruction.subject}}</h1>
-                <core-icon-button icon="close" on-click="{{dismissCard}}"></core-icon-button>
+                <paper-icon-button icon="close" on-click="{{dismissCard}}"></paper-icon-button>
                 {{instruction.content}}
               </paper-shadow>
             </div>
@@ -110,6 +122,7 @@
   </template>
   <script>
   Polymer({
+    requestingLocation: false,
     ready: function() {
       this.selectedTab = 0;
       CoreStyle.g.paperInput.focusedColor = '#4d9eff';
@@ -117,7 +130,7 @@
         subject: "Herzlich Willkommen",
         content: "Schön dass du bei dieser Präsentation mit machst. Schließe Karten einfach mit dem x oben rechts."
       });
-      this.instructions.push({
+      this.instructions.unshift({
         subject: "Wo bist du?",
         content: "Gib doch bitte deinen Standort frei, damit wir dich auch auf dem Beamer vorne sehen. Einfach oben rechts auf das Icon drücken. DATENSCHUTZ wird bei mir groß geschrieben, versprochen!"
       });
@@ -132,6 +145,25 @@
       this.async(function() {
         this.instructions.splice(index, 1);
       }, this, 300);
+    },
+    locate: function() {
+      if ("geolocation" in navigator) {
+        this.requestingLocation = true;
+        navigator.geolocation.getCurrentPosition(function(position) {
+            this.instructions.unshift({
+            subject: "Gefunden",
+            content: "Habe deinen Standort gefunden - schau mal nach vorne auf den Beamer!"
+          });
+          this.requestingLocation = false;
+          this.user.location = position.coords;
+          this.$.service.updateUser();
+        }.bind(this));
+      } else {
+        this.instructions.unshift({
+          subject: "Kann dich nicht finden",
+          content: "Mit deinem Browser kann dein Standort leider nicht abgerufen werden. Ich denke mir einen aus."
+        });
+      }
     }
   });
   </script>

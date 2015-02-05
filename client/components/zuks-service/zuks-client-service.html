@@ -43,6 +43,9 @@
         this.user = response;
         this.$.ws.send(response.id);
       }.bind(this));
+    },
+    updateUser: function() {
+      this.$.rest.put('volunteers', this.user);
     }
   });
   </script>
