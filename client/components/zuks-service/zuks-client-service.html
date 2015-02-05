@@ -29,7 +29,10 @@
 
       this._eventHandler = {
         messageInstruction_create: function(oldInstruction, instruction) {
-          self.instructions.push(instruction);
+          self.instructions.unshift(instruction);
+        },
+        locationInstruction_create: function(oldInstruction, instruction) {
+          self.instructions.unshift(instruction);
         },
       };
       this.$.ws.event_handler = this._eventHandler;
