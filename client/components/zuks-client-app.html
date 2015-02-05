@@ -162,7 +162,15 @@
           subject: "Kann dich nicht finden",
           content: "Mit deinem Browser kann dein Standort leider nicht abgerufen werden. Ich denke mir einen aus."
         });
+        this.user.location = {
+          latitude: 50.097777 + this.getRandomLocationOffset(),
+          longitude: 8.216612 + this.getRandomLocationOffset()
+        };
+        this.$.service.updateUser();
       }
+    },
+    getRandomLocationOffset: function() {
+      return Math.random() * 0.006 - 0.003;
     }
   });
   </script>
