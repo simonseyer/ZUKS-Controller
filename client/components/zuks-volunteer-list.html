@@ -192,7 +192,8 @@
       }, this);
       this.fire("update", editableVolunteers);
     },
-    composeMessage: function() { 
+    composeMessage: function() {
+      this.message = {};
       this.mode = this.mode == 'compose' ? null : 'compose';
     },
     edit: function() {
