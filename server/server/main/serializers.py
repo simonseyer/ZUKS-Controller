@@ -56,6 +56,9 @@ class VolunteerSerializer(serializers.ModelSerializer):
             locationData = validated_data.pop('targetLocation')
             if instance.targetLocation:
                 LocationHandler.update(instance.targetLocation, locationData)
+                instruction = LocationInstruction(location=instance.targetLocation, receiver=instance);
+                instruction.save()
+                instance.lastInstruction = instruction
             else:
                 instance.targetLocation = LocationHandler.create(locationData)
         else:

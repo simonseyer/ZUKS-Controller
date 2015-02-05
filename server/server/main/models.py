@@ -19,8 +19,8 @@ class Location(models.Model):
 class Volunteer(models.Model):
   first_name = models.CharField(max_length=30)
   last_name = models.CharField(max_length=30)
-  location = models.OneToOneField(Location)
-  targetLocation = models.OneToOneField(Location, blank=True, null=True, related_name='target')
+  location = models.ForeignKey(Location)
+  targetLocation = models.ForeignKey(Location, blank=True, null=True, related_name='target')
   group = models.ForeignKey(VolunteerGroup, null=True, related_name='members')
 
   class Meta:
@@ -42,7 +42,7 @@ class POICategory(models.Model):
 class POI(models.Model):
   name = models.CharField(max_length=60)
   description = models.TextField()
-  location = models.OneToOneField(Location)
+  location = models.ForeignKey(Location)
   address = models.TextField()
   category = models.ForeignKey(POICategory)
 
@@ -59,7 +59,7 @@ class Instruction(models.Model):
     abstract = True
 
 class LocationInstruction(Instruction):
-  location = models.OneToOneField(Location)
+  location = models.ForeignKey(Location)
   
   def __str__(self):
     return "Go to: %s [%s]" % (self.location, self.receiver)
