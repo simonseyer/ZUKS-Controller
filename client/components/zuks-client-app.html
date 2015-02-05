@@ -83,6 +83,12 @@
       padding: 16px;
     }
 
+    #emptyList {
+      text-align: center;
+      padding: 32px;
+      color: #666;
+      font-size: 1.2em;
+    }
     </style>
 
     <zuks-client-service instructions="{{instructions}}" user="{{user}}" id="service"></zuks-client-service>
@@ -110,6 +116,9 @@
       </template>
 
       <template if="{{user.id}}">
+        <template if="{{instructions.length == 0}}">
+          <div id="emptyList">Gleich gibt's mehr Karten</div>
+        </template>
         <template repeat="{{instruction, index in instructions}}">
             <div class="item">
               <paper-shadow>
