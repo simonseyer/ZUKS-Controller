@@ -162,19 +162,19 @@
               </leaflet-polyline>
             </template>
           </template>
+        </template>
 
-          <!-- POI markers-->
-          <template repeat="{{poi, index in pois.values}}">
-            <leaflet-marker longitude="{{poi.location.longitude}}" 
-                             latitude="{{poi.location.latitude}}"
-                             on-click="{{poiSelected}}"
-                                 icon="{{leafletIconBindings.p[index]}}">
-            </leaflet-marker>
-            <leaflet-marker-icon icon="{{iconForPOI(poi)}}" 
-                          leafletIcon="{{leafletIconBindings.p[index]}}" 
-                            iconClass="{{poi.selected ? 'selected' : ''}}">
-            </leaflet-marker-icon>
-          </template>
+        <!-- POI markers-->
+        <template repeat="{{poi, index in pois.values}}">
+          <leaflet-marker longitude="{{poi.location.longitude}}" 
+                           latitude="{{poi.location.latitude}}"
+                           on-click="{{poiSelected}}"
+                               icon="{{leafletIconBindings.p[index]}}">
+          </leaflet-marker>
+          <leaflet-marker-icon icon="{{iconForPOI(poi)}}" 
+                        leafletIcon="{{leafletIconBindings.p[index]}}" 
+                          iconClass="{{poi.selected ? 'selected' : ''}}">
+          </leaflet-marker-icon>
         </template>
 
         <!-- Search result markers-->
@@ -305,6 +305,7 @@
       }
     },
     poiSelected: function(event) {
+      if (this.searchMode) return;
       var poi = event.target.templateInstance.model.poi;
       this.fire('poi-select', poi);
     },
