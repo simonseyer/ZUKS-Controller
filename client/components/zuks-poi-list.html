@@ -25,6 +25,10 @@
       transition: transform 0.15s;
     }
 
+    html /deep/ #poiDetail {
+      margin-top: 0;
+    }
+
     html /deep/ #poiDetail /deep/ icon.category {
       color: #505353; 
       margin-right: 12px;
@@ -153,9 +157,10 @@
       }
     },
     layoutPOIOverlay: function(event) {
-      var thisStyle = getComputedStyle(this);
-      event.target.style.left = thisStyle.width;
-      event.target.style.top = 0;
+      var thisRect = this.getBoundingClientRect();
+
+      event.target.style.left = thisRect.right + 'px';
+      event.target.style.top = thisRect.top + 'px';
       event.target.dimensions.position = {v: 'top', h: 'left'};
     },
     savePOI: function(event) {

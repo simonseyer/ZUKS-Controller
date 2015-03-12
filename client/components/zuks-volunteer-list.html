@@ -25,6 +25,10 @@
       transition: transform 0.15s;
     }
 
+    html /deep/ #volunteerDetail {
+      margin-top: 0;
+    }
+
     html /deep/ #volunteerDetail.movedAway {
       transform: translateX(-200%);
     }
@@ -163,9 +167,10 @@
       }
     },
     layoutVolunteerOverlay: function(event) {
-      var thisStyle = getComputedStyle(this);
-      event.target.style.left = thisStyle.width;
-      event.target.style.top = 0;
+      var thisRect = this.getBoundingClientRect();
+
+      event.target.style.left = thisRect.right + 'px';
+      event.target.style.top = thisRect.top + 'px';
       event.target.dimensions.position = {v: 'top', h: 'left'};
     },
     saveVolunteer: function(event) {
