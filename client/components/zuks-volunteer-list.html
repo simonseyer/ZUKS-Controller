@@ -13,7 +13,7 @@
 
 <link rel="import" href="zuks-list-item.html">
 
-<polymer-element name="zuks-volunteer-list" attributes="volunteerGroups selectedVolunteers">
+<polymer-element name="zuks-volunteer-list" attributes="volunteers volunteerGroups selectedVolunteers">
 
   <!-- global dialog style -->
   <style>
@@ -49,7 +49,7 @@
     }
     </style>
 
-    <core-list data="{{volunteerGroups.values | flattenGroup}}" 
+    <core-list data="{{volunteerListData}}"
              groups="{{volunteerGroups.values}}"  
           selection="{{selectedVolunteers}}" selectionenabled multi
                  id="volunteerList" fit>
@@ -124,14 +124,21 @@
   Polymer({
     mode: null,
     message: {},
-    flattenGroup: function(groupList) {
+    ready: function() {
+      self.volunteerListData = [];
+    },
+    observe:  {
+      'volunteers.values': 'updateListData',
+      'volunteerGroups.values': 'updateListData'
+    },
+    updateListData: function() {
       var volunteers = [];
-      if (groupList) {
-        groupList.forEach(function(group) {
+      if (this.volunteerGroups && this.volunteerGroups.values) {
+        this.volunteerGroups.values.forEach(function(group) {
           volunteers.push(group.members);
         });
       }
-      return volunteers;
+      this.volunteerListData = volunteers;
     },
     selectVolunteer: function(volunteer) {
       this.$.volunteerList.selectData(volunteer);
