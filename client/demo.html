@@ -73,26 +73,29 @@
   }
 
   zuks-app, zuks-client-app {
-     box-shadow: 0px 0px 11px 0px #888;
+    border-radius: 9px;
+    border: 9px solid #ADB2BD;
+    box-shadow: 0 6px 16px 0 rgba(0,0,0,0.6);
   }
 
   zuks-app {
     float: left;
-    margin: 20px;
+    margin: 18px;
     /* 100 % - margin top - header - margin bottom */
-    height: calc(100% - 20px - 60px - 20px);
+    height: calc(100% - 27px - 60px - 27px);
     /* 80 % - margin left - margin right */
-    width: calc(80% - 20px - 20px);
+    width: calc(80% - 27px - 27px);
   }
   
   zuks-client-app {
     float: left;
-    margin: 20px;
+    margin: 18px;
     margin-left: 0;
     /* 100 % - margin top - header - margin bottom */
-    height: calc(100% - 20px - 60px - 20px);
-    /* 20 % - margin right */
-    width: calc(20% - 20px);
+    height: calc(100% - 27px - 60px - 27px);
+    max-height: 500px;
+    /* 20 % - margin right - border left */
+    width: calc(20% - 27px - 12px);
   }
 
   </style>
