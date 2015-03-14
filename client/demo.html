@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+
+<head>
+
+  <title>ZUKS Client</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" 
+  content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <link rel="shortcut icon" href="http://zuks.org/static/img/favicon.png?v=2" type="image/x-icon">
+
+  <script src="bower_components/webcomponentsjs/webcomponents.js">
+  </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+
+  <link rel="import" href="components/zuks-client-app.html">
+  <link rel="import" href="components/zuks-app.html">
+
+  <style>
+  html,body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    background-color: #f0f2f4;
+    
+    font-family: 'Roboto', sans-serif;
+  }
+
+  header {
+    background-color: white;
+    height: 60px;
+    border-bottom: 1px solid #4d9eff;
+  }
+
+  header img {
+    height: 41px;
+    width: 150px;
+    vertical-align: middle;
+    padding-top: 9px; 
+  }
+
+  .container {
+    width: 1000px;
+    margin: auto; 
+  }
+
+  .back {
+    background: url('https://www.zuks.org/img/icons/back.png') no-repeat left;
+    background-size: 16px;
+    padding-left: 28px!important;
+    background-position: 5px;
+  }
+
+  nav {
+    float: right;
+  }
+
+  nav div {
+    padding: 20px 15px;
+    line-height: 20px;
+    color: #555;
+    float: left;
+    font-size: 14px;
+  }
+
+  nav .active {
+    color: #fff;
+    background-color: #4d9eff;
+  }
+
+  zuks-app, zuks-client-app {
+     box-shadow: 0px 0px 11px 0px #888;
+  }
+
+  zuks-app {
+    float: left;
+    margin: 20px;
+    /* 100 % - margin top - header - margin bottom */
+    height: calc(100% - 20px - 60px - 20px);
+    /* 80 % - margin left - margin right */
+    width: calc(80% - 20px - 20px);
+  }
+  
+  zuks-client-app {
+    float: left;
+    margin: 20px;
+    margin-left: 0;
+    /* 100 % - margin top - header - margin bottom */
+    height: calc(100% - 20px - 60px - 20px);
+    /* 20 % - margin right */
+    width: calc(20% - 20px);
+  }
+
+  </style>
+
+</head>
+
+<body unresolved>
+  
+  <header>
+    <div class="container">
+      <a class="navbar-brand" href="https://www.zuks.org"><img src="https://www.zuks.org/static/img/logo/logo%40300.png" alt="ZUKS Logo" /></a>
+      <nav>
+        <div class="back">ZUKS</div>
+        <div class="active">Prototyp</div>
+      </nav>
+    </div>
+  </header>
+
+  <zuks-app></zuks-app>
+  <zuks-client-app></zuks-client-app>
+
+</body>
+
+</html>
