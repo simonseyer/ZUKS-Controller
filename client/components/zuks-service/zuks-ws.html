@@ -10,7 +10,7 @@
   </template>
   <script>
   Polymer({
-    root_url: "ws://" + location.hostname +  ":8888/ws",
+    root_url: /*SETTINGS:websocket-server-url*/"ws://" + location.hostname +  ":8888/ws"/*END_SETTINGS*/,
     ws: null,
     event_handler: {},
     initWebSocket: function() {
