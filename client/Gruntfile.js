@@ -12,7 +12,7 @@ module.exports = function(grunt) {
     mkdir: {
       default: {
         options: {
-          create: ['dist/controller', 'dist/client']
+          create: ['dist/controller', 'dist/client', 'dist/demo']
         }
       }
     },
@@ -20,7 +20,8 @@ module.exports = function(grunt) {
       default: {
         files: {
           'dist/controller/index.long.html': 'controller.html',
-          'dist/client/index.long.html': 'client.html'
+          'dist/client/index.long.html': 'client.html',
+          'dist/demo/index.long.html': 'demo.html'
         }
       },
     },
@@ -28,7 +29,8 @@ module.exports = function(grunt) {
         default: {
             files: {
                 'dist/controller/index.html': 'dist/controller/index.long.html',
-                'dist/client/index.html': 'dist/client/index.long.html'
+                'dist/client/index.html': 'dist/client/index.long.html',
+                'dist/demo/index.html': 'dist/demo/index.long.html'
             }
         }
     }
