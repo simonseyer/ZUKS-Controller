@@ -2,6 +2,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 import json
+import settings
 
 clients = set()
 
@@ -49,5 +50,5 @@ application = tornado.web.Application([
 ])
 
 if __name__ == "__main__":
-  application.listen(8888)
+  application.listen(settings.PORT)
   tornado.ioloop.IOLoop.instance().start()
