@@ -28,10 +28,15 @@
     font-family: 'Roboto', sans-serif;
   }
 
+  body {
+    min-width: 1000px;
+  }
+
   header {
     background-color: white;
     height: 60px;
     border-bottom: 1px solid #4d9eff;
+    padding: 0 27px;
   }
 
   header img {
@@ -39,11 +44,6 @@
     width: 150px;
     vertical-align: middle;
     padding-top: 9px; 
-  }
-
-  .container {
-    width: 1000px;
-    margin: auto; 
   }
 
   .back {
@@ -74,11 +74,11 @@
 
   zuks-app, zuks-client-app {
     box-shadow: 0 6px 16px 0 rgba(0,0,0,0.6);
+    margin: 27px;
   }
 
   zuks-app {
     float: left;
-    margin: 18px;
     /* 100 % - margin top - header - margin bottom */
     height: calc(100% - 27px - 60px - 27px);
     /* 80 % - margin left - margin right */
@@ -87,13 +87,24 @@
   
   zuks-client-app {
     float: left;
-    margin: 18px;
     margin-left: 0;
     /* 100 % - margin top - header - margin bottom */
     height: calc(100% - 27px - 60px - 27px);
     max-height: 500px;
-    /* 20 % - margin right - border left */
-    width: calc(20% - 27px - 12px);
+    /* 20 % - margin right*/
+    width: calc(20% - 27px);
+  }
+
+  @media (max-width: 1300px) {
+    zuks-app {
+      /* 70 % - margin left - margin right */
+      width: calc(70% - 27px - 27px);
+    }
+
+    zuks-client-app {
+      /* 20 % - margin right */
+      width: calc(30% - 27px);
+    }
   }
 
   </style>
