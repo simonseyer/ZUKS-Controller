@@ -77,7 +77,16 @@ module.exports = function(grunt) {
                 'dist/demo/index.html': 'dist/demo/index.long.html'
             }
         }
-    }
+    },
+    copy: {
+      default: {
+        files: [
+          {'expand': true, 'src' : ['bower_components/**', 'components/**'], 'dest' : 'dist/controller'},
+          {'expand': true, 'src' : ['bower_components/**', 'components/**'], 'dest' : 'dist/client'},
+          {'expand': true, 'src' : ['bower_components/**', 'components/**'], 'dest' : 'dist/demo'},
+        ],
+      },
+    },
   });
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-vulcanize');
@@ -86,7 +95,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mkdir');
   grunt.loadNpmTasks('grunt-regex-replace');
   grunt.loadNpmTasks('grunt-prompt');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('deploy', ['mkdir', 'vulcanize', 'minifyHtml']);
+  grunt.registerTask('deploy', ['mkdir', 'vulcanize', 'minifyHtml', 'copy']);
   grunt.registerTask('install', ['deploy','prompt', 'regex-replace']);
 };
