@@ -1,6 +1,7 @@
 ZUKS-Controller
 ===============
-![Travis build status](https://travis-ci.org/ZUKSev/ZUKS-Controller.svg?branch=master)
+[![Build status](https://img.shields.io/travis/ZUKSev/ZUKS-Controller/master.svg)](https://travis-ci.org/ZUKSev/ZUKS-Controller)
+[![Demo](https://img.shields.io/badge/demo-available-4d9eff.svg)](http://prototyp.zuks.org)
 
 Web application for the organisation of volunteers in Civil Support.
 ![Controller Sreenshot](https://raw.githubusercontent.com/ZUKSev/ZUKS-Controller/master/Images/controller-screenshot-01.png)
