@@ -28,6 +28,7 @@ Web application for the organisation of volunteers in Civil Support.
 
 ### Web-Server
 - `cd client`
+- Install node dependencies `npm install`
 - Install `grunt install`
 - Serve one of the following static files (For example by `python -m SimpleHTTPServer #web-port#`)
 	-  `dist/controller/index.html`, 

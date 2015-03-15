@@ -9,3 +9,4 @@ parts
 src/*.egg-info
 *.sqlite3
 /client/dist/
+node_modules
