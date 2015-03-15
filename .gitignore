@@ -3,10 +3,9 @@
 .installed.cfg
 bin
 develop-eggs
-dist
 downloads
 eggs
 parts
 src/*.egg-info
 *.sqlite3
-dist/
+/client/dist/
