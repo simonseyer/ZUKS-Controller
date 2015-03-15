@@ -1,9 +1,9 @@
 ZUKS-Controller
 ===============
-![Travis build status](https://travis-ci.org/Eldorado234/ZUKS-Controller.svg?branch=master)
+![Travis build status](https://travis-ci.org/ZUKSev/ZUKS-Controller.svg?branch=master)
 
 Web application for the organisation of volunteers in Civil Support.
-![Controller Sreenshot](https://raw.githubusercontent.com/Eldorado234/ZUKS-Controller/master/Images/controller-screenshot-01.png)
+![Controller Sreenshot](https://raw.githubusercontent.com/ZUKSev/ZUKS-Controller/master/Images/controller-screenshot-01.png)
 
 ## Installation
 - Switch to new a python 2.x or 3.x environment with `virtualenv` _(optional)_
