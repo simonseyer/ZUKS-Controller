@@ -7,7 +7,7 @@ Web application for the organisation of volunteers in Civil Support.
 ![Controller Sreenshot](https://raw.githubusercontent.com/ZUKSev/ZUKS-Controller/master/Images/controller-screenshot-01.png)
 
 ## Installation
-- Switch to new a python 2.x or 3.x environment with `virtualenv` _(optional)_
+- Switch to new a python 3.x environment with `virtualenv` _(optional)_
 - Install python dependencies `pip install -r requirements.txt`
 
 ### Websocket Server
