@@ -30,6 +30,13 @@
 
   body {
     min-width: 1000px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 1000px) {
+    body {
+      overflow: scroll;
+    }
   }
 
   header {
@@ -72,39 +79,49 @@
     background-color: #4d9eff;
   }
 
-  zuks-app, zuks-client-app {
-    box-shadow: 0 6px 16px 0 rgba(0,0,0,0.6);
-    margin: 27px;
+  .desktop-container, .mobile-container {
+    float: left;
+    position: relative;
+  }
+
+  .desktop-container {
+    margin: 9px 27px 0 27px;
+    /* 100 % - margin top - header */
+    height: calc(100% - 9px - 61px);
+    /* 100 % - margin left - margin right - mobile view - margin right */
+    width: calc(100% - 27px - 27px - 300px - 27px);
+  }
+
+  .desktop-container img {
+    width: 100%;
+    height: 100%
+  }
+  
+  .mobile-container {
+    margin-top: 6%;
+    height: 588px;
+    width: 300px;
+
+    background-image: url('demo/smartphone.png');
+    background-size: cover;
   }
 
   zuks-app {
-    float: left;
-    /* 100 % - margin top - header - margin bottom */
-    height: calc(100% - 27px - 60px - 27px);
-    /* 80 % - margin left - margin right */
-    width: calc(80% - 27px - 27px);
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    top: 6%;
+    bottom: 13%;
   }
-  
+
   zuks-client-app {
-    float: left;
-    margin-left: 0;
-    /* 100 % - margin top - header - margin bottom */
-    height: calc(100% - 27px - 60px - 27px);
-    max-height: 500px;
-    /* 20 % - margin right*/
-    width: calc(20% - 27px);
+    position: absolute;
+    left: 17px;
+    right: 17px;
+    top: 50px;
+    bottom: 66px;
   }
 
-  @media (max-width: 1300px) {
-    zuks-app {
-      /* 70 % - margin left - margin right */
-      width: calc(70% - 27px - 27px);
-    }
-
-    zuks-client-app {
-      /* 20 % - margin right */
-      width: calc(30% - 27px);
-    }
   }
 
   </style>
@@ -112,19 +129,26 @@
 </head>
 
 <body unresolved>
-  
-  <header>
-    <div class="container">
-      <a class="navbar-brand" href="https://www.zuks.org"><img src="https://www.zuks.org/static/img/logo/logo%40300.png" alt="ZUKS Logo" /></a>
-      <nav>
-        <a href="https://www.zuks.org" class="back">ZUKS</a>
-        <a href="#" class="active">Prototyp</a>
-      </nav>
-    </div>
-  </header>
+    <header>
+      <div class="container">
+        <a class="navbar-brand" href="https://www.zuks.org">
+          <img src="https://www.zuks.org/static/img/logo/logo%40300.png" alt="ZUKS Logo" />
+        </a>
+        <nav>
+          <a href="https://www.zuks.org" class="back">ZUKS</a>
+          <a href="#" class="active">Prototyp</a>
+        </nav>
+      </div>
+    </header>
 
-  <zuks-app></zuks-app>
-  <zuks-client-app></zuks-client-app>
+    <div class="desktop-container">
+      <img src="demo/desktop.png" />
+      <zuks-app></zuks-app>
+    </div>
+
+    <div class="mobile-container">
+      <zuks-client-app></zuks-client-app>
+    </div>
 
 </body>
 
