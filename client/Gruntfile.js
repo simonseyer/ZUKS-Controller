@@ -83,7 +83,7 @@ module.exports = function(grunt) {
         files: [
           {'expand': true, 'src' : ['bower_components/**', 'components/**'], 'dest' : 'dist/controller'},
           {'expand': true, 'src' : ['bower_components/**', 'components/**'], 'dest' : 'dist/client'},
-          {'expand': true, 'src' : ['bower_components/**', 'components/**'], 'dest' : 'dist/demo'},
+          {'expand': true, 'src' : ['bower_components/**', 'components/**', 'demo/*'], 'dest' : 'dist/demo'},
         ],
       },
     },
