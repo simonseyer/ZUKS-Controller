@@ -15,6 +15,9 @@
   </script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
 
+  <link rel="import" href="bower_components/polymer/polymer.html">
+  <link rel="import" href="bower_components/web-tour/web-tour.html">
+
   <link rel="import" href="components/zuks-client-app.html">
   <link rel="import" href="components/zuks-app.html">
 
@@ -129,6 +132,8 @@
 </head>
 
 <body unresolved>
+  <template is="auto-binding" id="template">
+    
     <header>
       <div class="container">
         <a class="navbar-brand" href="https://www.zuks.org">
@@ -137,6 +142,7 @@
         <nav>
           <a href="https://www.zuks.org" class="back">ZUKS</a>
           <a href="#" class="active">Prototyp</a>
+          <a href="#" on-click="{{startTour}}">Tour starten</a>
         </nav>
       </div>
     </header>
@@ -150,6 +156,36 @@
       <zuks-client-app></zuks-client-app>
     </div>
 
+    <web-tour id="tour" texts="{{tourTexts}}">
+      <web-tour-step heading="In der App anmelden" targetSelector="html /deep/ #login">
+        <p>Bitte trage hier deinen oder einen ausgedachten Namen ein und drücke anschließend auf 'Anmelden'.</p>
+      </web-tour-step>
+      <web-tour-step heading="Helfer-Liste" targetSelector="html /deep/ zuks-volunteer-list">
+        <p>Nun taucht dein Name hier drüber in der Liste auf.</p>
+      </web-tour-step>
+      <web-tour-step heading="Viel Spaß beim spielen">
+        <p>Probier ruhig alles aus. Du kannst nichts kaputt machen!</p>
+      </web-tour-step>
+    </web-tour>
+
+  </template>
+
+  <script type="text/javascript">
+
+    var template = document.querySelector('template');
+
+    template.startTour = function() {
+      template.tourTexts = {
+        next: 'Weiter',
+        abort: 'Beenden',
+        finish: 'Abschließen',
+        moreInfos: 'Weitere Infos'
+      }
+
+      document.querySelector('#tour').start();
+    };
+
+  </script>
 </body>
 
 </html>
