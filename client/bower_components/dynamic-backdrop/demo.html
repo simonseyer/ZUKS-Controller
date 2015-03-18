@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>dynamic-backdrop Demo</title>
+    <script src="../webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="dynamic-backdrop.html">
+
+    <style type="text/css">
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .container {
+        float: left;
+      }
+
+      #example-1, #example-2, #example-3 {
+        margin: 80px;
+        width: 100px;
+        height: 100px;
+        padding: 30px;
+
+        background-color: red;
+        color: white;
+        
+
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        font-family: 'Arial';
+
+        cursor: pointer;
+      }
+
+      #example-2 {
+        background-color: green;
+        border-radius: 100px;
+      }
+
+      #example-3 {
+        background-color: blue;
+      }
+
+      #example-3-container {
+        margin: 80px;
+        padding: 10px;
+        height: 320px;
+        background-color: yellow;
+      }
+
+      button {
+        margin-left: 80px;
+      }
+
+    </style>
+
+  </head>
+  <body unresolved>
+   
+
+    <template is="auto-binding" id="template">
+      <div class="container">
+        <div id="example-1" on-click="{{example1}}">
+          Klick on me twice
+        </div>
+        <div id="example-2" on-click="{{example2}}">
+           Klick on me, when I'm focused
+        </div>
+
+      </div>
+      <div class="container">
+        <div id="example-3-container">
+           <div id="example-3" on-click="{{example3}}">
+            Klick on me twice
+          </div>
+        </div>
+
+        <button on-click="{{example4}}">Backdrop without target (Closes after two seconds)</button>
+      </div>
+
+      <dynamic-backdrop visible="false" id="backdrop"></dynamic-backdrop>
+    </template>
+
+    <script type="text/javascript">
+      var backdrop = document.querySelector('#backdrop');
+
+      var template = document.querySelector('#template');
+      
+      template.example1 = function(event) {
+        var backdrop = document.querySelector('#backdrop');
+        backdrop.visible = true;
+        if (backdrop.target == event.target) {
+          backdrop.target = document.querySelector('#example-2');;
+        } else {
+          backdrop.target = event.target;
+        }
+        backdrop.host = document.body;
+      };
+
+      template.example2 = function(event) {
+        var backdrop = document.querySelector('#backdrop');
+        backdrop.visible = false;
+        backdrop.target = null;
+      };
+
+      template.example3 = function(event) {
+        var backdrop = document.querySelector('#backdrop');
+        if (backdrop.target == event.target) {
+          backdrop.visible = false;
+          backdrop.target = null;
+        } else {
+          backdrop.visible = true;
+          backdrop.target = event.target;
+        }
+        backdrop.host = document.querySelector('#example-3-container');
+      }
+
+      template.example4 = function(event) {
+        var backdrop = document.querySelector('#backdrop');
+        backdrop.visible = true;
+        backdrop.target = null;
+        backdrop.host = document.body;
+        setTimeout(function(){
+          backdrop.visible = false;
+        }, 2000);
+      }
+    </script>
+  </body>
+</html>

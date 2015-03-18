@@ -1,0 +1,179 @@
+
+<!--
+Presents an web application by showing contextual dialogs and
+hilighting elements on the page.
+
+This element show a guided tour through an web application. The
+different steps of the tour could be easily configered. For
+showing the dialogs, the material designed `paper-action-dialog`
+is used.
+
+Check out the [component page](http://http://Eldorado234.github.io/web-tour/step)
+of the `web-tour-step` to see all options available to configure each step
+of the tour.
+
+##### Example
+
+    <web-tour>
+      <web-tour-step heading="Heading of the dialog" target="{{firstStepTarget}}">
+        <p>This text is shown as the content of the dialog</p>
+      </web-tour-step>
+      <web-tour-step heading="Step 2" moreInfosAvailable on-info-request="{{showMoreInfos}}">
+        <p>Lorem ipsum dolor</p>
+      </web-tour-step>
+    </web-tour>
+
+@element web-tour
+@blurb Webcomponent to present a guided tour trough a web application
+@status alpha
+@homepage http://Eldorado234.github.io/web-tour
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../dynamic-backdrop/dynamic-backdrop.html">
+<link rel="import" href="web-tour-step.html">
+
+<polymer-element name="web-tour">
+  <template>
+    <content></content>
+
+    <dynamic-backdrop target="{{currentTarget}}" visible="{{backdropVisible}}">
+    </dynamic-backdrop>
+  </template>
+
+  <script>
+  Polymer({
+    publish: {
+      /**
+       * Aligns each dialog next to the steps's target
+       * element. The optimal position is determined automatically.
+       *
+       * If no target element is specified or this
+       * options is turned off, all dialogs will be centered
+       * on screen. This could cause overlap with the hilighted
+       * area.  
+       *
+       * @attribute alignDialogs
+       * @type boolean
+       * @default true
+       */
+      alignDialogs: true,
+
+      /**
+       * Texts used in this component. Allows to do 
+       * internationalization. The texts are applied
+       * on all steps.
+       *
+       * Keys: `next`, `abort`, `finish`, `moreInfos`
+       *
+       * @attribute texts
+       * @type Object
+       * @default {...}
+       */
+      texts: {
+        next: 'Next',
+        abort: 'Abort',
+        finish: 'Finish',
+        moreInfos: 'More Infos'
+      }
+    },
+    lastTimeStamp: 0,
+    ready: function() {
+      this._registerSteps();
+      this.abort()
+    },
+
+    /**
+      * Starts the tour and shows the first step. If
+      * this method is called in between of a tour, the
+      * tour is restarted.
+      *
+      * @method start
+      */
+    start: function() {
+      this.currentStep = -1;
+      this.next();
+    },
+
+    /**
+      * Moves forward to the next step. Call this method
+      * without arguments to move forward programmaticly.
+      *
+      * @method next
+      */
+    next: function(event) {
+      // Workround: prevent duplicate events
+      if (event) {
+        if (event.timeStamp == this.lastTimeStamp) {
+          return;
+        }
+        this.lastTimeStamp = event.timeStamp;
+      }
+
+      if (!event && this.currentStep >= 0 && this.currentStep < this.children.length) {
+        this.children[this.currentStep].close();
+      }
+
+      this.currentStep += 1;
+
+      if (this.currentStep < this.children.length) {
+        var nextStep = this.children[this.currentStep];
+        nextStep.lastStep = this.currentStep + 1 == this.children.length;
+
+        nextStep.open();
+
+        console.log(nextStep.target);
+        this.backdropVisible = nextStep.backdrop;
+        this.currentTarget = nextStep.target;
+      } else {
+        this.abort();
+      }
+    },
+
+    /**
+      * Aborts a running tour. If a step is visible,
+      * it is hidden when calling this method.
+      *
+      * @method abort
+      */
+    abort: function(event) {
+      if (!event && this.currentStep < this.children.length) {
+        this.children[this.currentStep].close();
+      }
+      this.currentTarget = null;
+      this.currentStep = -1;
+      this.backdropVisible = false;
+    },
+    _layoutDialog: function(event) {
+      if (this.alignDialogs && event.target.target) {
+        var dialog = event.detail.target;
+        var dialogMargin = parseFloat(window.getComputedStyle(dialog).marginTop);
+        var targetRect = event.target.target.getBoundingClientRect();
+
+        var left = targetRect.left > window.innerWidth - targetRect.right;
+
+        // Align top with the target element
+        dialog.style.top = targetRect.top - dialogMargin + 'px';
+        if (left) {
+          // Align left of the target element
+          dialog.style.right = window.innerWidth - targetRect.left + 'px';
+          dialog.dimensions.position = {v: 'top', h: 'right'};
+        } else {
+          // Align right of the target element
+          dialog.style.left = targetRect.right + 'px';
+          dialog.dimensions.position = {v: 'top', h: 'left'};
+        }
+      }
+    },
+    _registerSteps: function() {
+      for (var i = 0; i < this.children.length; i++) {
+        this.children[i].addEventListener('next', this.next.bind(this));
+        this.children[i].addEventListener('abort', this.abort.bind(this));
+        this.children[i].addEventListener('core-overlay-position', this._layoutDialog.bind(this));
+        this.children[i].texts = this.texts;
+      }
+      this.onMutation(this, this._registerSteps);
+    },
+  });
+  </script>
+</polymer-element>

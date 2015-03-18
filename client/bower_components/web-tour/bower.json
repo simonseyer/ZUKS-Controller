@@ -1,0 +1,18 @@
+{
+  "name": "web-tour",
+  "version": "0.2.0",
+  "keywords": [
+    "seed",
+    "polymer",
+    "web-components"
+  ],
+  "main": "web-tour.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.2",
+    "paper-elements": "Polymer/paper-elements#~0.5.2",
+    "dynamic-backdrop": "~1.1.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^2.0.0"
+  }
+}

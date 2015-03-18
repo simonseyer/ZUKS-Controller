@@ -1,0 +1,153 @@
+
+<!--
+Defines one step of a `web-tour`. This step contains of a target
+element to focus on and an dialog to tell the user something about
+this step.
+
+Add other elements as children of the `web-tour-step` to define the
+content presented in the dialog that is shown when the step is activated.
+
+@element web-tour-step
+@blurb Webcomponent to define one step of a web-tour
+@status alpha
+@homepage http://Eldorado234.github.io/web-tour
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dialog/paper-action-dialog.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<polymer-element name="web-tour-step">
+
+  <style type="text/css">
+    html /deep/ paper-action-dialog.web-tour-step {
+      max-width: 600px;
+    }
+  </style>
+
+  <template>
+    <paper-action-dialog heading="{{heading}}" id="dialog" class="web-tour-step" autoCloseDisabled>
+      <content></content>
+
+      <template if="{{moreInfosAvailable}}">
+        <paper-button dismissive on-click="{{_showMoreInfos}}">{{texts.moreInfos}}</paper-button>
+      </template>
+
+      <paper-button affirmative on-click="{{_abort}}">{{texts.abort}}</paper-button>
+      <paper-button affirmative on-click="{{_next}}">
+        {{lastStep ? texts.finish : texts.next}}
+      </paper-button>
+    </paper-action-dialog>
+
+  </template>
+  <script>
+  Polymer({
+    publish: {
+      /**
+       * The heading of the dialog which is shown
+       * when this step is activated.
+       *
+       * @attribute heading
+       * @type string
+       * @default ''
+       */
+      heading: '',
+
+      /**
+       * The element that should be hilighted
+       * when this step is active. Could be
+       * omitted.
+       *
+       * Use either `target` or `targetSelector`.
+       * `target` is overriden, when both values
+       * are provided.
+       *
+       * @attribute target
+       * @type Element
+       * @default null
+       */
+      target: null,
+
+      /**
+       * The element that should be hilighted
+       * when this step is active, defined by an
+       * selector. 
+       *
+       * Use either `target` or `targetSelector`.
+       * The `target` attribute will be
+       * set accordingly, when a `targetSelector` is
+       * provided.
+       *
+       * @attribute targetSelector
+       * @type string
+       * @default null
+       */
+      targetSelector: null,
+
+      /**
+       * If a backdrop should be shown behind
+       * the dialog and around the target
+       * element.
+       *
+       * @attribute backdrop
+       * @type boolean
+       * @default true
+       */
+      backdrop: true,
+
+      /**
+       * If there is further information
+       * available for this step the user could
+       * request.
+       *
+       * An `info-request` event is fired, when
+       * the user asks for the additional infos.
+       *
+       * @attribute moreInfosAvailable
+       * @type boolean
+       * @default false
+       */
+      moreInfosAvailable: false,
+
+      /**
+       * If this step is the last step. Alters
+       * the presentation of the dialog.
+       *
+       * Is set automatically by the enclosing `web-tour`
+       * component.
+       *
+       * @attribute lastStep
+       * @type boolean
+       * @default false
+       */
+      lastStep: false
+    },
+    open: function() {
+      this.$.dialog.open();
+    },
+    close: function() {
+      this.$.dialog.close();
+    },
+
+    /**
+      * The `info-request` event is fired whenever the
+      * user asks for further information to the step.
+      *
+      * @event info-request
+      */
+
+    _showMoreInfos: function() {
+      this.fire('info-request');
+    },
+    _abort: function() {
+      this.fire('abort');
+    },
+    _next: function(event) {
+      this.fire('next');
+    },
+    targetSelectorChanged: function() {
+      this.target = document.querySelector(this.targetSelector);
+    }
+  });
+  </script>
+</polymer-element>

@@ -1,0 +1,135 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`dynamic-backdrop` creates a backdrop around a target element.
+This could be useful to hilight an specific part of the website by fading
+out anything around.
+
+This component also works for nested webcomponents, because it does not rely
+on the z-index css property to move a part of the website above the backdrop.
+It instead creates multiple backdrops around the target.
+
+The backdrop is restricted to the host element. This allows to just hilight an
+sub-part of a specific area on the website. 
+
+##### Example
+
+    <dynamic-backdrop></dynamic-backdrop>
+
+##### Known issues
+
+1. Position of the backdrop is not updated, when `host` or `target` are moved
+1. Position of the backdrop is not updated on scroll
+1. Browser support has to be checked
+
+@element dynamic-backdrop
+@blurb Creates a backdrop around a target element
+@status beta
+@homepage http://Eldorado234.github.io/dynamic-backdrop
+-->
+<link rel="stylesheet" href="dynamic-backdrop.css">
+
+<polymer-element name="dynamic-backdrop" attributes="author fancy">
+  <script>
+    Polymer({
+      publish: {
+        /**
+         * The target element to wrap the background around. If set to null,
+         * the backdrop covers the whole host area.
+         *
+         * @attribute target
+         * @type Element
+         * @default null
+         */
+        target: null,
+
+        /**
+         * The host element the backdrop should be restricted to. The backdrop
+         * elements will be inserted as children of this element. 
+         *
+         * @attribute host
+         * @type Element
+         * @default document.body
+         */
+        host: document.body,
+
+        /**
+         * If the backdrop should be visible
+         *
+         * @attribute visible
+         * @type boolean
+         * @default true
+         */
+        visible: true
+      },
+      ready: function() {
+        this.targetChanged();
+      },
+      _createBackdropElement: function(target) {
+        var elem = document.createElement('div');
+        elem.className = 'dynamic-backdrop';
+        target.appendChild(elem);
+        return elem;
+      },
+      targetChanged: function(oldTarget, newTarget) {
+        if (this.visible) {
+          this._initBackdrop();
+        } else {
+          this._resetBackdrop();
+          return;
+        }
+
+        var hostRect = this.host.getBoundingClientRect();
+        var targetRect = {top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}
+        if (this.target) {
+          targetRect = this.target.getBoundingClientRect();
+        }
+
+        this.top.style.top = hostRect.top + 'px';
+        this.top.style.right =  window.innerWidth - hostRect.right + 'px';
+        this.top.style.bottom = 'initial';
+        this.top.style.height = targetRect.top - hostRect.top + 'px';
+        this.top.style.left = hostRect.left + 'px';
+
+        this.right.style.top = targetRect.top + 'px';
+        this.right.style.right = window.innerWidth - hostRect.right + 'px';
+        this.right.style.bottom = window.innerHeight - hostRect.bottom + 'px';
+        this.right.style.left = targetRect.right + 'px';
+
+        this.bottom.style.top = targetRect.bottom + 'px';
+        this.bottom.style.right = 'initial';
+        this.bottom.style.width = targetRect.width + 'px';
+        this.bottom.style.bottom = window.innerHeight - hostRect.bottom + 'px';
+        this.bottom.style.left = targetRect.left + 'px';
+
+        this.left.style.top = targetRect.top + 'px';
+        this.left.style.right = 'initial';
+        this.left.style.width = targetRect.left - hostRect.left + 'px';
+        this.left.style.bottom = window.innerHeight - hostRect.bottom + 'px';
+        this.left.style.left = hostRect.left + 'px';
+      },
+      hostChanged: function() {
+        this.targetChanged();
+      },
+      visibleChanged: function() {
+        this.targetChanged();
+      },
+      _initBackdrop: function() {
+        if (!this.top) {
+          this.top = this._createBackdropElement(this.host);
+          this.right = this._createBackdropElement(this.host);
+          this.bottom = this._createBackdropElement(this.host);
+          this.left = this._createBackdropElement(this.host);
+        }
+      },
+      _resetBackdrop: function() {
+        if (this.top) {
+          for (backdrop of [this.top, this.right, this.bottom, this.left]) {
+            backdrop.remove();
+          }
+          this.top = this.right = this.bottom = this.left = null;
+        }
+      }
+    });
+  </script>
+</polymer-element>

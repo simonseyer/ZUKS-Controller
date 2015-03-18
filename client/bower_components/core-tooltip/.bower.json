@@ -9,13 +9,13 @@
     "paper-fab": "Polymer/paper-fab#^0.5",
     "core-resizable": "Polymer/core-resizable#^0.5"
   },
-  "version": "0.5.4",
+  "version": "0.5.5",
   "homepage": "https://github.com/Polymer/core-tooltip",
-  "_release": "0.5.4",
+  "_release": "0.5.5",
   "_resolution": {
     "type": "version",
-    "tag": "0.5.4",
-    "commit": "a4f51665a74582c4f3b4dd882eb361cfeedeb4bf"
+    "tag": "0.5.5",
+    "commit": "e5a8f3a92c4125edcb75a6498301c5fd2f44b63b"
   },
   "_source": "git://github.com/Polymer/core-tooltip.git",
   "_target": "^0.5",

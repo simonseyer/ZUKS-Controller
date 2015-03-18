@@ -8,13 +8,13 @@
     "core-transition": "Polymer/core-transition#^0.5",
     "core-resizable": "Polymer/core-resizable#^0.5"
   },
-  "version": "0.5.4",
+  "version": "0.5.5",
   "homepage": "https://github.com/Polymer/core-animated-pages",
-  "_release": "0.5.4",
+  "_release": "0.5.5",
   "_resolution": {
     "type": "version",
-    "tag": "0.5.4",
-    "commit": "806c29a99697d7eb82e7bcc775253a130cff33f3"
+    "tag": "0.5.5",
+    "commit": "e57f200cc6f4b524e4c8abade8d94629e4386dcd"
   },
   "_source": "git://github.com/Polymer/core-animated-pages.git",
   "_target": "^0.5",

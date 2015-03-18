@@ -1,0 +1,17 @@
+{
+  "name": "dynamic-backdrop",
+  "version": "1.1.2",
+  "keywords": [
+    "seed",
+    "polymer",
+    "web-components",
+    "backdrop"
+  ],
+  "main": "dynamic-backdrop.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.1"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^2.0.0"
+  }
+}
