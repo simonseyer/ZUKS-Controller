@@ -9,15 +9,16 @@ module.exports = function(grunt) {
         }
       }     
     },
+    settings: grunt.file.readJSON('settings.json'),
     prompt: {
       default: {
         options: {
           questions: [
             {
-              config: 'server.url',
+              config: 'settings.serverURL',
               type: 'input',
               message: 'Please enter the backend server url',
-              default: 'http://localhost:8000/',
+              default: '<%- settings.serverURL %>',
               filter:  function(value) {
                 // Append trailing slash
                 if (value.substr(-1) !== "/") {
@@ -27,10 +28,10 @@ module.exports = function(grunt) {
               }
             },
             {
-              config: 'websocket.server.url',
+              config: 'settings.websocketServerURL',
               type: 'input',
               message: 'Please enter the websocket server url',
-              default: 'ws://localhost:8888/ws'
+              default: '<%- settings.websocketServerURL %>'
             }
           ]
         }
@@ -43,12 +44,12 @@ module.exports = function(grunt) {
           {
             name: 'Update server url',
             search: '(\\/\\*SETTINGS:server-url\\*\\/).*(\\/\\*END_SETTINGS\\*\\/)',
-            replace: '$1"<%= server.url %>"$2'
+            replace: '$1"<%= settings.serverURL %>"$2'
           },
           {
             name: 'Update websocket server url',
             search: '(\\/\\*SETTINGS:websocket-server-url\\*\\/).*(\\/\\*END_SETTINGS\\*\\/)',
-            replace: '$1"<%= websocket.server.url %>"$2'
+            replace: '$1"<%= settings.websocketServerURL %>"$2'
           }
         ]
       }
@@ -96,6 +97,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-regex-replace');
   grunt.loadNpmTasks('grunt-prompt');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.registerTask('saveSettings', 'Stores the configured settings in the settings.json file', function() {
+    grunt.file.write('settings.json', JSON.stringify(grunt.config('settings'), null, 4));
+  });
 
-  grunt.registerTask('install', ['mkdir', 'vulcanize:default', 'copy', 'prompt', 'regex-replace', 'vulcanize:compress']);
+  grunt.registerTask('install', ['mkdir', 'vulcanize:default', 'copy', 'prompt', 'saveSettings', 'regex-replace', 'vulcanize:compress']);
+  grunt.registerTask('deploy', ['mkdir', 'vulcanize:default', 'copy', 'regex-replace', 'vulcanize:compress']);
 };
