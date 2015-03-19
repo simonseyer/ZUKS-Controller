@@ -83,6 +83,10 @@
     background-color: #4d9eff;
   }
 
+  #content {
+    height: 100%;
+  }
+
   .desktop-container, .mobile-container {
     float: left;
     position: relative;
@@ -150,16 +154,18 @@
       </div>
     </header>
 
-    <div class="desktop-container">
-      <img src="demo/desktop.png" />
-      <zuks-app></zuks-app>
+    <div id="content">
+      <div class="desktop-container">
+        <img src="demo/desktop.png" />
+        <zuks-app></zuks-app>
+      </div>
+
+      <div class="mobile-container">
+        <zuks-client-app></zuks-client-app>
+      </div>
     </div>
 
-    <div class="mobile-container">
-      <zuks-client-app></zuks-client-app>
-    </div>
-
-    <web-tour id="tour" texts="{{tourTexts}}">
+    <web-tour id="tour" texts="{{tourTexts}}" host="{{tourHost}}">
       <web-tour-step heading="In der App anmelden" targetSelector="html /deep/ #login">
         <p>Bitte trage hier deinen oder einen ausgedachten Namen ein und drücke anschließend auf 'Anmelden'.</p>
       </web-tour-step>
@@ -174,19 +180,23 @@
   </template>
 
   <script type="text/javascript">
+    window.onload = function() { 
+      var template = document.querySelector('template#demoTemplate');
+      template.addEventListener('template-bound', function() {
+        this.tourTexts = {
+          next: 'Weiter',
+          abort: 'Beenden',
+          finish: 'Abschließen',
+          moreInfos: 'Weitere Infos'
+        }
 
-    var template = document.querySelector('template#demoTemplate');
-    template.tourTexts = {
-      next: 'Weiter',
-      abort: 'Beenden',
-      finish: 'Abschließen',
-      moreInfos: 'Weitere Infos'
-    }
+        this.tourHost = document.querySelector('div#content');
 
-    template.startTour = function() {
-      document.querySelector('web-tour#tour').start();
-    }
-
+        this.startTour = function() {
+          document.querySelector('web-tour#tour').start();
+        }
+      });
+    };
   </script>
 </body>
 
