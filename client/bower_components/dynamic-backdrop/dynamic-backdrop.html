@@ -146,9 +146,9 @@ sub-part of a specific area on the website.
       },
       _resetBackdrop: function() {
         if (this.top) {
-          for (backdrop of [this.top, this.right, this.bottom, this.left]) {
+          [this.top, this.right, this.bottom, this.left].forEach(function(backdrop) {
             backdrop.remove();
-          }
+          });
           this.top = this.right = this.bottom = this.left = null;
         }
       }
