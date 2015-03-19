@@ -135,7 +135,7 @@
 </head>
 
 <body unresolved>
-  <template is="auto-binding" id="template">
+  <template is="auto-binding" id="demoTemplate">
     
     <header>
       <div class="container">
@@ -145,7 +145,7 @@
         <nav>
           <a href="https://www.zuks.org" class="back">ZUKS</a>
           <a href="#" class="active">Prototyp</a>
-          <a href="#" onclick="document.querySelector('#tour').start();">Tour starten</a>
+          <a href="#" on-click="{{startTour}}">Tour starten</a>
         </nav>
       </div>
     </header>
@@ -175,12 +175,16 @@
 
   <script type="text/javascript">
 
-    var template = document.querySelector('template');
+    var template = document.querySelector('template#demoTemplate');
     template.tourTexts = {
       next: 'Weiter',
       abort: 'Beenden',
       finish: 'Abschließen',
       moreInfos: 'Weitere Infos'
+    }
+
+    template.startTour = function() {
+      document.querySelector('web-tour#tour').start();
     }
 
   </script>
