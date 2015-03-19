@@ -25,7 +25,14 @@
         margin-left: 20px;
       }
 
-      .container div {
+      .container {
+        background-color: #eee;
+        border: 2px solid #444;
+        margin: 20px;
+        height: 250px;
+      }
+
+      .container .example {
         float: left;
         margin-top: 40px;
         margin-left: 11%;
@@ -57,19 +64,22 @@
       <button on-click="{{startTour}}">Start tour</button>
 
       <div class="container">
-        <div id="example1"></div>
-        <div id="example2"></div>
-        <div id="example3"></div>
+        <div id="example1" class="example"></div>
+        <div id="example2" class="example"></div>
+        <div id="example3" class="example"></div>
       </div>
 
-      <web-tour id="tour" texts="{{tourTexts}}">
-        <web-tour-step heading="Red spot" target="{{step1Target}}" moreInfosAvailable>
-          <p>The component atomatically hilights the target element and positions the dialog.</p>
+      <web-tour id="tour" texts="{{tourTexts}}" host="{{tourHost}}">
+        <web-tour-step heading="Red spot" target="{{step1Target}}" backdropOffset="{{step1Offset}}">
+          <p>
+            The component atomatically hilights the target element and positions the dialog. 
+            An offset could be configured around the target element to be more flexible in hilihting.
+          </p>
         </web-tour-step>
         <web-tour-step heading="Green spot" targetSelector="#example2" backdrop="false">
           <p>The backdrop could be easily disabled. By using the targetSelector attribute, the target element could be directly defined.</p>
         </web-tour-step>
-        <web-tour-step heading="Blue spot" target="{{step3Target}}">
+        <web-tour-step heading="Blue spot" target="{{step3Target}}" moreInfosAvailable on-info-request="{{showMoreInfos}}">
           <p>Now the dialog moved to the left side of the target, because there is more room available.</p>
         </web-tour-step>
         <web-tour-step heading="Final step">
@@ -86,12 +96,18 @@
 
       template.startTour = function() {
         template.tourTexts.next = 'Go on';
+        template.tourHost = document.querySelector('.container');
         template.step1Target = document.querySelector('#example1');
+        template.step1Offset = {left: 10, right: 10, top: 10, bottom: 10};
         template.step3Target = document.querySelector('#example3');
 
         var tour = document.querySelector('#tour');
         tour.start();
-      }
+      };
+
+      template.showMoreInfos = function() {
+        window.open('http://webcomponents.org/', '_blank');
+      };
 
     </script>
   </body>

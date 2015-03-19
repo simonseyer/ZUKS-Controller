@@ -145,7 +145,7 @@
         <nav>
           <a href="https://www.zuks.org" class="back">ZUKS</a>
           <a href="#" class="active">Prototyp</a>
-          <a href="#" on-click="{{startTour}}">Tour starten</a>
+          <a href="#" onclick="document.querySelector('#tour').start();">Tour starten</a>
         </nav>
       </div>
     </header>
@@ -176,17 +176,12 @@
   <script type="text/javascript">
 
     var template = document.querySelector('template');
-
-    template.startTour = function() {
-      template.tourTexts = {
-        next: 'Weiter',
-        abort: 'Beenden',
-        finish: 'Abschließen',
-        moreInfos: 'Weitere Infos'
-      }
-
-      document.querySelector('#tour').start();
-    };
+    template.tourTexts = {
+      next: 'Weiter',
+      abort: 'Beenden',
+      finish: 'Abschließen',
+      moreInfos: 'Weitere Infos'
+    }
 
   </script>
 </body>

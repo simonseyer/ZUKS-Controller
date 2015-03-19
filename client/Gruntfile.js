@@ -97,6 +97,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-prompt');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('deploy', ['mkdir', 'vulcanize', 'minifyHtml', 'copy']);
+  grunt.registerTask('deploy', ['mkdir', 'vulcanize',  'copy']);
   grunt.registerTask('install', ['deploy','prompt', 'regex-replace']);
 };

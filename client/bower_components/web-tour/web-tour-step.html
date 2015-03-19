@@ -33,10 +33,15 @@ content presented in the dialog that is shown when the step is activated.
         <paper-button dismissive on-click="{{_showMoreInfos}}">{{texts.moreInfos}}</paper-button>
       </template>
 
-      <paper-button affirmative on-click="{{_abort}}">{{texts.abort}}</paper-button>
-      <paper-button affirmative on-click="{{_next}}">
-        {{lastStep ? texts.finish : texts.next}}
-      </paper-button>
+      <template if="{{!lastStep}}">
+        <paper-button affirmative on-click="{{_abort}}">{{texts.abort}}</paper-button>
+      </template>
+
+      <template if="{{autoNext}}">
+        <paper-button affirmative on-click="{{_next}}">
+          {{lastStep ? texts.finish : texts.next}}
+        </paper-button>
+      </template>
     </paper-action-dialog>
 
   </template>
@@ -108,6 +113,29 @@ content presented in the dialog that is shown when the step is activated.
        * @default false
        */
       moreInfosAvailable: false,
+
+      /**
+       * If the user be able to skip
+       * this step manually.
+       *
+       * @attribute autoNext
+       * @type boolean
+       * @default true
+       */
+      autoNext: true,
+
+      /**
+       * Defines an offset around the target element that
+       * should not be covered by the backdrop.
+       *
+       * Default:
+       *     {top: 0, right: 0, bottom: 0, left: 0}
+       *
+       * @attribute backdropOffset
+       * @type Object
+       * @default {...}
+       */
+      backdropOffset: {top: 0, right: 0, bottom: 0, left: 0},
 
       /**
        * If this step is the last step. Alters

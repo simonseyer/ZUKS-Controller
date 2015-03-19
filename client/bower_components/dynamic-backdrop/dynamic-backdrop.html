@@ -29,7 +29,7 @@ sub-part of a specific area on the website.
 -->
 <link rel="stylesheet" href="dynamic-backdrop.css">
 
-<polymer-element name="dynamic-backdrop" attributes="author fancy">
+<polymer-element name="dynamic-backdrop">
   <script>
     Polymer({
       publish: {
@@ -42,6 +42,19 @@ sub-part of a specific area on the website.
          * @default null
          */
         target: null,
+
+         /**
+         * Defines an offset around the target element that
+         * should not be covered by the backdrop.
+         *
+         * Default:
+         *     {top: 0, right: 0, bottom: 0, left: 0}
+         *
+         * @attribute offset
+         * @type Object
+         * @default {...}
+         */
+        offset: {top: 0, right: 0, bottom: 0, left: 0},
 
         /**
          * The host element the backdrop should be restricted to. The backdrop
@@ -80,31 +93,40 @@ sub-part of a specific area on the website.
         }
 
         var hostRect = this.host.getBoundingClientRect();
-        var targetRect = {top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}
+        var targetRect;
         if (this.target) {
           targetRect = this.target.getBoundingClientRect();
+        } else {
+          targetRect = {
+            top: hostRect.top, 
+            right: hostRect.left, 
+            bottom: hostRect.top, 
+            left: hostRect.left, 
+            width: 0, 
+            height: 0
+          }
         }
 
         this.top.style.top = hostRect.top + 'px';
         this.top.style.right =  window.innerWidth - hostRect.right + 'px';
         this.top.style.bottom = 'initial';
-        this.top.style.height = targetRect.top - hostRect.top + 'px';
+        this.top.style.height = targetRect.top - hostRect.top - this.offset.top + 'px';
         this.top.style.left = hostRect.left + 'px';
 
-        this.right.style.top = targetRect.top + 'px';
+        this.right.style.top = targetRect.top - this.offset.top + 'px';
         this.right.style.right = window.innerWidth - hostRect.right + 'px';
         this.right.style.bottom = window.innerHeight - hostRect.bottom + 'px';
-        this.right.style.left = targetRect.right + 'px';
+        this.right.style.left = targetRect.right + this.offset.right + 'px';
 
-        this.bottom.style.top = targetRect.bottom + 'px';
+        this.bottom.style.top = targetRect.bottom + this.offset.bottom + 'px';
         this.bottom.style.right = 'initial';
-        this.bottom.style.width = targetRect.width + 'px';
+        this.bottom.style.width = targetRect.width + this.offset.left + this.offset.right + 'px';
         this.bottom.style.bottom = window.innerHeight - hostRect.bottom + 'px';
-        this.bottom.style.left = targetRect.left + 'px';
+        this.bottom.style.left = targetRect.left - this.offset.left + 'px';
 
-        this.left.style.top = targetRect.top + 'px';
+        this.left.style.top = targetRect.top - this.offset.top + 'px';
         this.left.style.right = 'initial';
-        this.left.style.width = targetRect.left - hostRect.left + 'px';
+        this.left.style.width = targetRect.left - hostRect.left - this.offset.left + 'px';
         this.left.style.bottom = window.innerHeight - hostRect.bottom + 'px';
         this.left.style.left = hostRect.left + 'px';
       },

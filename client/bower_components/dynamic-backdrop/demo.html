@@ -18,7 +18,7 @@
         float: left;
       }
 
-      #example-1, #example-2, #example-3 {
+      #example-1, #example-2, #example-3, #example-5 {
         margin: 80px;
         width: 100px;
         height: 100px;
@@ -65,21 +65,27 @@
     <template is="auto-binding" id="template">
       <div class="container">
         <div id="example-1" on-click="{{example1}}">
-          Klick on me twice
+          Klick me twice
         </div>
         <div id="example-2" on-click="{{example2}}">
-           Klick on me, when I'm focused
+           Klick me, when I'm focused
         </div>
 
       </div>
       <div class="container">
         <div id="example-3-container">
            <div id="example-3" on-click="{{example3}}">
-            Klick on me twice
+            Klick me twice
           </div>
         </div>
 
         <button on-click="{{example4}}">Backdrop without target (Closes after two seconds)</button>
+      </div>
+
+      <div class="container">
+        <div id="example-5" on-click="{{example5}}">
+          Target with offset. Klick me twice
+        </div>
       </div>
 
       <dynamic-backdrop visible="false" id="backdrop"></dynamic-backdrop>
@@ -94,7 +100,7 @@
         var backdrop = document.querySelector('#backdrop');
         backdrop.visible = true;
         if (backdrop.target == event.target) {
-          backdrop.target = document.querySelector('#example-2');;
+          backdrop.target = document.querySelector('#example-2');
         } else {
           backdrop.target = event.target;
         }
@@ -117,7 +123,7 @@
           backdrop.target = event.target;
         }
         backdrop.host = document.querySelector('#example-3-container');
-      }
+      };
 
       template.example4 = function(event) {
         var backdrop = document.querySelector('#backdrop');
@@ -127,7 +133,21 @@
         setTimeout(function(){
           backdrop.visible = false;
         }, 2000);
-      }
+      };
+
+      template.example5 = function(event) {
+        var backdrop = document.querySelector('#backdrop');
+        if (backdrop.target == event.target) {
+          backdrop.visible = false;
+          backdrop.target = null;
+          backdrop.offset = {top: 0, right: 0, bottom: 0, left: 0};
+        } else {
+          backdrop.visible = true;
+          backdrop.target = event.target;
+          backdrop.host = document.body;
+          backdrop.offset = {top: 20, right: 20, bottom: 20, left: 20};
+        }
+      };
     </script>
   </body>
 </html>

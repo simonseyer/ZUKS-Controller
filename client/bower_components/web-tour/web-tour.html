@@ -8,7 +8,7 @@ different steps of the tour could be easily configered. For
 showing the dialogs, the material designed `paper-action-dialog`
 is used.
 
-Check out the [component page](http://http://Eldorado234.github.io/web-tour/step)
+Check out the [component page](http://eldorado234.github.io/web-tour/components/web-tour/step)
 of the `web-tour-step` to see all options available to configure each step
 of the tour.
 
@@ -37,7 +37,8 @@ of the tour.
   <template>
     <content></content>
 
-    <dynamic-backdrop target="{{currentTarget}}" visible="{{backdropVisible}}">
+    <dynamic-backdrop target="{{currentTarget}}" offset="{{backdropOffset}}" 
+                      visible="{{backdropVisible}}" host="{{host}}">
     </dynamic-backdrop>
   </template>
 
@@ -75,7 +76,18 @@ of the tour.
         abort: 'Abort',
         finish: 'Finish',
         moreInfos: 'More Infos'
-      }
+      },
+
+      /**
+       * The element the tour should be presented in.
+       * The backdrops are restricted to the area of
+       * this element.
+       *
+       * @attribute host
+       * @type Element
+       * @default document.body
+       */
+      host: document.body,
     },
     lastTimeStamp: 0,
     ready: function() {
@@ -122,9 +134,9 @@ of the tour.
 
         nextStep.open();
 
-        console.log(nextStep.target);
         this.backdropVisible = nextStep.backdrop;
         this.currentTarget = nextStep.target;
+        this.backdropOffset = nextStep.backdropOffset;
       } else {
         this.abort();
       }
@@ -169,6 +181,7 @@ of the tour.
       for (var i = 0; i < this.children.length; i++) {
         this.children[i].addEventListener('next', this.next.bind(this));
         this.children[i].addEventListener('abort', this.abort.bind(this));
+        this.children[i].addEventListener('info-request', this.abort.bind(this));
         this.children[i].addEventListener('core-overlay-position', this._layoutDialog.bind(this));
         this.children[i].texts = this.texts;
       }
