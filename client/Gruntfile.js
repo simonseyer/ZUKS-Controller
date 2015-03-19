@@ -62,21 +62,15 @@ module.exports = function(grunt) {
     },
     vulcanize: {
       default: {
+        options: {
+          strip: true
+        },
         files: {
-          'dist/controller/index.long.html': 'controller.html',
-          'dist/client/index.long.html': 'client.html',
-          'dist/demo/index.long.html': 'demo.html'
+          'dist/controller/index.html': 'controller.html',
+          'dist/client/index.html': 'client.html',
+          'dist/demo/index.html': 'demo.html'
         }
       },
-    },
-    minifyHtml: {
-        default: {
-            files: {
-                'dist/controller/index.html': 'dist/controller/index.long.html',
-                'dist/client/index.html': 'dist/client/index.long.html',
-                'dist/demo/index.html': 'dist/demo/index.long.html'
-            }
-        }
     },
     copy: {
       default: {
@@ -91,12 +85,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-vulcanize');
   grunt.loadNpmTasks('grunt-devtools');
-  grunt.loadNpmTasks('grunt-minify-html');
   grunt.loadNpmTasks('grunt-mkdir');
   grunt.loadNpmTasks('grunt-regex-replace');
   grunt.loadNpmTasks('grunt-prompt');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('deploy', ['mkdir', 'vulcanize',  'copy']);
+  grunt.registerTask('deploy', ['mkdir', 'vulcanize', 'copy']);
   grunt.registerTask('install', ['deploy','prompt', 'regex-replace']);
 };
