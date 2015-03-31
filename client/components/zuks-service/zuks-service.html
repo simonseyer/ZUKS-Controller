@@ -16,6 +16,7 @@
     <zuks-ws id="ws"></zuks-ws>
 
   </template>
+  <script type="text/javascript" src="assign.polyfill.js"></script>
   <script>
   Polymer({
     volunteers: new IndexedArray('id'),
@@ -50,7 +51,7 @@
           }
 
           var v = self.volunteers.get(volunteer.id);
-          $.extend(v, volunteer);
+          Object.assign(v, volunteer);
         },
         volunteerGroup_create: function(oldGroup, group) {
           group.members = [];
@@ -58,7 +59,7 @@
         },
         volunteerGroup_update: function(oldGroup, group) {
           var g = self.volunteerGroups.get(group.id);
-          $.extend(g, group);
+          Object.assign(g, group);
         },
         poi_create: function(oldPOI, poi) {
           self.pois.values.push(poi);
@@ -79,7 +80,7 @@
           }
 
           var p = self.pois.get(poi.id);
-          $.extend(p, poi);
+          Object.assign(p, poi);
         }
       };
       this.$.ws.event_handler = this._eventHandler;

@@ -30,9 +30,7 @@ if (typeof NominatimGeoServer === 'undefined') {
           email: this.email
         };
         // Merge external and internal params
-        for (var attr in parameters) {
-          params[attr] = parameters[attr];
-        }
+        Object.assign(params, parameters);
 
         // Create url
         var urlParams = Object.keys(params).map(function(key) {

@@ -124,6 +124,7 @@
     </paper-action-dialog>
 
   </template>
+  <script type="text/javascript" src="assign.polyfill.js"></script>
   <script>
   Polymer({
     mode: null,
@@ -200,7 +201,7 @@
     applyUpdate: function(changeFunction) {
       var editableVolunteers = [];
       this.selectedVolunteers.forEach(function(volunteer) {
-        var copiedVolunteer = $.extend(true, {}, volunteer);
+        var copiedVolunteer = Object.assign({}, volunteer);
         changeFunction(copiedVolunteer);
         editableVolunteers.push(copiedVolunteer);
       }, this);

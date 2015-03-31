@@ -117,6 +117,7 @@
     </paper-action-dialog>
 
   </template>
+  <script type="text/javascript" src="assign.polyfill.js"></script>
   <script>
   Polymer({
     editablePOI: null,
@@ -145,7 +146,7 @@
     },
     selectedPOIChanged: function(changes) {
       if (this.selectedPOI) {
-        this.editablePOI = $.extend({}, this.selectedPOI);
+        this.editablePOI = Object.assign({}. this.selectedPOI);
         this.$.poiDetail.open();
       } else {
         this.$.poiDetail.close();

@@ -31,10 +31,11 @@
     </paper-action-dialog>
 
   </template>
+  <script type="text/javascript" src="assign.polyfill.js"></script>
   <script>
   Polymer({
     groupSelected: function(event) {
-      this.group = $.extend(true, {}, event.detail.data);
+      this.group = Object.assign({}, event.detail.data);
       this.actionName = "aktualisieren";
       this.$.addGroup.open();
     },
