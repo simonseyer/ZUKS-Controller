@@ -34,14 +34,14 @@ if (typeof IndexedArray === 'undefined') {
         is overriden. If this happens, the array is
         reinitialized.
         */
-        Object.observe(this, function(changes) {
-          changes.forEach(function(change) {
-            if (change.name == 'values') {
-              self._initArrayObservation();
+        new ObjectObserver(this).open(function(added, removed, changed) {
+          Object.keys(changed).forEach(function(property) {
+            if (property == 'values') {
+              this._initArrayObservation();
             }
-          });
-        });
-        self._initArrayObservation();
+          }.bind(this));
+        }.bind(this));
+        this._initArrayObservation();
       },
       /*
       Starts observer the values array and rebuilds
@@ -55,32 +55,25 @@ if (typeof IndexedArray === 'undefined') {
         }.bind(this));
 
         // Observe changes in the values array
-        Array.observe(this.values, function(changes) {
-          self._refreshIndex(changes);
-        });
+        new ArrayObserver(this.values).open(function(changes) {
+          this._refreshIndex(changes);
+        }.bind(this));
       },
       /*
       Refreshes the index, when the values array changes. All cases
       of change are handeled: add, remove and update.
       */
       _refreshIndex: function(changes) {
-        var self = this;
         changes.forEach(function(change) {
-          if (change.type == 'update') {
-            self._removeFromIndex(change.oldValue);
-            self._addToIndex(self.values[change.name]);
-          } else if (change.type == 'delete') {
-            self._removeFromIndex(change.oldValue);
-          } 
           if (change.removed && change.removed.length > 0) {
-            change.removed.forEach(_removeFromIndex);
+            change.removed.forEach(_removeFromIndex.bind(this));
           }
           if (change.addedCount && change.addedCount > 0) {
             for(var i=0; i < change.addedCount; i++) {
-              self._addToIndex(self.values[change.index + i]);
+              this._addToIndex(this.values[change.index + i]);
             }
           }
-        });
+        }.bind(this));
       },
       /*
       Removes an object from the index, if it is indexed.
