@@ -2,7 +2,7 @@ if (typeof IndexedArray === 'undefined') {
   (function() {
     /*
     An indexed array.
-    It allows to efficiently retrieve a list of all values (which 
+    It allows to efficiently retrieve a list of all values (which
     is not possible with an object) and retrieve an object based on
     an indexed key (which is not possible with arrays).
 
@@ -29,9 +29,7 @@ if (typeof IndexedArray === 'undefined') {
       Initialize the IndexedArray
       */
       _init: function() {
-        var self = this;
-
-        /* 
+        /*
         Observe the values variable for the case it
         is overriden. If this happens, the array is
         reinitialized.
@@ -50,13 +48,11 @@ if (typeof IndexedArray === 'undefined') {
       the index.
       */
       _initArrayObservation: function() {
-        var self = this;
-
         // Build initial index
-        self._index = {};
-        self.values.forEach(function(value) {
-          self._addToIndex(value);
-        });
+        this._index = {};
+        this.values.forEach(function(value) {
+          this._addToIndex(value);
+        }.bind(this));
 
         // Observe changes in the values array
         Array.observe(this.values, function(changes) {
@@ -91,20 +87,20 @@ if (typeof IndexedArray === 'undefined') {
       */
       _removeFromIndex: function(object) {
         var key = object[this._indexVariable];
-        if (key in self._index) {
-          delete self._index[key];
+        if (key in this._index) {
+          delete this._index[key];
         }
       },
       /*
-      Adds an object to the index. 
+      Adds an object to the index.
 
-      If there is already an object in the index with an equal 
-      indexVariable's value, then the new value is added. 
-  
+      If there is already an object in the index with an equal
+      indexVariable's value, then the new value is added.
+
       If the object doesn't have a variable named with the value
       of indexVariable, then the object is not added to the index.
 
-      In both cases, this size of the values array and the index 
+      In both cases, this size of the values array and the index
       is different. This should be prevented by the caller.
       */
       _addToIndex: function(object) {
