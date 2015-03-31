@@ -40,6 +40,7 @@
 
       request.open(method, this.root_url + url + "/", true);
       request.setRequestHeader('content-type', 'application/json; charset=utf-8');
+      request.setRequestHeader('accept', 'application/json; charset=utf-8');
 
       if (object) {
         request.send(JSON.stringify(object));
