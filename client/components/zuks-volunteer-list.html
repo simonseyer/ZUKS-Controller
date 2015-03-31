@@ -217,7 +217,7 @@
     sendMessage: function() {
       this.mode = null;
       this.selectedVolunteers.forEach(function(volunteer) {
-        var message = $.extend(true, {}, this.message);
+        var message = Object.assign({}, this.message);
         message.receiver = volunteer.id;
         this.fire("message-instruction", message);
       }, this);
