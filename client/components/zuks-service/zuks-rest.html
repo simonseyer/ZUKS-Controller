@@ -12,6 +12,9 @@
   Polymer({
     root_url: /*SETTINGS:server-url*/"http://" + location.hostname + ":8000/"/*END_SETTINGS*/,
     errorHandler: null,
+    get: function(url, callback) {
+      this.send(url, null, "GET", callback);
+    },
     put: function(type, object, callback) {
       if (!object.id) {
         console.warn("Object has to have an id to be able to PUT it.")
@@ -22,27 +25,25 @@
       this.send(type, object, "POST", callback);
     },
     send: function(url, object, method, callback) {
-      var self = this;
-      $.ajax({
-        url:self.root_url + url + "/",
-        type:method,
-        data:JSON.stringify(object),
-        contentType:"application/json; charset=utf-8",
-        dataType:"json",
-        error: self.errorHandler,
-        success: callback
-      });
-    },
-    get: function(url, callback) {
-      var self = this;
-      $.ajax({
-        url:self.root_url + url + "/",
-        type:"GET",
-        contentType:"application/json; charset=utf-8",
-        dataType:"json",
-        success: callback,
-        error: self.errorHandler
-      });
+      xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+              if (xmlhttp.status == 200) {
+                callback(JSON.parse(xmlhttp.responseText));
+              } else {
+                this.errorHandler(xmlhttp.responseText)
+              }
+          }
+      }.bind(this);
+
+      xmlhttp.open(method, this.root_url + url + "/", true);
+      xmlhttp.setRequestHeader('content-type', 'application/json; charset=utf-8');
+
+      if (object) {
+        xmlhttp.send(JSON.stringify(object));
+      } else {
+        xmlhttp.send();
+      }
     }
   });
   </script>
