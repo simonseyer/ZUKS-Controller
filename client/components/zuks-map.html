@@ -52,7 +52,7 @@
       position: absolute;
       right: 8px;
       top: 8px;
-      margin: 0; 
+      margin: 0;
     }
 
     :host(.search) #closeButton {
@@ -115,12 +115,12 @@
     <!-- Location API-->
     <geo-search address="{{searchValue}}" results="{{locationResults}}"></geo-search>
     <template if="{{freehandLocation}}">
-      <reverse-geo-search latitude="{{freehandLocation.latitude}}" 
-                         longitude="{{freehandLocation.longitude}}" 
+      <reverse-geo-search latitude="{{freehandLocation.latitude}}"
+                         longitude="{{freehandLocation.longitude}}"
                            result="{{freehandLocation.lookup}}">
       </reverse-geo-search>
     </template>
-    
+
     <!-- Leaflet map-->
     <leaflet-map
       longitude="8.238611"
@@ -129,27 +129,27 @@
       id="map"
       on-contextmenu="{{clickedRight}}"
       zoomControl="false">
-        
+
         <template if="{{!searchMode}}">
           <!-- Volunteer markers-->
           <template repeat="{{volunteer, index in volunteers.values}}">
-            <leaflet-marker longitude="{{volunteer.location.longitude}}" 
+            <leaflet-marker longitude="{{volunteer.location.longitude}}"
                              latitude="{{volunteer.location.latitude}}"
                              on-click="{{volunteerSelected}}"
                                  icon="{{leafletIconBindings.v[index]}}">
             </leaflet-marker>
-            <leaflet-marker-icon icon="social:person" 
-                          leafletIcon="{{leafletIconBindings.v[index]}}" 
+            <leaflet-marker-icon icon="social:person"
+                          leafletIcon="{{leafletIconBindings.v[index]}}"
                             iconClass="{{volunteer.selected ? 'selected' : ''}}">
             </leaflet-marker-icon>
 
             <template if="{{volunteer.targetLocation && volunteer.selected}}">
-              <leaflet-marker longitude="{{volunteer.targetLocation.longitude}}" 
+              <leaflet-marker longitude="{{volunteer.targetLocation.longitude}}"
                                latitude="{{volunteer.targetLocation.latitude}}"
                                    icon="{{leafletIconBindings.t[index]}}">
               </leaflet-marker>
-              <leaflet-marker-icon icon="flag" 
-                            leafletIcon="{{leafletIconBindings.t[index]}}" 
+              <leaflet-marker-icon icon="flag"
+                            leafletIcon="{{leafletIconBindings.t[index]}}"
                               iconClass="target">
               </leaflet-marker-icon>
               <leaflet-polyline color="#444" fillOpacity="0.6">
@@ -166,37 +166,37 @@
 
         <!-- POI markers-->
         <template repeat="{{poi, index in pois.values}}">
-          <leaflet-marker longitude="{{poi.location.longitude}}" 
+          <leaflet-marker longitude="{{poi.location.longitude}}"
                            latitude="{{poi.location.latitude}}"
                            on-click="{{poiSelected}}"
                                icon="{{leafletIconBindings.p[index]}}">
           </leaflet-marker>
-          <leaflet-marker-icon icon="{{iconForPOI(poi)}}" 
-                        leafletIcon="{{leafletIconBindings.p[index]}}" 
+          <leaflet-marker-icon icon="{{iconForPOI(poi)}}"
+                        leafletIcon="{{leafletIconBindings.p[index]}}"
                           iconClass="{{poi.selected ? 'selected' : ''}}">
           </leaflet-marker-icon>
         </template>
 
         <!-- Search result markers-->
         <template repeat="{{location, index in locationResults}}">
-          <leaflet-marker longitude="{{location.lon}}" 
+          <leaflet-marker longitude="{{location.lon}}"
                            latitude="{{location.lat}}"
                            on-click="{{searchResultSelected}}"
                                icon="{{leafletIconBindings.l[index]}}">
           </leaflet-marker>
-          <leaflet-marker-icon icon="flag" 
-                        leafletIcon="{{leafletIconBindings.l[index]}}" 
+          <leaflet-marker-icon icon="flag"
+                        leafletIcon="{{leafletIconBindings.l[index]}}"
                           iconClass="{{index==selectedIndex ? 'selected' : ''}}">
           </leaflet-marker-icon>
         </template>
 
         <template if="{{freehandLocation}}">
-          <leaflet-marker longitude="{{freehandLocation.longitude}}" 
+          <leaflet-marker longitude="{{freehandLocation.longitude}}"
                            latitude="{{freehandLocation.latitude}}"
                                icon="{{freehandLeafletIcon}}">
           </leaflet-marker>
-          <leaflet-marker-icon icon="flag" 
-                        leafletIcon="{{freehandLeafletIcon}}" 
+          <leaflet-marker-icon icon="flag"
+                        leafletIcon="{{freehandLeafletIcon}}"
                           iconClass="selected">
           </leaflet-marker-icon>
         </template>
@@ -207,13 +207,13 @@
     </leaflet-map>
 
     <!-- Search-->
-    <core-overlay id="searchOverlay" transition="core-transition-top" 
+    <core-overlay id="searchOverlay" transition="core-transition-top"
     on-core-overlay-position="{{layoutSearchOverlay}}" autoCloseDisabled on-keydown="{{searchKeyDown}}">
 
       <paper-input-decorator label="Ort suchen...">
           <input type="text"
-                value="{{searchValue}}"   
-             on-focus="{{searchedFieldFocused}}" 
+                value="{{searchValue}}"
+             on-focus="{{searchedFieldFocused}}"
               on-blur="{{searchFieldBlurred}}" autofocus>
       </paper-input-decorator>
 
@@ -315,10 +315,10 @@
     focus: function(dataList) {
       var locations = [];
       dataList.forEach(function(data) {
-        locations.push(L.latLng(data.location.latitude, 
+        locations.push(L.latLng(data.location.latitude,
                                 data.location.longitude));
         if (data.targetLocation) {
-          locations.push(L.latLng(data.targetLocation.latitude, 
+          locations.push(L.latLng(data.targetLocation.latitude,
                                 data.targetLocation.longitude));
         }
       });
@@ -334,7 +334,7 @@
       this.searchCallback = request.callback;
       if (request.locationPreset) {
         var oldLocation = request.locationPreset;
-        this.setFreehandLocation(oldLocation.latitude, 
+        this.setFreehandLocation(oldLocation.latitude,
                                  oldLocation.longitude)
       }
     },
@@ -395,7 +395,7 @@
     },
     clickedRight: function(event) {
       if (this.searchMode && event.detail && event.detail.latlng) {
-        this.setFreehandLocation(event.detail.latlng.lat, 
+        this.setFreehandLocation(event.detail.latlng.lat,
                                  event.detail.latlng.lng);
         this.selectedIndex = -1;
         this.checkValidity();
@@ -410,7 +410,7 @@
     },
     checkValidity: function() {
       // The freehandLocation is valid after the address lookup
-      var valid = this.selectedIndex >= 0 || (this.freehandLocation && 
+      var valid = this.selectedIndex >= 0 || (this.freehandLocation &&
                                               this.freehandLocation.lookup.lat);
       this.$.submitFab.classList.toggle('valid', !!valid);
       return !!valid;

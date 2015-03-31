@@ -71,7 +71,7 @@ class WebNotifierTestCase(TestCase):
     self.event_bus = EventBus(False)
     self.websocket_service = WebNotifierTestCase.WebsocketServiceMock(self.setData)
     self.web_notifier = WebNotifier(self.event_bus, self.websocket_service)
-      
+
   def setData(self, data):
     self.data = data
 

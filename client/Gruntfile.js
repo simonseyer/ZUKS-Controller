@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         options: {
           livereload: true
         }
-      }     
+      }
     },
     settings: grunt.file.readJSON('settings.json'),
     prompt: {

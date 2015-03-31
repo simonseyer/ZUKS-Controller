@@ -36,7 +36,7 @@
     paper-tabs paper-tab::shadow #ink {
       color: #ec7217;
     }
-     
+
     paper-tabs, core-toolbar {
       width: 300px;
       background-color: #4d9eff;
@@ -47,17 +47,17 @@
       font-weight: 800;
     }
     </style>
-    
-    <zuks-service volunteers="{{volunteers}}" 
-             volunteerGroups="{{volunteerGroups}}" 
-                        pois="{{pois}}" 
-               poiCategories="{{poiCategories}}" 
+
+    <zuks-service volunteers="{{volunteers}}"
+             volunteerGroups="{{volunteerGroups}}"
+                        pois="{{pois}}"
+               poiCategories="{{poiCategories}}"
                           id="service">
     </zuks-service>
-    
+
     <div class="container" layout horizontal>
-      
-      
+
+
       <div vertical layout>
         <core-toolbar>
           <div flex>ZUKS</div>
@@ -75,39 +75,39 @@
             Orte
           </paper-tab>
         </paper-tabs>
-        
+
         <core-pages selected="{{selectedTab}}" flex>
           <zuks-volunteer-list volunteerGroups="{{volunteerGroups}}"
                                     volunteers="{{volunteers}}"
                             selectedVolunteers="{{selectedVolunteers}}"
-                                     on-update="{{volunteersUpdated}}" 
+                                     on-update="{{volunteersUpdated}}"
                               on-focus-request="{{volunteerFocusRequested}}"
                            on-location-request="{{locationRequested}}"
-                        on-message-instruction="{{messageInstructionAdded}}"  
+                        on-message-instruction="{{messageInstructionAdded}}"
                                             id="list">
           </zuks-volunteer-list>
-          <zuks-group-list volunteerGroups="{{volunteerGroups}}" 
-                                 on-create="{{groupAdded}}" 
-                                 on-update="{{groupUpdated}}" 
+          <zuks-group-list volunteerGroups="{{volunteerGroups}}"
+                                 on-create="{{groupAdded}}"
+                                 on-update="{{groupUpdated}}"
                                         id="groupList">
           </zuks-group-list>
-          <zuks-poi-list poiCategories="{{poiCategories}}" 
-                           selectedPOI="{{selectedPOI}}" 
-                             on-create="{{poiCreated}}" 
-                             on-update="{{poiUpdated}}" 
+          <zuks-poi-list poiCategories="{{poiCategories}}"
+                           selectedPOI="{{selectedPOI}}"
+                             on-create="{{poiCreated}}"
+                             on-update="{{poiUpdated}}"
                    on-location-request="{{locationRequested}}"
                                     id="poiList">
           </zuks-group-list>
         </core-pages>
       </div>
 
-      <zuks-map flex volunteers="{{volunteers}}" 
+      <zuks-map flex volunteers="{{volunteers}}"
              selectedVolunteers="{{selectedVolunteers}}"
                            pois="{{pois}}"
                   poiCategories="{{poiCategories}}"
                     selectedPOI="{{selectedPOI}}"
-            on-volunteer-select="{{volunteerSelected}}"    
-                  on-poi-select="{{poiSelected}}" 
+            on-volunteer-select="{{volunteerSelected}}"
+                  on-poi-select="{{poiSelected}}"
                              id="map">
       </zuks-map>
     </div>
@@ -123,7 +123,7 @@
         <paper-button dismissive>Abbrechen</paper-button>
         <paper-button on-click="{{saveVolunteer}}" affirmative>Speichern</paper-button>
     </paper-action-dialog>
-    
+
   </template>
   <script>
   Polymer({

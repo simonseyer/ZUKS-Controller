@@ -11,30 +11,30 @@ class EventBus:
 
   The key should be a string, separated by underscores. This
   convention allows to consistently subscribe to parts of the
-  keys. 
+  keys.
 
-  Example: user_add, user_update, user_delete. 
+  Example: user_add, user_update, user_delete.
 
   A event handler now could subscribe to 'user_.*'. By
-  evaluating this key pattern with regex, all events that 
-  start with 'user_' are transmitted to the handler. 
+  evaluating this key pattern with regex, all events that
+  start with 'user_' are transmitted to the handler.
 
   All of these three examples have the prefix user, so
-  the receiver could expect to get a user object as value. 
+  the receiver could expect to get a user object as value.
   '''
 
   def __init__(self, async=True):
     '''Create a event bus
 
     Keyword arguments:
-    async -- if true, all handlers are executed in a separate thread (default: True)    
+    async -- if true, all handlers are executed in a separate thread (default: True)
     '''
     self.handler = set()
     self.async = async
 
   def addHandler(self, key_pattern, func):
     '''Add a new event handler
-    
+
     The func is called, when the event key machtches
     the key_pattern.
 
@@ -47,7 +47,7 @@ class EventBus:
   def removeHandler(self, key_pattern=None, func=None):
     '''Remove an event handler
 
-    Remove a handler function that is associated with a key. If 
+    Remove a handler function that is associated with a key. If
     the key is not provided (None), the function is completly
     removed from the registered handlers.
 
@@ -121,7 +121,7 @@ class EventHandler:
     Keyword arguments:
     key_pattern -- the key, that identifies the event
     func        -- the function to be called when an event occurs
-    ''' 
+    '''
     func_matches = not func or func == self.func
     key_matches = not key_pattern or key_pattern == self.raw_key_pattern
     return func_matches and key_matches

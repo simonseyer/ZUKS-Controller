@@ -52,7 +52,7 @@ class WebNotifier:
   def handleEvent(self, key, value):
     '''Callback method for the event bus
 
-    Converts the data into a json string sends this 
+    Converts the data into a json string sends this
     string to the websocket server.
 
     Keyword arguments:

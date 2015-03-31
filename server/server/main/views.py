@@ -13,9 +13,9 @@ web_notifier = WebNotifier(default_event_bus)
 class EventViewSet(viewsets.ModelViewSet):
   '''
   ModelViewSet that fires events, when the model
-  is changed. 
+  is changed.
 
-  The events are published to the global 
+  The events are published to the global
   default_event_bus.
   '''
 
@@ -57,9 +57,9 @@ class EventViewSet(viewsets.ModelViewSet):
       key = "%s_%s" % (self.__class__.event_key, event)
       self.fire(key, {'old': original, 'new': response.data})
 
-  def fire(self, key, data): 
+  def fire(self, key, data):
     '''
-    Publishes a new event to the global 
+    Publishes a new event to the global
     default_event_bus.
 
     Keyword arguments:

@@ -60,14 +60,13 @@ class Instruction(models.Model):
 
 class LocationInstruction(Instruction):
   location = models.ForeignKey(Location)
-  
+
   def __str__(self):
     return "Go to: %s [%s]" % (self.location, self.receiver)
 
 class MessageInstruction(Instruction):
   subject = models.CharField(max_length=100)
   content = models.TextField()
-  
+
   def __str__(self):
     return "%s [%s]" % (self.content, self.receiver)
-

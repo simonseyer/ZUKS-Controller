@@ -45,10 +45,10 @@
       height: 40px;
       margin: 10px;
     }
-    
+
     #login paper-input{
       margin-left: 12px;
-      margin-right: 12px; 
+      margin-right: 12px;
     }
 
     #login paper-button {
@@ -125,8 +125,8 @@
           </template>
         </template>
       </div>
-    
-    
+
+
       <template if="{{!user.id}}">
         <div id="login" vertical layout>
           <paper-input label="Vorname" value="{{user.first_name}}" autofocus floatingLabel></paper-input>
@@ -160,12 +160,12 @@
                            zoomControl="false">
 
                   <!-- Target location -->
-                  <leaflet-marker longitude="{{instruction.location.longitude}}" 
+                  <leaflet-marker longitude="{{instruction.location.longitude}}"
                                    latitude="{{instruction.location.latitude}}"
                                        icon="{{leafletIconBindings.t[index]}}">
                   </leaflet-marker>
-                  <leaflet-marker-icon icon="flag" 
-                                leafletIcon="{{leafletIconBindings.t[index]}}" 
+                  <leaflet-marker-icon icon="flag"
+                                leafletIcon="{{leafletIconBindings.t[index]}}"
                   </leaflet-marker-icon>
                 </leaflet-map>
               </template>

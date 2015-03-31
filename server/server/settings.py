@@ -116,4 +116,3 @@ LOGGING = {
 # Web Socket Service
 
 WEB_SOCKET_SERVICE_URL = r'http://localhost:8888/notify'
-

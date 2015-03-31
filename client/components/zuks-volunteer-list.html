@@ -54,7 +54,7 @@
     </style>
 
     <core-list data="{{volunteerListData}}"
-             groups="{{volunteerGroups.values}}"  
+             groups="{{volunteerGroups.values}}"
           selection="{{selectedVolunteers}}" selectionenabled multi
                  id="volunteerList" fit>
       <template>
@@ -67,8 +67,8 @@
       </template>
     </core-list>
 
-    <paper-action-dialog heading="{{selectedVolunteers.length > 1 ? selectedVolunteers.length + ' Helfer ausgewählt' : selectedVolunteers[0].first_name + ' ' + selectedVolunteers[0].last_name}}" 
-        on-core-overlay-position="{{layoutVolunteerOverlay}}" 
+    <paper-action-dialog heading="{{selectedVolunteers.length > 1 ? selectedVolunteers.length + ' Helfer ausgewählt' : selectedVolunteers[0].first_name + ' ' + selectedVolunteers[0].last_name}}"
+        on-core-overlay-position="{{layoutVolunteerOverlay}}"
  on-core-overlay-close-completed="{{volunteerOverlayClosed}}"
                               id="volunteerDetail" autoCloseDisabled>
         <template if="{{selectedVolunteers.length > 1}}">
@@ -84,12 +84,12 @@
         <div class="actions" horizontal layout>
           <paper-icon-button icon="maps:my-location" on-click="{{locate}}"></paper-icon-button>
           <paper-icon-button icon="maps:navigation" on-click="{{sendToLocation}}"></paper-icon-button>
-          <paper-icon-button icon="communication:messenger" 
-                          active?="{{mode=='compose'}}" 
+          <paper-icon-button icon="communication:messenger"
+                          active?="{{mode=='compose'}}"
                          on-click="{{composeMessage}}">
           </paper-icon-button>
           <paper-icon-button icon="social:group"
-                          active?="{{mode=='edit'}}" 
+                          active?="{{mode=='edit'}}"
                          on-click="{{edit}}">
           </paper-icon-button>
         </div>

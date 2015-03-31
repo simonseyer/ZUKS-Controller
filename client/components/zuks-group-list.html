@@ -8,11 +8,8 @@
 
 <polymer-element name="zuks-group-list" attributes="volunteerGroups">
   <template>
-    <style>
-    </style>
-
-    <core-list data="{{volunteerGroups.values}}" 
-   on-core-activate="{{groupSelected}}" 
+    <core-list data="{{volunteerGroups.values}}"
+   on-core-activate="{{groupSelected}}"
                  id="list" selectionenabled fit>
       <template>
         <zuks-list-item class="item" selected="{{selected}}">

@@ -112,4 +112,3 @@ class MessageInstructionSerializer(serializers.ModelSerializer):
     receiver = serializers.PrimaryKeyRelatedField(queryset=Volunteer.objects.all())
     class Meta:
         model = MessageInstruction
-

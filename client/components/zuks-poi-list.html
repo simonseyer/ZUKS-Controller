@@ -15,7 +15,7 @@
 <link rel="import" href="zuks-list-item.html">
 
 <polymer-element name="zuks-poi-list" attributes="poiCategories selectedPOI">
-  
+
   <!-- global dialog style -->
   <style type="text/css" shim-shadowdom>
     html /deep/ #poiDetail {
@@ -30,12 +30,12 @@
     }
 
     html /deep/ #poiDetail /deep/ icon.category {
-      color: #505353; 
+      color: #505353;
       margin-right: 12px;
     }
 
     html /deep/ #poiDetail /deep/ paper-icon-button.location {
-      margin: auto; 
+      margin: auto;
       padding-top: 20px;
     }
 
@@ -54,14 +54,14 @@
     }
 
     #poiList core-icon {
-      color: #505353; 
+      color: #505353;
       margin-right: 12px;
     }
     </style>
 
-    <core-list data="{{poiCategories.values | flattenGroup}}" 
-             groups="{{poiCategories.values}}" 
-          selection="{{selectedPOI}}" 
+    <core-list data="{{poiCategories.values | flattenGroup}}"
+             groups="{{poiCategories.values}}"
+          selection="{{selectedPOI}}"
                  id="poiList" selectionenabled fit>
       <template>
         <div divider class="divider" horizontal layout center>
@@ -73,12 +73,12 @@
         </zuks-list-item>
       </template>
     </core-list>
-    
-    <paper-action-dialog heading="{{editablePOI.name.length > 0 ? editablePOI.name : 'Ort hinzufügen'}}" 
-                              id="poiDetail" 
-               autoCloseDisabled="{{!!editablePOI.id}}" 
-        on-core-overlay-position="{{layoutPOIOverlay}}" 
- on-core-overlay-close-completed="{{poiOverlayClosed}}" 
+
+    <paper-action-dialog heading="{{editablePOI.name.length > 0 ? editablePOI.name : 'Ort hinzufügen'}}"
+                              id="poiDetail"
+               autoCloseDisabled="{{!!editablePOI.id}}"
+        on-core-overlay-position="{{layoutPOIOverlay}}"
+ on-core-overlay-close-completed="{{poiOverlayClosed}}"
                         backdrop="{{!editablePOI.id}}" vertical layout >
       <template if="{{editablePOI}}">
         <div flex>
@@ -138,7 +138,7 @@
     },
     createPOI: function() {
       this.editablePOI = {
-        name: '', description: '', 
+        name: '', description: '',
         address: '', category: -1,
         location: {latitude: 0, longitude: 0}
       };
