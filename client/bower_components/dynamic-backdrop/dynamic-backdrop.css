@@ -2,10 +2,10 @@ html /deep/ .dynamic-backdrop {
   position: fixed;
   z-index: 500;
   background-color: rgba(0,0,0,0.8);
-  transition: top 0.5s, 
-              right 0.5s, 
-              bottom 0.5s, 
-              left 0.5s, 
-              width 0.5s, 
+  transition: top 0.5s,
+              right 0.5s,
+              bottom 0.5s,
+              left 0.5s,
+              width 0.5s,
               height 0.5s;
 }

@@ -10,7 +10,7 @@ on the z-index css property to move a part of the website above the backdrop.
 It instead creates multiple backdrops around the target.
 
 The backdrop is restricted to the host element. This allows to just hilight an
-sub-part of a specific area on the website. 
+sub-part of a specific area on the website.
 
 ##### Example
 
@@ -27,7 +27,7 @@ sub-part of a specific area on the website.
 @status beta
 @homepage http://Eldorado234.github.io/dynamic-backdrop
 -->
-<link rel="stylesheet" href="dynamic-backdrop.css">
+<link rel="stylesheet" href="dynamic-backdrop.css" shim-shadowdom>
 
 <polymer-element name="dynamic-backdrop">
   <script>
@@ -58,7 +58,7 @@ sub-part of a specific area on the website.
 
         /**
          * The host element the backdrop should be restricted to. The backdrop
-         * elements will be inserted as children of this element. 
+         * elements will be inserted as children of this element.
          *
          * @attribute host
          * @type Element
@@ -97,16 +97,29 @@ sub-part of a specific area on the website.
         if (this.target) {
           targetRect = this.target.getBoundingClientRect();
         } else {
+          // Calculate center of current target area
+          var vertCenter = Math.ceil(
+            (parseFloat(this.bottom.style.top) +
+             parseFloat(this.top.style.top) +
+             parseFloat(this.top.style.height)) / 2
+          );
+          var horzCenter = Math.ceil(
+            (parseFloat(this.right.style.left) +
+             parseFloat(this.left.style.left) +
+             parseFloat(this.left.style.width)) / 2
+          );
+
           targetRect = {
-            top: hostRect.top, 
-            right: hostRect.left, 
-            bottom: hostRect.top, 
-            left: hostRect.left, 
-            width: 0, 
+            top: vertCenter ? vertCenter : 0,
+            right: horzCenter ? horzCenter : 0,
+            bottom: vertCenter,
+            left: horzCenter,
+            width: 0,
             height: 0
           }
         }
 
+        // Create four backdrops around the target area
         this.top.style.top = hostRect.top + 'px';
         this.top.style.right =  window.innerWidth - hostRect.right + 'px';
         this.top.style.bottom = 'initial';

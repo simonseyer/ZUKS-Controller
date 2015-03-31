@@ -1,6 +1,6 @@
 {
   "name": "web-tour",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "keywords": [
     "seed",
     "polymer",
@@ -16,11 +16,11 @@
     "web-component-tester": "Polymer/web-component-tester#^2.0.0"
   },
   "homepage": "https://github.com/Eldorado234/web-tour",
-  "_release": "0.3.0",
+  "_release": "0.3.1",
   "_resolution": {
     "type": "version",
-    "tag": "0.3.0",
-    "commit": "5d8df357b928a634da58d6b3a4bb100ff1a85ea6"
+    "tag": "0.3.1",
+    "commit": "0b2966b6e7ece1c00cc7b0a8c8a67259596c9127"
   },
   "_source": "git://github.com/Eldorado234/web-tour.git",
   "_target": "~0.3.0",

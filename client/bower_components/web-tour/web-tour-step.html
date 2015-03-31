@@ -19,7 +19,7 @@ content presented in the dialog that is shown when the step is activated.
 
 <polymer-element name="web-tour-step">
 
-  <style type="text/css">
+  <style type="text/css" shim-shadowdom>
     html /deep/ paper-action-dialog.web-tour-step {
       max-width: 600px;
     }
@@ -76,7 +76,7 @@ content presented in the dialog that is shown when the step is activated.
       /**
        * The element that should be hilighted
        * when this step is active, defined by an
-       * selector. 
+       * selector.
        *
        * Use either `target` or `targetSelector`.
        * The `target` attribute will be

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>dynamic-backdrop Demo</title>
-    <script src="../webcomponentsjs/webcomponents.js"></script>
+    <script src="../webcomponentsjs/webcomponents.min.js"></script>
     <link rel="import" href="dynamic-backdrop.html">
 
     <style type="text/css">
@@ -26,7 +26,7 @@
 
         background-color: red;
         color: white;
-        
+
 
         font-size: 16px;
         font-weight: bold;
@@ -60,7 +60,7 @@
 
   </head>
   <body unresolved>
-   
+
 
     <template is="auto-binding" id="template">
       <div class="container">
@@ -79,7 +79,9 @@
           </div>
         </div>
 
-        <button on-click="{{example4}}">Backdrop without target (Closes after two seconds)</button>
+        <button on-click="{{example4}}">
+          Backdrop without target (Closes after two seconds)
+        </button>
       </div>
 
       <div class="container">
@@ -92,62 +94,62 @@
     </template>
 
     <script type="text/javascript">
-      var backdrop = document.querySelector('#backdrop');
+      (function(window, document, undefined) {
+        var template = document.querySelector('#template');
 
-      var template = document.querySelector('#template');
-      
-      template.example1 = function(event) {
-        var backdrop = document.querySelector('#backdrop');
-        backdrop.visible = true;
-        if (backdrop.target == event.target) {
-          backdrop.target = document.querySelector('#example-2');
-        } else {
-          backdrop.target = event.target;
-        }
-        backdrop.host = document.body;
-      };
+        template.addEventListener('template-bound', function() {
+          var backdrop = document.querySelector('#backdrop');
 
-      template.example2 = function(event) {
-        var backdrop = document.querySelector('#backdrop');
-        backdrop.visible = false;
-        backdrop.target = null;
-      };
+          template.example1 = function(event) {
 
-      template.example3 = function(event) {
-        var backdrop = document.querySelector('#backdrop');
-        if (backdrop.target == event.target) {
-          backdrop.visible = false;
-          backdrop.target = null;
-        } else {
-          backdrop.visible = true;
-          backdrop.target = event.target;
-        }
-        backdrop.host = document.querySelector('#example-3-container');
-      };
+            backdrop.visible = true;
+            if (backdrop.target == event.target) {
+              backdrop.target = document.querySelector('#example-2');
+            } else {
+              backdrop.target = event.target;
+            }
+            backdrop.host = document.body;
+          };
 
-      template.example4 = function(event) {
-        var backdrop = document.querySelector('#backdrop');
-        backdrop.visible = true;
-        backdrop.target = null;
-        backdrop.host = document.body;
-        setTimeout(function(){
-          backdrop.visible = false;
-        }, 2000);
-      };
+          template.example2 = function(event) {
+            backdrop.visible = false;
+            backdrop.target = null;
+          };
 
-      template.example5 = function(event) {
-        var backdrop = document.querySelector('#backdrop');
-        if (backdrop.target == event.target) {
-          backdrop.visible = false;
-          backdrop.target = null;
-          backdrop.offset = {top: 0, right: 0, bottom: 0, left: 0};
-        } else {
-          backdrop.visible = true;
-          backdrop.target = event.target;
-          backdrop.host = document.body;
-          backdrop.offset = {top: 20, right: 20, bottom: 20, left: 20};
-        }
-      };
+          template.example3 = function(event) {
+            if (backdrop.target == event.target) {
+              backdrop.visible = false;
+              backdrop.target = null;
+            } else {
+              backdrop.visible = true;
+              backdrop.target = event.target;
+            }
+            backdrop.host = document.querySelector('#example-3-container');
+          };
+
+          template.example4 = function(event) {
+            backdrop.visible = true;
+            backdrop.target = null;
+            backdrop.host = document.body;
+            setTimeout(function(){
+              backdrop.visible = false;
+            }, 2000);
+          };
+
+          template.example5 = function(event) {
+            if (backdrop.target == event.target) {
+              backdrop.visible = false;
+              backdrop.target = null;
+              backdrop.offset = {top: 0, right: 0, bottom: 0, left: 0};
+            } else {
+              backdrop.visible = true;
+              backdrop.target = event.target;
+              backdrop.host = document.body;
+              backdrop.offset = {top: 20, right: 20, bottom: 20, left: 20};
+            }
+          };
+        });
+      })(window, document);
     </script>
   </body>
 </html>

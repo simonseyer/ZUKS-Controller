@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>web-tour Demo</title>
-    <script src="../webcomponentsjs/webcomponents.js"></script>
+    <script src="../webcomponentsjs/webcomponents.min.js"></script>
     <link rel="import" href="web-tour.html">
 
     <style type="text/css">
@@ -72,7 +72,7 @@
       <web-tour id="tour" texts="{{tourTexts}}" host="{{tourHost}}">
         <web-tour-step heading="Red spot" target="{{step1Target}}" backdropOffset="{{step1Offset}}">
           <p>
-            The component atomatically hilights the target element and positions the dialog. 
+            The component atomatically hilights the target element and positions the dialog.
             An offset could be configured around the target element to be more flexible in hilihting.
           </p>
         </web-tour-step>
@@ -84,31 +84,32 @@
         </web-tour-step>
         <web-tour-step heading="Final step">
           <p>
-            This step is configured without a target. Because it is the last step, 
+            This step is configured without a target. Because it is the last step,
             the button text at the bottom right changed to 'Finish'.
           </p>
         </web-tour-step>
       </web-tour>
-    
+
     </template>
     <script type="text/javascript">
-      var template = document.querySelector('#template');
+      (function(window, document, undefined) {
+        var template = document.querySelector('#template');
 
-      template.startTour = function() {
-        template.tourTexts.next = 'Go on';
-        template.tourHost = document.querySelector('.container');
-        template.step1Target = document.querySelector('#example1');
-        template.step1Offset = {left: 10, right: 10, top: 10, bottom: 10};
-        template.step3Target = document.querySelector('#example3');
+        template.startTour = function() {
+          template.tourTexts.next = 'Go on';
+          template.tourHost = document.querySelector('.container');
+          template.step1Target = document.querySelector('#example1');
+          template.step1Offset = {left: 10, right: 10, top: 10, bottom: 10};
+          template.step3Target = document.querySelector('#example3');
 
-        var tour = document.querySelector('#tour');
-        tour.start();
-      };
+          var tour = document.querySelector('#tour');
+          tour.start();
+        };
 
-      template.showMoreInfos = function() {
-        window.open('http://webcomponents.org/', '_blank');
-      };
-
+        template.showMoreInfos = function() {
+          window.open('http://webcomponents.org/', '_blank');
+        };
+      })(window, document);
     </script>
   </body>
 </html>
