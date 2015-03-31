@@ -25,24 +25,26 @@
       this.send(type, object, "POST", callback);
     },
     send: function(url, object, method, callback) {
-      xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function() {
-          if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-              if (xmlhttp.status == 200) {
-                callback(JSON.parse(xmlhttp.responseText));
-              } else {
-                this.errorHandler(xmlhttp.responseText)
-              }
-          }
+      var request = callback.request = new XMLHttpRequest();
+      request.onreadystatechange = function() {
+        var request = callback.request;
+        if (request.readyState == XMLHttpRequest.DONE) {
+            if (request.status == 200) {
+              callback(JSON.parse(request.responseText));
+            } else {
+              this.errorHandler(request.responseText)
+            }
+            callback.request = null;
+        }
       }.bind(this);
 
-      xmlhttp.open(method, this.root_url + url + "/", true);
-      xmlhttp.setRequestHeader('content-type', 'application/json; charset=utf-8');
+      request.open(method, this.root_url + url + "/", true);
+      request.setRequestHeader('content-type', 'application/json; charset=utf-8');
 
       if (object) {
-        xmlhttp.send(JSON.stringify(object));
+        request.send(JSON.stringify(object));
       } else {
-        xmlhttp.send();
+        request.send();
       }
     }
   });
