@@ -21,6 +21,7 @@
     "paper-elements": "Polymer/paper-elements#~0.5.2",
     "i18next": "~1.7.7",
     "jquery-throttle-debounce": "*",
-    "web-tour": "~0.3.0"
+    "web-tour": "~0.3.0",
+    "observe-js": "~0.5.5"
   }
 }
