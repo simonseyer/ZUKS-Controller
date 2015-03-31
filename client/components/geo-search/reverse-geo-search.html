@@ -1,51 +1,30 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <polymer-element name="reverse-geo-search" attributes="latitude longitude result delay">
-  <template>
-    <style>
-    :host {
-      display: none;
-    }
-    </style>
-  </template>
-  <script type="text/javascript" src="../../bower_components/jquery-throttle-debounce/jquery.ba-throttle-debounce.min.js"></script>
+  <script type="text/javascript"
+           src="../../bower_components/jquery-throttle-debounce/jquery.ba-throttle-debounce.js">
+  </script>
+  <script type="text/javascript" src="NominatimGeoServer.js"></script>
   <script>
   Polymer({
-    root_url: "http://nominatim.openstreetmap.org/reverse",
-    email: "simon.seyer@zuks.org",
-    format: "json",
-    delay: 1000,
-    throtteledUpdate: null,
     ready: function() {
-      this.delayChanged();
-    },
-    delayChanged: function() {
-      this.throtteledUpdate = $.throttle(this.delay, this.updateResults);
+      this.server = new NominatimGeoServer(true);
     },
     observe: {
       latitude: 'locationChanged',
       longitude: 'locationChanged'
     },
     locationChanged: function() {
-      this.throtteledUpdate();
+      var params = {
+        lat: this.latitude,
+        lon: this.longitude,
+      };
+      this.server.sendRequest(params, function(result) {
+        this.result = result;
+      }.bind(this));
     },
-    updateResults: function() {
-      if (!this.latitude || !this.longitude) {
-        return;
-      }
-
-      var self = this;
-      $.get(
-        this.root_url, 
-        {
-          format: 'json',
-          lat: this.latitude,
-          lon: this.longitude,
-          email: this.email
-        }, 
-        function(data) {
-          self.result = data;
-        }, 'json');
+    delayChanged: function() {
+      this.server.setDelay(this.delay);
     }
   });
   </script>

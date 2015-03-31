@@ -1,45 +1,33 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <polymer-element name="geo-search" attributes="results address limit countrycodes delay">
-  <template>
-    <style>
-    :host {
-      display: none;
-    }
-    </style>
-  </template>
-  <script type="text/javascript" src="../../bower_components/jquery-throttle-debounce/jquery.ba-throttle-debounce.min.js"></script>
+  <script type="text/javascript"
+           src="../../bower_components/jquery-throttle-debounce/jquery.ba-throttle-debounce.js">
+  </script>
+  <script type="text/javascript" src="NominatimGeoServer.js"></script>
   <script>
   Polymer({
-    root_url: "http://nominatim.openstreetmap.org/search",
-    email: "simon.seyer@zuks.org",
     limit: 10,
     countrycodes: "de",
-    format: "json",
-    delay: 1000,
-    throtteledUpdate: null,
     ready: function() {
-      this.delayChanged();
+      this.server = new NominatimGeoServer(false);
+    },
+    observe: {
+      address: 'dataChanged',
+      countrycodes: 'dataChanged'
+    },
+    dataChanged: function() {
+      var params = {
+        q: this.address,
+        countrycodes: this.countrycodes,
+        limit: this.limit
+      };
+      this.server.sendRequest(params, function(results) {
+        this.results = results;
+      }.bind(this));
     },
     delayChanged: function() {
-      this.throtteledUpdate = $.throttle(this.delay, this.updateResults);
-    },
-    addressChanged: function() {
-      this.throtteledUpdate();
-    },
-    updateResults: function() {
-      var self = this;
-      $.get(
-        this.root_url, 
-        {
-          format: 'json',
-          q: this.address,
-          countrycodes: this.countrycodes,
-          email: this.email
-        }, 
-        function(data) {
-          self.results = data;
-        }, 'json');
+      this.server.setDelay(this.delay);
     }
   });
   </script>
