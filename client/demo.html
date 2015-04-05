@@ -194,6 +194,28 @@
         this.startTour = function() {
           document.querySelector('web-tour#tour').start();
         }
+
+        // Safari hacks (IE is completely unsuported)
+        var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+        if (isSafari) {
+          // Safari hack to force layout refresh
+          document.body.style.height = '0';
+          setTimeout(function() {
+            document.body.style.height = '100%';
+          }, 1);
+
+          // Safari hack to fix marker icon layout
+          var style = document.createElement("style");
+          style.appendChild(document.createTextNode(""));
+          document.head.appendChild(style);
+          style.innerHTML = "core-icon.foreground {\
+            width: 46%;\
+            height: 46%;\
+            margin: 28%;\
+            margin-top: 18%;\
+          }";
+        }
+
       });
     };
   </script>
