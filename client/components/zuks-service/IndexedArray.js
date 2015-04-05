@@ -9,6 +9,10 @@ if (typeof IndexedArray === 'undefined') {
     The indexVariable parameter defines which variable of the objects
     should be indexed. Only this index could be used when calling get.
     Each object added has to have this variable.
+
+    WARNING: At the moment, updates of the index variables value are not
+    reflected into the index. Remove and add the object again to trigger an
+    index update.
     */
     var IndexedArray = function(indexVariable) {
       this._indexVariable = indexVariable;
@@ -60,8 +64,9 @@ if (typeof IndexedArray === 'undefined') {
         }.bind(this));
       },
       /*
-      Refreshes the index, when the values array changes. All cases
-      of change are handeled: add, remove and update.
+      Refreshes the index, when the values array changes. These cases
+      of change are handeled: add, remove.
+      TODO: handle updates of each objects index value
       */
       _refreshIndex: function(changes) {
         changes.forEach(function(change) {
