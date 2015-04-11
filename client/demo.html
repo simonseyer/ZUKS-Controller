@@ -26,7 +26,7 @@
     width: 100%;
     margin: 0;
     background-color: #f0f2f4;
-
+    
     font-family: 'Roboto', sans-serif;
     color: #666;
   }
@@ -165,14 +165,30 @@
     </div>
 
     <web-tour id="tour" texts="{{tourTexts}}" host="{{tourHost}}">
-      <web-tour-step heading="In der App anmelden" targetSelector="html /deep/ #login">
-        <p>Bitte trage hier deinen oder einen ausgedachten Namen ein und drücke anschließend auf 'Anmelden'.</p>
+      <web-tour-step heading="Demo-Tour">
+        <p>In dieser Tour lernst Du die wesentlichen Interaktionselemente des ZUKS-Prototypen kennen. Auf der rechten Seite siehst Du die App die Du als ZUKS-Helfer benutzen wirst und links auf dem Bildschirm den Controller wie wir ihn in der ZUKS-Zentrale einsetzen. Um zu zeigen wie die beiden Anwednungen zusammenspielen kannst du in dieser Demo ausnahmensweise beide bedienen.</p>
+      </web-tour-step>
+      <web-tour-step heading="Anmeldung in der App" targetSelector="html /deep/ core-header-panel">
+        <p>Um bei einer Katastrophe in deiner Nähe zu helfen hast du dir die ZUKS-App heruntergeladen und willst dich anmelden. Bitte trage hier deinen oder einen ausgedachten Namen ein und schließe mit 'Anmelden' ab.</p>
       </web-tour-step>
       <web-tour-step heading="Helfer-Liste" targetSelector="html /deep/ zuks-volunteer-list">
-        <p>Nun taucht dein Name hier drüber in der Liste auf.</p>
+        <p>Wir in der ZUKS-Zentrale haben dich nun auf unserer Liste. Du bist als potentieller Helfer in der Datenbank eingetragen.</p>
       </web-tour-step>
-      <web-tour-step heading="Viel Spaß beim spielen">
-        <p>Probier ruhig alles aus. Du kannst nichts kaputt machen!</p>
+      <web-tour-step heading="Standortfreigabe" targetSelector="html /deep/ core-header-panel">
+        <p>Alle für Dich relevanten Infos erhältst du über solche "Karten". Hier bitten wir dich darum deinen Standort freizugeben. Dadurch können wir dir helfen wenn du dich verlaufen solltest oder dich warnen wenn du dich in ein Gefahrengebiet begiebst.</p>
+      </web-tour-step>
+      <web-tour-step heading="Danke für deine Hilfe!">
+        <p>Dies ist das Ende unserer kleinen Demo-Tour. Wir freuen uns über Feedback und Verbesserungsvorschläge auf unseren Kanälen:</p>
+        <a href="mailto:info@zuks.org" onmouseover="this.href=this.href.replace(/x/g,'');">
+            <paper-icon-button icon="mail" role="button" aria-label="mail"></paper-icon-button>
+        </a>
+        <a href="https://www.facebook.com/zuks.org">
+            <paper-icon-button icon="face" role="button" aria-label="mail"></paper-icon-button>
+        </a>
+        <a href="https://twitter.com/zuksDE">
+            <paper-icon-button icon="flag" role="button" aria-label="mail"></paper-icon-button>
+        </a>
+        <p>Viel Spaß beim weiteren Testen unserer Anwendung. Probier ruhig alles aus, Du kannst nichts kaputt machen!</p>
       </web-tour-step>
     </web-tour>
 
@@ -184,7 +200,7 @@
       template.addEventListener('template-bound', function() {
         this.tourTexts = {
           next: 'Weiter',
-          abort: 'Beenden',
+          abort: 'Abbrechen',
           finish: 'Abschließen',
           moreInfos: 'Weitere Infos'
         }
