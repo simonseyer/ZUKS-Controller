@@ -29,7 +29,7 @@
       request.onreadystatechange = function() {
         var request = callback.request;
         if (request.readyState == XMLHttpRequest.DONE) {
-            if (request.status == 200) {
+            if (request.status >= 200 && request.status < 300) {
               callback(JSON.parse(request.responseText));
             } else {
               this.errorHandler(request.responseText)
