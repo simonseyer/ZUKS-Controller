@@ -133,33 +133,35 @@
         <template if="{{!searchMode}}">
           <!-- Volunteer markers-->
           <template repeat="{{volunteer, index in volunteers.values}}">
-            <leaflet-marker longitude="{{volunteer.location.longitude}}"
-                             latitude="{{volunteer.location.latitude}}"
-                             on-click="{{volunteerSelected}}"
-                                 icon="{{leafletIconBindings.v[index]}}">
-            </leaflet-marker>
-            <leaflet-marker-icon icon="social:person"
-                          leafletIcon="{{leafletIconBindings.v[index]}}"
-                            iconClass="{{volunteer.selected ? 'selected' : ''}}">
-            </leaflet-marker-icon>
-
-            <template if="{{volunteer.targetLocation && volunteer.selected}}">
-              <leaflet-marker longitude="{{volunteer.targetLocation.longitude}}"
-                               latitude="{{volunteer.targetLocation.latitude}}"
-                                   icon="{{leafletIconBindings.t[index]}}">
+            <template if="{{volunteer.location | locationValid}}">
+              <leaflet-marker longitude="{{volunteer.location.longitude}}"
+                               latitude="{{volunteer.location.latitude}}"
+                               on-click="{{volunteerSelected}}"
+                                   icon="{{leafletIconBindings.v[index]}}">
               </leaflet-marker>
-              <leaflet-marker-icon icon="flag"
-                            leafletIcon="{{leafletIconBindings.t[index]}}"
-                              iconClass="target">
+              <leaflet-marker-icon icon="social:person"
+                            leafletIcon="{{leafletIconBindings.v[index]}}"
+                              iconClass="{{volunteer.selected ? 'selected' : ''}}">
               </leaflet-marker-icon>
-              <leaflet-polyline color="#444" fillOpacity="0.6">
-                <leaflet-point latitude="{{volunteer.location.latitude}}"
-                              longitude="{{volunteer.location.longitude}}">
-                </leaflet-point>
-                <leaflet-point latitude="{{volunteer.targetLocation.latitude}}"
-                              longitude="{{volunteer.targetLocation.longitude}}">
-                </leaflet-point>
-              </leaflet-polyline>
+
+              <template if="{{volunteer.targetLocation && volunteer.selected}}">
+                <leaflet-marker longitude="{{volunteer.targetLocation.longitude}}"
+                                 latitude="{{volunteer.targetLocation.latitude}}"
+                                     icon="{{leafletIconBindings.t[index]}}">
+                </leaflet-marker>
+                <leaflet-marker-icon icon="flag"
+                              leafletIcon="{{leafletIconBindings.t[index]}}"
+                                iconClass="target">
+                </leaflet-marker-icon>
+                <leaflet-polyline color="#444" fillOpacity="0.6">
+                  <leaflet-point latitude="{{volunteer.location.latitude}}"
+                                longitude="{{volunteer.location.longitude}}">
+                  </leaflet-point>
+                  <leaflet-point latitude="{{volunteer.targetLocation.latitude}}"
+                                longitude="{{volunteer.targetLocation.longitude}}">
+                  </leaflet-point>
+                </leaflet-polyline>
+              </template>
             </template>
           </template>
         </template>
@@ -263,6 +265,10 @@
     observe: {
       'freehandLocation.lookup' : 'checkValidity'
     },
+    locationValid: function(location) {
+      return parseFloat(location.latitude) > 0 ||
+             parseFloat(location.longitude) > 0;
+    },
     selectedVolunteersChanged: function(changes, newVal) {
       if (newVal == undefined) {
         // Array updated
@@ -315,13 +321,15 @@
     focus: function(dataList) {
       var locations = [];
       dataList.forEach(function(data) {
-        locations.push(L.latLng(data.location.latitude,
-                                data.location.longitude));
-        if (data.targetLocation) {
-          locations.push(L.latLng(data.targetLocation.latitude,
-                                data.targetLocation.longitude));
+        if (this.locationValid(data.location)) {
+          locations.push(L.latLng(data.location.latitude,
+                                  data.location.longitude));
+          if (data.targetLocation) {
+            locations.push(L.latLng(data.targetLocation.latitude,
+                                  data.targetLocation.longitude));
+          }
         }
-      });
+      }.bind(this));
       if (locations.length == 1) {
         this.$.map.map.setView(locations[0], 17, {animate: true});
       } else if (locations.length > 1) {
