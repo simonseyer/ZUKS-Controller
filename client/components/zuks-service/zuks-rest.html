@@ -25,18 +25,20 @@
       this.send(type, object, "POST", callback);
     },
     send: function(url, object, method, callback) {
-      var request = callback.request = new XMLHttpRequest();
+      var self = this;
+
+      var request = new XMLHttpRequest();
       request.onreadystatechange = function() {
-        var request = callback.request;
-        if (request.readyState == XMLHttpRequest.DONE) {
-            if (request.status >= 200 && request.status < 300) {
-              callback(JSON.parse(request.responseText));
+        if (this.readyState == XMLHttpRequest.DONE) {
+            if (this.status >= 200 && this.status < 300) {
+              if (callback) {
+                callback(JSON.parse(this.responseText));
+              }
             } else {
-              this.errorHandler(request.responseText)
+              self.errorHandler(this.responseText)
             }
-            callback.request = null;
         }
-      }.bind(this);
+      }.bind(request);
 
       request.open(method, this.root_url + url + "/", true);
       request.setRequestHeader('content-type', 'application/json; charset=utf-8');
