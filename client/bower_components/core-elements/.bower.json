@@ -56,6 +56,6 @@
     "commit": "e03130e5f7c579cdaf5495462e0e4e65770a8fc7"
   },
   "_source": "git://github.com/Polymer/core-elements.git",
-  "_target": "~0.5.2",
+  "_target": "~0.5",
   "_originalSource": "Polymer/core-elements"
 }

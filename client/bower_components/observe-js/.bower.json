@@ -26,7 +26,6 @@
     "commit": "4fcd67e1842d4e9be993d3fccaaae9793904e0d8"
   },
   "_source": "git://github.com/Polymer/observe-js.git",
-  "_target": "~0.5.5",
-  "_originalSource": "observe-js",
-  "_direct": true
+  "_target": "~0.5",
+  "_originalSource": "observe-js"
 }

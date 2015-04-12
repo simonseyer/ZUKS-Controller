@@ -1,6 +1,6 @@
 {
   "name": "leaflet-map",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "authors": [
     "Hendrik Brummermann <nhnb@users.sourceforge.net>",
     "Prateek Saxena <prtksxna@gmail.com>"
@@ -26,15 +26,16 @@
   ],
   "dependencies": {
     "polymer": ">=0.3.3",
-    "leaflet": "~0.7.3"
+    "leaflet": "~0.7.3",
+    "core-style": "Polymer/core-style#~0.5.4"
   },
-  "_release": "0.3.1",
+  "_release": "0.4.0",
   "_resolution": {
     "type": "version",
-    "tag": "v0.3.1",
-    "commit": "1dd2d9c2a50635cd6f835b00717bf25f1ac2fe68"
+    "tag": "0.4.0",
+    "commit": "c878a755c8b83b75b761496ac13e91cac72bfbbd"
   },
-  "_source": "git://github.com/nhnb/leaflet-map.git",
-  "_target": "~0.3.1",
-  "_originalSource": "leaflet-map"
+  "_source": "git@github.com:Eldorado234/leaflet-map.git",
+  "_target": "0.4.0",
+  "_originalSource": "git@github.com:Eldorado234/leaflet-map.git"
 }

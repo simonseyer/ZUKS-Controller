@@ -15,13 +15,13 @@
   ],
   "homepage": "https://github.com/Eldorado234/ZUKS-Controller",
   "dependencies": {
-    "polymer": "Polymer/polymer#~0.5.2",
-    "core-elements": "Polymer/core-elements#~0.5.2",
-    "leaflet-map": "~0.3.1",
-    "paper-elements": "Polymer/paper-elements#~0.5.2",
-    "i18next": "~1.7.7",
+    "polymer": "Polymer/polymer#~0.5",
+    "core-elements": "Polymer/core-elements#~0.5",
+    "leaflet-map": "git@github.com:Eldorado234/leaflet-map.git#0.4.0",
+    "paper-elements": "Polymer/paper-elements#~0.5",
+    "i18next": "~1.7",
     "jquery-throttle-debounce": "*",
-    "web-tour": "~0.3.0",
-    "observe-js": "~0.5.5"
+    "web-tour": "~0.3",
+    "observe-js": "~0.5"
   }
 }
