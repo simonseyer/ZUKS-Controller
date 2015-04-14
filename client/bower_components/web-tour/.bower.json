@@ -23,6 +23,6 @@
     "commit": "0b2966b6e7ece1c00cc7b0a8c8a67259596c9127"
   },
   "_source": "git://github.com/Eldorado234/web-tour.git",
-  "_target": "~0.3.0",
+  "_target": "~0.3",
   "_originalSource": "web-tour"
 }
