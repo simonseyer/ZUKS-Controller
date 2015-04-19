@@ -129,9 +129,6 @@
   Polymer({
     mode: null,
     message: {},
-    ready: function() {
-      self.volunteerListData = [];
-    },
     observe:  {
       'volunteers.values': 'updateListData',
       'volunteerGroups.values': 'updateListData'
