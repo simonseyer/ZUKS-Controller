@@ -51,18 +51,36 @@
       padding-bottom: 4px;
       cursor: pointer;
     }
+
+    .volunteerSelect {
+      color: #4d9eff;
+      padding: 0;
+      margin-right: 8px;
+      z-index: 100;
+    }
+
+    .volunteerSelect /deep/ core-icon {
+      width: 30px;
+      height: 30px;
+    }
     </style>
 
     <core-list data="{{volunteerListData}}"
              groups="{{volunteerGroups.values}}"
-          selection="{{selectedVolunteers}}" selectionenabled multi
+          selection="{{selectedVolunteersInternal}}" multi?="{{multiSelection}}"
                  id="volunteerList" fit>
       <template>
         <div divider class="divider">
           {{groupModel.name}}
         </div>
-        <zuks-list-item class="item" selected="{{selected}}">
-          {{model.first_name}} {{model.last_name}}
+        <zuks-list-item class="item" selected="{{selected}}" on-tap="{{voluneerItemTapped}}">
+          <div horizontal layout center>
+            <paper-icon-button class="volunteerSelect" icon="{{multiSelection ? (model.selected ? 'check-box' : 'check-box-outline-blank') : (buttonHoverIndex == index ? 'check-box-outline-blank' : 'account-circle')}}"
+            on-tap="{{volunteerMultiSelected}}" on-mouseover='{{buttonHovered}}'
+            on-mouseout='{{buttonUnhovered}}'>
+            </paper-icon-button>
+            <div flex>{{model.first_name}} {{model.last_name}}</div>
+          </div>
         </zuks-list-item>
       </template>
     </core-list>
@@ -129,6 +147,7 @@
   Polymer({
     mode: null,
     message: {},
+    buttonHoverIndex: -1,
     observe:  {
       'volunteers.values': 'updateListData',
       'volunteerGroups.values': 'updateListData'
@@ -146,6 +165,17 @@
       this.$.volunteerList.selectData(volunteer);
       this.$.volunteerList.scrollToData(volunteer);
     },
+    selectedVolunteersInternalChanged: function(changes) {
+      if (Array.isArray(this.selectedVolunteersInternal)) {
+        this.selectedVolunteers = this.selectedVolunteersInternal;
+      }  else {
+        if (this.selectedVolunteersInternal) {
+          this.selectedVolunteers = [this.selectedVolunteersInternal];
+        } else {
+          this.selectedVolunteers = [];
+        }
+      }
+    },
     selectedVolunteersChanged: function(changes) {
       if (this.selectedVolunteers.length > 0) {
         if (this.selectedVolunteers.length > 1) {
@@ -157,7 +187,26 @@
         this.$.volunteerDetail.open();
       } else {
         this.$.volunteerDetail.close();
+        this.multiSelection = false;
       }
+    },
+    voluneerItemTapped: function(e) {
+      if (e.target.classList.contains('item')) {
+        if (this.multiSelection) {
+          this.selectVolunteer(e.target.templateInstance.model.model);
+          this.multiSelection = false;
+        }
+      }
+    },
+    volunteerMultiSelected: function(event) {
+      this.multiSelection = true;
+      this.selectVolunteer(event.target.templateInstance.model.model);
+    },
+    buttonHovered: function(e) {
+      this.buttonHoverIndex = e.target.templateInstance.model.index;
+    },
+    buttonUnhovered: function(e) {
+      this.buttonHoverIndex = -1;
     },
     volunteerOverlayClosed: function(event) {
       if (event.target === this.$.volunteerDetail) {
