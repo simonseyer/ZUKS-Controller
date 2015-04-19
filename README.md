@@ -25,6 +25,7 @@ Web application for the organisation of volunteers in Civil Support.
 	- `WEB_SOCKET_SERVICE_URL` (as configured above))
 - Create database `python manage.py migrate`
 - Load fixtures `python manage.py loaddata POICategories`
+- Load fixtures `python manage.py loaddata VolunteerGroups`
 - Start server `python manage.py runserver #ip#:#port#` or embedded via wsgi
 
 ### Web-Server
@@ -33,6 +34,6 @@ Web application for the organisation of volunteers in Civil Support.
 - Install grunt `npm install -g grunt-cli` ([Read more](http://gruntjs.com/getting-started))
 - Deploy Webserver `grunt install` (when updating run `grunt deploy` to reuse the configured settings)
 - Serve one of the following static files (For example by `python -m SimpleHTTPServer #web-port#`)
-	-  `dist/controller/index.html`, 
-	- `dist/client/index.html` or 
+	-  `dist/controller/index.html`,
+	- `dist/client/index.html` or
 	- `dist/demo/index.html`

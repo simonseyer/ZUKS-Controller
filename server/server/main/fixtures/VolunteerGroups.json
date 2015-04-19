@@ -1,0 +1,9 @@
+[
+  {
+    "model": "main.VolunteerGroup",
+    "pk": 1,
+    "fields": {
+      "name": "Verfügbar"
+    }
+  }
+]
