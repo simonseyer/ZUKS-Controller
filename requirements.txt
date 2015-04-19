@@ -1,5 +1,5 @@
 certifi==14.5.14
-Django==1.7.4
+Django==1.8.0
 django-cors-headers==1.0.0
 djangorestframework==3.0.4
 requests==2.5.1
