@@ -10,3 +10,6 @@ src/*.egg-info
 *.sqlite3
 /client/dist/
 node_modules
+/client/settings.json
+/websocket-server/settings.py
+/server/server/settings.py
