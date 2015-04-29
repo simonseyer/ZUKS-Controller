@@ -47,6 +47,9 @@
         this.$.ws.send(response.id);
       }.bind(this));
     },
+    logout: function() {
+      this.user = {};
+    },
     updateUser: function() {
       this.$.rest.put('volunteers', this.user);
     }

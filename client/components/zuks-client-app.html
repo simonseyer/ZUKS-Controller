@@ -39,6 +39,7 @@
       background-color: #4d9eff;
       height: 60px;
       color: white;
+      padding-right: 8px;
     }
 
     .core-header img {
@@ -75,15 +76,11 @@
       transform: translateX(110%);
     }
 
-    paper-icon-button, paper-spinner {
+    paper-icon-button.close {
       position: absolute;
       top: 0;
       right: 0;
       z-index: 1;
-    }
-
-    #locationButton, paper-spinner {
-      padding: 16px;
     }
 
     #emptyList {
@@ -114,15 +111,17 @@
     <zuks-client-service instructions="{{instructions}}" user="{{user}}" id="service"></zuks-client-service>
 
     <core-header-panel mode="waterfall" fullbleed>
-      <div class="core-header" center>
+      <div class="core-header" horizontal layout center>
         <img src="https://www.zuks.org/static/img/logo/logo-weiss%401200.png">
+        <div flex></div>
         <template if="{{user.id}}">
           <template if="{{!requestingLocation}}">
-            <paper-icon-button icon="maps:my-location" id="locationButton" on-click="{{locate}}"></core-icon-button>
+            <paper-icon-button icon="maps:my-location" id="locationButton" on-click="{{locate}}"></paper-icon-button>
           </template>
           <template if="{{requestingLocation}}">
             <paper-spinner active></paper-spinner>
           </template>
+          <paper-icon-button icon="exit-to-app" id="logoutButton" on-click="{{logout}}"></paper-icon-button>
         </template>
       </div>
 
@@ -146,7 +145,7 @@
         <template repeat="{{instruction, index in instructions}}">
           <div class="item {{ {map: !!instruction.location} | tokenList }}">
             <paper-shadow>
-              <paper-icon-button icon="close" on-click="{{dismissCard}}"></paper-icon-button>
+              <paper-icon-button icon="close" class="close" on-click="{{dismissCard}}"></paper-icon-button>
 
               <template if="{{instruction.subject}}">
                 <h1>{{instruction.subject}}</h1>
@@ -197,6 +196,9 @@
           content: "Gib doch bitte deinen Standort frei. Einfach oben rechts auf das Icon drücken. DATENSCHUTZ wird bei mir übrigens groß geschrieben, versprochen!"
         });
       }, this, 4000);
+    },
+    logout: function() {
+      this.$.service.logout();
     },
     dismissCard: function(event) {
       var item = event.target.parentElement;
