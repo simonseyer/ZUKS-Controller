@@ -42,7 +42,7 @@
       this.user.location = {latitude: 0, longitude: 0};
       this.user.targetLocation = null;
       this.user.group = 1;
-      this.$.rest.post('volunteers', this.user, function(response) {
+      this.$.rest.post('volunteers/login', this.user, function(response) {
         this.user = response;
         this.$.ws.send(response.id);
       }.bind(this));
