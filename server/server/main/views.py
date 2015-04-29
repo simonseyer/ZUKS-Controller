@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from server.main.models import *
 from server.main.serializers import *
 from server.main.event_bus import EventBus, EventBusLogger
@@ -75,6 +75,22 @@ class VolunteerViewSet(EventViewSet):
   queryset = Volunteer.objects.all()
   serializer_class = VolunteerSerializer
   event_key = "volunteer"
+
+  @list_route(methods=['post'])
+  def login(self, request):
+    first_name = request.data['first_name']
+    last_name = request.data['last_name']
+    if not first_name or not last_name:
+      return Response(status_code=400)
+
+    try:
+      # login if the user already exists
+      volunteer = Volunteer.objects.get(first_name=first_name, last_name=last_name)
+      serializer = VolunteerSerializer(volunteer)
+      return Response(serializer.data)
+    except:
+      # register, if it is a new user
+      return self.create(request)
 
   def fire(self, key, data):
     '''
