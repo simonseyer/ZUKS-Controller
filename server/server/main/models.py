@@ -25,6 +25,7 @@ class Volunteer(models.Model):
 
   class Meta:
     ordering = ['first_name', 'last_name']
+    unique_together = ("first_name", "last_name")
 
   def __str__(self):
     return "%s %s" % (self.first_name, self.last_name)
