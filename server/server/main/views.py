@@ -83,6 +83,7 @@ class VolunteerViewSet(EventViewSet):
     if not first_name or not last_name:
       return Response(status_code=400)
 
+    first_name, last_name = first_name.strip(), last_name.strip()
     try:
       # login if the user already exists
       volunteer = Volunteer.objects.get(first_name=first_name, last_name=last_name)
