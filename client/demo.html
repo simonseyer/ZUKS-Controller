@@ -84,6 +84,7 @@
 
   #content {
     height: 100%;
+    color: rgba(0, 0, 0, 0.87);
   }
 
   .desktop-container, .mobile-container {
@@ -133,27 +134,182 @@
     color: #4d9eff;
   }
 
+  #welcome-overlay {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 20%;
+    background-color: white;
+    max-width: 600px;
+    z-index: 1200;
+    padding: 24px;
+  }
+
+  #welcome-backdrop {
+    z-index: 1100;
+    position: fixed;
+    background-color: rgba(0,0,0,0.75);
+    top: 61px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  #welcome-overlay, #welcome-backdrop {
+    -webkit-transition: opacity 0.25s;
+            transition: opacity 0.25s;
+  }
+
+  #welcome-overlay button {
+    border: none;
+    background-color: white;
+    float: right;
+    margin: 0.7em 0.86em;
+    text-transform: uppercase;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+  }
+
+  #startTourButton {
+    color: #4d9eff;
+  }
+
+  .paper-shadow-top-z-3, .paper-shadow-bottom-z-3 {
+    pointer-events: none;
+  }
+
+  p.info {
+    color: #ec7217;
+  }
+
+  #content a, #content a:hover, #content a:visited {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.87);
+    opacity: 0.9;
+  }
+
+  #content a:hover {
+    opacity: 1;
+  }
+
+  #content a.fb {
+    color: #3B5998;
+  }
+
+  #content a.google {
+    color: #DD4B39;
+  }
+
+  #content a.twitter {
+    color: #55ACEE;
+  }
+
+  #content a.mail {
+    color: #4d9eff;
+  }
+
+  .browser {
+    display: inline-block;
+    margin-right: 40px;
+  }
+
+  .browser img {
+    height: 70px;
+  }
+
+  .browser div {
+    text-align: center;
+    margin-top: 4px;
+    font-weight: bold;
+  }
+
   </style>
 
 </head>
 
 <body unresolved>
-  <template is="auto-binding" id="demoTemplate">
+  <header>
+    <div class="container">
+      <a class="navbar-brand" href="https://www.zuks.org">
+        <img src="https://www.zuks.org/static/img/logo/logo%40300.png" alt="ZUKS Logo" />
+      </a>
+      <nav>
+        <a href="https://www.zuks.org" class="back">ZUKS</a>
+        <a href="#" class="active">Prototyp</a>
+      </nav>
+    </div>
+  </header>
+  <div id="content">
+    <div id="welcome-backdrop">
 
-    <header>
-      <div class="container">
-        <a class="navbar-brand" href="https://www.zuks.org">
-          <img src="https://www.zuks.org/static/img/logo/logo%40300.png" alt="ZUKS Logo" />
+    </div>
+    <div id="welcome-overlay">
+      <div id="shadow-bottom" fit="" class="paper-shadow-bottom-z-3"></div>
+      <div id="shadow-top" fit="" class="paper-shadow-top-z-3"></div>
+      <h1>ZUKS Prototyp</h1>
+      <p>
+        Freiwillige Helfer in Katastrophen zu organisieren -  dass ist unser Ziel von ZUKS.
+      </p>
+      <p>
+        Diese Software soll uns dabei unterstützen, eine große Anzahl Helfern
+        verlässlich zu organisieren und mit diesen zu kommunizieren.
+        Der Prototyp dient als Basis für die Anwendung, die
+        uns und euch später im Einsatz begleiten wird.
+      </p>
+      <p>
+        Wir wollen euch hier unseren ersten Zwischenstand zeigen und um Feedback
+        bitten. Wir sind gespannt auf eure Ideen, die ihr uns gerne auf
+        <a href="https://www.facebook.com/zuks.org" class="fb">Facebook</a>,
+        <a href="https://plus.google.com/+ZuksOrg" class="google">Google+</a>,
+        <a href="https://twitter.com/zuksDE" class="twitter">Twitter</a> oder per
+        <a href="mailto:info@zuks.org" class="mail">Mail</a> zukommen lassen könnt.
+      </P>
+      <div id="browser-error">
+        <p class="info">
+          Dein Browser wird leider nicht vollständig von der Anwendung unterstützt.
+          Damit alles funktioniert, verwende bitte die aktuellste Version einer der folgenden Browser:
+        </p>
+        <a href="https://www.google.com/chrome/browser/desktop/index.html" class="browser">
+          <img src="demo/chrome.png" alt="Chrome logo" /><br />
+          <div>Chrome</div>
         </a>
-        <nav>
-          <a href="https://www.zuks.org" class="back">ZUKS</a>
-          <a href="#" class="active">Prototyp</a>
-          <a href="#" on-click="{{startTour}}">Tour starten</a>
-        </nav>
+        <a href="https://www.mozilla.org/de/firefox/new/" class="browser">
+          <img src="demo/firefox.png" alt="Firefox logo" />
+          <div>Firefox</div>
+        </a>
+        <a href="http://www.opera.com/de" class="browser">
+          <img src="demo/opera.png" alt="Opera logo" />
+          <div>Opera</div>
+        </a>
       </div>
-    </header>
+      <p class="info" id="mobile-error">
+        Die Anwendung ist nicht für Smartphones optimiert. Damit alles funktioniert,
+        schau sie dir doch bitte auf einem großen Bildschirm an.
+      </p>
+      <script type="text/javascript" src="demo/bowser.min.js"></script>
+      <script type="text/javascript">
+        if (bowser.mobile) {
+          document.querySelector('#browser-error').remove();
+        } else {
+          document.querySelector('#mobile-error').remove();
+          if (bowser.chrome && bowser.version >= 41 ||
+              bowser.opera && bowser.version >= 28 ||
+              bowser.firefox && bowser.version >= 37) {
+                document.querySelector('#browser-error').remove();
+              }
+        }
+      </script>
+      <p>
+        Viel Spaß beim Ausprobieren!
+      </p>
+      <button id="startTourButton">Tour starten</button>
+      <button id="closeWelcomeOverlayButton">Schließen</button>
+    </div>
 
-    <div id="content">
+    <template is="auto-binding" id="demoTemplate">
+
       <div class="desktop-container">
         <img src="demo/desktop.png" />
         <zuks-app></zuks-app>
@@ -162,24 +318,44 @@
       <div class="mobile-container">
         <zuks-client-app></zuks-client-app>
       </div>
-    </div>
 
-    <web-tour id="tour" texts="{{tourTexts}}" host="{{tourHost}}">
-      <web-tour-step heading="In der App anmelden" targetSelector="html /deep/ #login">
-        <p>Bitte trage hier deinen oder einen ausgedachten Namen ein und drücke anschließend auf 'Anmelden'.</p>
-      </web-tour-step>
-      <web-tour-step heading="Helfer-Liste" targetSelector="html /deep/ zuks-volunteer-list">
-        <p>Nun taucht dein Name hier drüber in der Liste auf.</p>
-      </web-tour-step>
-      <web-tour-step heading="Viel Spaß beim spielen">
-        <p>Probier ruhig alles aus. Du kannst nichts kaputt machen!</p>
-      </web-tour-step>
-    </web-tour>
+      <web-tour id="tour" texts="{{tourTexts}}" host="{{tourHost}}">
+        <web-tour-step heading="In der App anmelden" targetSelector="html /deep/ #login">
+          <p>Bitte trage hier deinen oder einen ausgedachten Namen ein und drücke anschließend auf 'Anmelden'.</p>
+        </web-tour-step>
+        <web-tour-step heading="Helfer-Liste" targetSelector="html /deep/ zuks-volunteer-list">
+          <p>Nun taucht dein Name hier drüber in der Liste auf.</p>
+        </web-tour-step>
+        <web-tour-step heading="Viel Spaß beim spielen">
+          <p>Probier ruhig alles aus. Du kannst nichts kaputt machen!</p>
+        </web-tour-step>
+      </web-tour>
 
-  </template>
+    </template>
+  </div>
 
   <script type="text/javascript">
     window.onload = function() {
+      var closeWelcomeOverlay = function() {
+        var overlay = document.querySelector('#welcome-overlay');
+        var backdrop = document.querySelector('#welcome-backdrop');
+        overlay.style.opacity = 0;
+        backdrop.style.opacity = 0;
+        setTimeout(function() {
+          overlay.remove();
+          backdrop.remove()
+        }, 500)
+      };
+
+      var startTourButton = document.querySelector('#startTourButton');
+      startTourButton.addEventListener('click', function() {
+        document.querySelector('web-tour').start();
+        closeWelcomeOverlay();
+      });
+
+      var closeButton = document.querySelector('#closeWelcomeOverlayButton');
+      closeButton.addEventListener('click', closeWelcomeOverlay);
+
       var template = document.querySelector('template#demoTemplate');
       template.addEventListener('template-bound', function() {
         this.tourTexts = {
@@ -191,13 +367,8 @@
 
         this.tourHost = document.querySelector('div#content');
 
-        this.startTour = function() {
-          document.querySelector('web-tour#tour').start();
-        }
-
         // Safari hacks (IE is completely unsuported)
-        var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
-        if (isSafari) {
+        if (bowser.safari) {
           // Safari hack to force layout refresh
           document.body.style.height = '0';
           setTimeout(function() {
@@ -215,7 +386,6 @@
             margin-top: 18%;\
           }";
         }
-
       });
     };
   </script>
