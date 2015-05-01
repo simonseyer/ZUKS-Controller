@@ -24,6 +24,10 @@
       transition: transform 0.15s;
     }
 
+    html /deep/ #poiDetail .button-icon {
+      margin-right: 8px;
+    }
+
     html /deep/ .menu core-icon.category {
       color: #505353;
       margin-right: 12px;
@@ -103,7 +107,12 @@
 
        
           <p>{{editablePOI.address}}</p>
-          <paper-button on-click="{{changeLocation}}" raised flex>Standort definieren</paper-button>
+          <div horizontal layout center>
+            <paper-button on-click="{{changeLocation}}" raised flex>
+              <core-icon icon="maps:my-location" class="button-icon"></core-icon>
+              Standort finden
+            </paper-button>
+          </div>
         
         <paper-button dismissive>Abbrechen</paper-button>
         <paper-button class="tintText" on-click="{{savePOI}}" affirmative>Speichern</paper-button>
