@@ -78,7 +78,9 @@
         </web-tour-step>
         <web-tour-step heading="Green spot" targetSelector="#example2" backdrop="false">
           <p>The backdrop could be easily disabled. By using the targetSelector attribute, the target element could be directly defined.</p>
+          <p><b>The tour is paused for two seconds when pressing GO ON.</b></p>
         </web-tour-step>
+        <web-tour-step empty delay="2000"></web-tour-step>
         <web-tour-step heading="Blue spot" target="{{step3Target}}" moreInfosAvailable on-info-request="{{showMoreInfos}}">
           <p>Now the dialog moved to the left side of the target, because there is more room available.</p>
         </web-tour-step>

@@ -26,24 +26,25 @@ content presented in the dialog that is shown when the step is activated.
   </style>
 
   <template>
-    <paper-action-dialog heading="{{heading}}" id="dialog" class="web-tour-step" autoCloseDisabled>
-      <content></content>
+    <template if="{{!empty}}">
+      <paper-action-dialog heading="{{heading}}" id="dialog" class="web-tour-step" autoCloseDisabled>
+        <content></content>
 
-      <template if="{{moreInfosAvailable}}">
-        <paper-button dismissive on-click="{{_showMoreInfos}}">{{texts.moreInfos}}</paper-button>
-      </template>
+        <template if="{{moreInfosAvailable}}">
+          <paper-button dismissive on-click="{{_showMoreInfos}}">{{texts.moreInfos}}</paper-button>
+        </template>
 
-      <template if="{{!lastStep}}">
-        <paper-button affirmative on-click="{{_abort}}">{{texts.abort}}</paper-button>
-      </template>
+        <template if="{{!lastStep}}">
+          <paper-button affirmative on-click="{{_abort}}">{{texts.abort}}</paper-button>
+        </template>
 
-      <template if="{{autoNext}}">
-        <paper-button affirmative on-click="{{_next}}">
-          {{lastStep ? texts.finish : texts.next}}
-        </paper-button>
-      </template>
-    </paper-action-dialog>
-
+        <template if="{{autoNext}}">
+          <paper-button affirmative on-click="{{_next}}">
+            {{lastStep ? texts.finish : texts.next}}
+          </paper-button>
+        </template>
+      </paper-action-dialog>
+    </template>
   </template>
   <script>
   Polymer({
@@ -101,6 +102,28 @@ content presented in the dialog that is shown when the step is activated.
       backdrop: true,
 
       /**
+       * Set this, to pause the tour. All other
+       * parameters are ignored and no backdrop and no
+       * dialog are shown.
+       *
+       * @attribute empty
+       * @type boolean
+       * @default false
+       */
+      empty: false,
+
+      /**
+       * If this parameter is greater than zero,
+       * the step is automatically skipped after
+       * the defined time in miliseconds.
+       *
+       * @attribute delay
+       * @type number
+       * @default 0
+       */
+      delay: 0,
+
+      /**
        * If there is further information
        * available for this step the user could
        * request.
@@ -151,10 +174,26 @@ content presented in the dialog that is shown when the step is activated.
       lastStep: false
     },
     open: function() {
-      this.$.dialog.open();
+      if (!this.empty) {
+        this.$.dialog.open();
+      }
+      if (this.delay > 0) {
+        this.nextTask = setTimeout(function() {
+          this._closeDialog();
+          this._next();
+        }.bind(this), this.delay);
+      }
     },
     close: function() {
-      this.$.dialog.close();
+      this._closeDialog();
+      if (this.nextTask) {
+        clearTimeout(this.nextTask);
+      }
+    },
+    _closeDialog: function() {
+      if (!this.empty && this.$.dialog.openend) {
+        this.$.dialog.close();
+      }
     },
 
     /**
@@ -168,10 +207,10 @@ content presented in the dialog that is shown when the step is activated.
       this.fire('info-request');
     },
     _abort: function() {
-      this.fire('abort');
+      this.fire('step-abort');
     },
     _next: function(event) {
-      this.fire('next');
+      this.fire('step-next');
     },
     targetSelectorChanged: function() {
       this.target = document.querySelector(this.targetSelector);
