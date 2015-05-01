@@ -157,40 +157,72 @@
 
       var closeButton = document.querySelector('#closeWelcomeOverlayButton');
       closeButton.addEventListener('click', closeWelcomeOverlay);
-
-      var template = document.querySelector('template#demoTemplate');
-      template.addEventListener('template-bound', function() {
-        this.tourTexts = {
-          next: 'Weiter',
-          abort: 'Beenden',
-          finish: 'Abschließen',
-          moreInfos: 'Weitere Infos'
-        }
-
-        this.tourHost = document.querySelector('div#content');
-
-        // Safari hacks (IE is completely unsuported)
-        if (bowser.safari) {
-          // Safari hack to force layout refresh
-          document.body.style.height = '0';
-          setTimeout(function() {
-            document.body.style.height = '100%';
-          }, 1);
-
-          // Safari hack to fix marker icon layout
-          var style = document.createElement("style");
-          style.appendChild(document.createTextNode(""));
-          document.head.appendChild(style);
-          style.innerHTML = "core-icon.foreground {\
-            width: 46%;\
-            height: 46%;\
-            margin: 28%;\
-            margin-top: 18%;\
-          }";
-        }
-      });
     };
+    var template = document.querySelector('template#demoTemplate');
+    template.addEventListener('template-bound', function() {
+      this.tourTexts = {
+        next: 'Weiter',
+        abort: 'Beenden',
+        finish: 'Abschließen',
+        moreInfos: 'Weitere Infos'
+      }
+
+      this.tourHost = document.querySelector('div#content');
+
+      var tour = document.querySelector('#tour');
+      tour.addEventListener('start', function() {
+        _paq.push(['trackGoal', 2]);
+      });
+      tour.addEventListener('step-forward', function(event) {
+        _paq.push(['trackEvent', 'Prototyp Tour', 'step forward', event.detail.index]);
+      });
+      tour.addEventListener('finish', function() {
+        _paq.push(['trackGoal', 3]);
+      });
+      tour.addEventListener('abort', function() {
+        _paq.push(['trackEvent', 'Prototyp Tour', 'abort']);
+      });
+
+      // Safari hacks (IE is completely unsuported)
+      if (bowser.safari) {
+        // Safari hack to force layout refresh
+        document.body.style.height = '0';
+        setTimeout(function() {
+          document.body.style.height = '100%';
+        }, 1);
+
+        // Safari hack to fix marker icon layout
+        var style = document.createElement("style");
+        style.appendChild(document.createTextNode(""));
+        document.head.appendChild(style);
+        style.innerHTML = "core-icon.foreground {\
+          width: 46%;\
+          height: 46%;\
+          margin: 28%;\
+          margin-top: 18%;\
+        }";
+      }
+    });
   </script>
+  <!-- Piwik -->
+  <script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+    _paq.push(["setCookieDomain", "*.zuks.org"]);
+    _paq.push(["setDomains", ["*.zuks.org","*.www.zuks.org","*.www.zuks.org","*.zuks.org"]]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="//analytics.zuks.org/";
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
+      _paq.push(['setSiteId', 1]);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  <noscript><p><img src="//analytics.zuks.org/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+  <!-- End Piwik Code -->
+
 </body>
 
 </html>
