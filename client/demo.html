@@ -204,6 +204,12 @@
       }
     });
   </script>
+  <!-- Error logging -->
+  <script src="//cdn.ravenjs.com/1.1.18/raven.min.js"></script>
+  <script>
+    Raven.config('http://ed2fb309396a458f85f01100ef767e9e@sentry.zuks.org/3').install();
+  </script>
+
   <!-- Piwik -->
   <script type="text/javascript">
     var _paq = _paq || [];
