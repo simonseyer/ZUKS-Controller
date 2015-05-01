@@ -10,6 +10,7 @@
 <link rel="import" href="../bower_components/core-icons/maps-icons.html">
 <link rel="import" href="../bower_components/core-icons/communication-icons.html">
 <link rel="import" href="../bower_components/core-icons/social-icons.html">
+<link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 
 <link rel="import" href="zuks-list-item.html">
 
@@ -40,6 +41,17 @@
     html /deep/ #volunteerDetail paper-icon-button[active] {
       color: #4d9eff;
     }
+
+    html /deep/ #volunteerDetail paper-shadow {
+      padding: 24px;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+
+    html /deep/ #volunteerDetail paper-shadow paper-button {
+      margin-right: -10px;
+    }
+     
   </style>
 
   <template>
@@ -113,29 +125,33 @@
         </div>
 
         <template if="{{mode == 'edit'}}">
-          <paper-dropdown-menu label="Gruppe">
-              <paper-dropdown layered class="dropdown">
-                  <core-menu class="menu" valueattr="gid" selected="{{selectedGroup}}">
-                      <template repeat="{{group in volunteerGroups.values}}">
-                          <paper-item gid="{{group.id}}">{{group.name}}</paper-item>
-                      </template>
-                  </core-menu>
-              </paper-dropdown>
-          </paper-dropdown-menu>
+          <paper-shadow z="1" vertical end-justified layout>
+            <paper-dropdown-menu label="Gruppe">
+                <paper-dropdown layered class="dropdown">
+                    <core-menu class="menu" valueattr="gid" selected="{{selectedGroup}}">
+                        <template repeat="{{group in volunteerGroups.values}}">
+                            <paper-item gid="{{group.id}}">{{group.name}}</paper-item>
+                        </template>
+                    </core-menu>
+                </paper-dropdown>
+            </paper-dropdown-menu>
 
-          <paper-button class="tintText" on-click="{{saveVolunteer}}" affirmative>Speichern</paper-button>
+            <paper-button class="tintText" on-click="{{saveVolunteer}}" affirmative self-end>Speichern</paper-button>
+            </paper-shadow>
         </template>
 
         <template if="{{mode == 'compose'}}">
-          <paper-input-decorator label="Betreff">
-            <input type="text" value="{{message.subject}}" autofocus>
-          </paper-input-decorator>
+          <paper-shadow z="1" vertical end-justified layout>
+              <paper-input-decorator label="Betreff">
+                <input type="text" value="{{message.subject}}" autofocus>
+              </paper-input-decorator>
 
-          <paper-input-decorator label="Nachricht" floatingLabel>
-            <textarea value="{{message.content}}" rows="3"></textarea>
-          </paper-input-decorator>
+              <paper-input-decorator label="Nachricht" floatingLabel>
+                <textarea value="{{message.content}}" rows="3"></textarea>
+              </paper-input-decorator>
 
-          <paper-button class="tintText" on-click="{{sendMessage}}" affirmative>Senden</paper-button>
+              <paper-button class="tintText" on-click="{{sendMessage}}" affirmative self-end>Senden</paper-button>
+            </paper-shadow>
         </template>
 
         <paper-button class="tintText" affirmative>Schließen</paper-button>
