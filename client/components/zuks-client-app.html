@@ -183,22 +183,27 @@
     ready: function() {
       this.selectedTab = 0;
       CoreStyle.g.paperInput.focusedColor = '#4d9eff';
+    },
+    register: function() {
+      this.$.service.register();
       this.instructions.push({
         subject: "Herzlich Willkommen",
         content: "Schön dass du bei dieser Präsentation mit machst. Schließe Karten einfach mit dem x oben rechts."
       });
-    },
-    register: function() {
-      this.$.service.register();
-      this.async(function() {
+      this.addCardTask = setTimeout(function() {
         this.instructions.unshift({
           subject: "Wo bist du?",
           content: "Gib doch bitte deinen Standort frei. Einfach oben rechts auf das Icon drücken. DATENSCHUTZ wird bei mir übrigens groß geschrieben, versprochen!"
         });
-      }, this, 4000);
+        this.addCardTask = null;
+      }.bind(this), 4000);
     },
     logout: function() {
       this.$.service.logout();
+      this.instructions = [];
+      if (this.addCardTask) {
+        clearTimeout(this.addCardTask);
+      }
     },
     dismissCard: function(event) {
       var item = event.target.parentElement;
