@@ -156,6 +156,15 @@
     left: 0;
   }
 
+  @media (max-width: 648px) {
+    #welcome-overlay {
+      top: 61px;
+    }
+    #welcome-backdrop {
+      display: none;
+    }
+  }
+
   #welcome-overlay, #welcome-backdrop {
     -webkit-transition: opacity 0.25s;
             transition: opacity 0.25s;
@@ -172,7 +181,7 @@
     font-size: 1em;
   }
 
-  #startTourButton {
+  button.primary {
     color: #4d9eff;
   }
 
@@ -266,6 +275,9 @@
         <a href="https://twitter.com/zuksDE" class="twitter">Twitter</a> oder per
         <a href="mailto:info@zuks.org" class="mail">Mail</a> zukommen lassen könnt.
       </P>
+      <p>
+        Viel Spaß beim Ausprobieren!
+      </p>
       <div id="browser-error">
         <p class="info">
           Dein Browser wird leider nicht vollständig von der Anwendung unterstützt.
@@ -288,10 +300,17 @@
         Die Anwendung ist nicht für Smartphones optimiert. Damit alles funktioniert,
         schau sie dir doch bitte auf einem großen Bildschirm an.
       </p>
+
+      <button id="startTourButton" class="primary">Tour starten</button>
+      <button id="closeWelcomeOverlayButton">Schließen</button>
       <script type="text/javascript" src="demo/bowser.min.js"></script>
       <script type="text/javascript">
         if (bowser.mobile) {
           document.querySelector('#browser-error').remove();
+          document.querySelector('#startTourButton').remove();
+          var closeButton = document.querySelector('#closeWelcomeOverlayButton');
+          closeButton.innerText = "Trotzdem starten";
+          closeButton.className = "primary";
         } else {
           document.querySelector('#mobile-error').remove();
           if (bowser.chrome && bowser.version >= 41 ||
@@ -301,11 +320,6 @@
               }
         }
       </script>
-      <p>
-        Viel Spaß beim Ausprobieren!
-      </p>
-      <button id="startTourButton">Tour starten</button>
-      <button id="closeWelcomeOverlayButton">Schließen</button>
     </div>
 
     <template is="auto-binding" id="demoTemplate">
@@ -348,10 +362,12 @@
       };
 
       var startTourButton = document.querySelector('#startTourButton');
-      startTourButton.addEventListener('click', function() {
-        document.querySelector('web-tour').start();
-        closeWelcomeOverlay();
-      });
+      if (startTourButton) {
+        startTourButton.addEventListener('click', function() {
+          document.querySelector('web-tour').start();
+          closeWelcomeOverlay();
+        });
+      }
 
       var closeButton = document.querySelector('#closeWelcomeOverlayButton');
       closeButton.addEventListener('click', closeWelcomeOverlay);
