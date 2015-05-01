@@ -14,7 +14,7 @@
 
 <link rel="import" href="zuks-list-item.html">
 
-<polymer-element name="zuks-poi-list" attributes="poiCategories selectedPOI">
+<polymer-element name="zuks-poi-list" attributes="poiCategories pois selectedPOI">
 
   <!-- global dialog style -->
   <style type="text/css" shim-shadowdom>
@@ -56,8 +56,8 @@
     }
     </style>
 
-    <core-list data="{{poiCategories.values | flattenGroup}}"
-             groups="{{poiCategories.values}}"
+    <core-list data="{{poiListData}}"
+             groups="{{poiCategoryListData}}"
           selection="{{selectedPOI}}"
                  id="poiList" selectionenabled fit>
       <template>
@@ -120,12 +120,23 @@
   <script>
   Polymer({
     editablePOI: null,
-    flattenGroup: function(categoryList) {
+    observe:  {
+      'poiCategories.values': 'poiCategoriesChanged',
+      'pois.values': 'poiCategoriesChanged',
+    },
+    poiCategoriesChanged: function() {
       var pois = [];
-      categoryList.forEach(function(category) {
-        pois.push(category.pois);
-      });
-      return pois;
+      var categories = [];
+      if (this.poiCategories && this.poiCategories.values) {
+        this.poiCategories.values.forEach(function(category) {
+          if (category.pois.length) {
+            categories.push(category);
+            pois.push(category.pois);
+          }
+        });
+      }
+      this.poiListData = pois;
+      this.poiCategoryListData = categories;
     },
     selectPOI: function(poi) {
       if (this.selectedPOI && this.selectedPOI.id == poi.id) {
