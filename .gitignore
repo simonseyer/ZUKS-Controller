@@ -13,3 +13,5 @@ node_modules
 /client/settings.json
 /websocket-server/settings.py
 /server/server/settings.py
+/client/.sass-cache
+/client/demo/*.css*
