@@ -29,13 +29,12 @@
       margin-right: 12px;
     }
 
-    html /deep/ #poiDetail /deep/ paper-icon-button.location {
-      margin: auto;
-      padding-top: 20px;
-    }
-
     html /deep/ #poiDetail.movedAway {
       transform: translateX(-200%);
+    }
+
+    html /deep/ paper-button {
+      margin-bottom: 4px;
     }
   </style>
 
@@ -102,14 +101,10 @@
           <textarea value="{{editablePOI.description}}" rows="3"></textarea>
         </paper-input-decorator>
 
-        <div horizontal layout>
-          <paper-input-decorator label="Adresse" floatingLabel>
-            <textarea readonly value="{{editablePOI.address}}" rows="3"></textarea>
-          </paper-input-decorator>
-          <paper-icon-button icon="maps:my-location" class="location" on-click="{{changeLocation}}">
-          </paper-icon-button>
-        </div>
-
+       
+          <p>{{editablePOI.address}}</p>
+          <paper-button on-click="{{changeLocation}}" raised flex>Standort definieren</paper-button>
+        
         <paper-button dismissive>Abbrechen</paper-button>
         <paper-button class="tintText" on-click="{{savePOI}}" affirmative>Speichern</paper-button>
       </template>
