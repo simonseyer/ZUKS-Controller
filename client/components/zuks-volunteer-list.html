@@ -21,7 +21,6 @@
     html /deep/ #volunteerDetail {
       margin: 0;
       max-width: 280px;
-      width: 280px;
       margin-top: 4px;
       transition: transform 0.15s;
     }
@@ -34,11 +33,22 @@
       transform: translateX(-200%);
     }
 
-    html /deep/ #volunteerDetail .actions :first-child {
-      padding-left: 0px;
+    html /deep/ #volunteerDetail .actions {
+      height: 100px;
     }
 
-    html /deep/ #volunteerDetail paper-icon-button[active] {
+    html /deep/ #volunteerDetail .actions div {
+      width: 120px;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+    }
+
+    html /deep/ #volunteerDetail core-icon {
+      margin-bottom: 8px;
+    }
+
+    html /deep/ #volunteerDetail paper-ripple {
       color: #4d9eff;
     }
 
@@ -102,60 +112,62 @@
         on-core-overlay-position="{{layoutVolunteerOverlay}}"
  on-core-overlay-close-completed="{{volunteerOverlayClosed}}"
                               id="volunteerDetail" autoCloseDisabled>
-        <template if="{{selectedVolunteers.length > 1}}">
-          <div>
-            <template repeat="{{volunteer, i in selectedVolunteers}}">
-              <span>
-                {{volunteer.first_name}} {{volunteer.last_name}}{{(i < selectedVolunteers.length - 1) ? ',' : ''}}
-              </span>
-            </template>
+        <div vertical layout >
+          <div horizontal layout class="actions">
+            <div vertical layout center center-justified on-tap="{{locate}}">
+              <core-icon icon="maps:my-location"></core-icon>
+              <div>Lokalisieren</div>
+              <paper-ripple fit class="recenteringTouch circle"></paper-ripple>
+            </div>
+            <div vertical layout center center-justified on-tap="{{sendToLocation}}">
+              <core-icon icon="maps:navigation"></core-icon>
+              <div>Ziel festlegen</div>
+              <paper-ripple fit class="recenteringTouch circle"></paper-ripple>
+            </div>
           </div>
-        </template>
-
-        <div class="actions" horizontal layout>
-          <paper-icon-button icon="maps:my-location" on-click="{{locate}}"></paper-icon-button>
-          <paper-icon-button icon="maps:navigation" on-click="{{sendToLocation}}"></paper-icon-button>
-          <paper-icon-button icon="communication:messenger"
-                          active?="{{mode=='compose'}}"
-                         on-click="{{composeMessage}}">
-          </paper-icon-button>
-          <paper-icon-button icon="social:group"
-                          active?="{{mode=='edit'}}"
-                         on-click="{{edit}}">
-          </paper-icon-button>
+          <div class="actions" horizontal layout>
+            <div vertical layout center center-justified on-tap="{{composeMessage}}">
+              <core-icon icon="communication:messenger"></core-icon>
+              <div>Nachricht senden</div>
+              <paper-ripple fit class="recenteringTouch circle"></paper-ripple>
+            </div>
+            <div vertical layout center center-justified on-tap="{{edit}}">
+              <core-icon icon="social:group"></core-icon>
+              <div>Gruppe zuordnen</div>
+              <paper-ripple fit class="recenteringTouch circle"></paper-ripple>
+            </div>
+          </div>
         </div>
 
-        <template if="{{mode == 'edit'}}">
-          <paper-shadow z="1" vertical end-justified layout>
-            <paper-dropdown-menu label="Gruppe">
-                <paper-dropdown layered class="dropdown">
-                    <core-menu class="menu" valueattr="gid" selected="{{selectedGroup}}">
-                        <template repeat="{{group in volunteerGroups.values}}">
-                            <paper-item gid="{{group.id}}">{{group.name}}</paper-item>
-                        </template>
-                    </core-menu>
-                </paper-dropdown>
-            </paper-dropdown-menu>
-
-            <paper-button class="tintText" on-click="{{saveVolunteer}}" affirmative self-end>Speichern</paper-button>
-            </paper-shadow>
-        </template>
-
-        <template if="{{mode == 'compose'}}">
-          <paper-shadow z="1" vertical end-justified layout>
-              <paper-input-decorator label="Betreff">
-                <input type="text" value="{{message.subject}}" autofocus>
-              </paper-input-decorator>
-
-              <paper-input-decorator label="Nachricht" floatingLabel>
-                <textarea value="{{message.content}}" rows="3"></textarea>
-              </paper-input-decorator>
-
-              <paper-button class="tintText" on-click="{{sendMessage}}" affirmative self-end>Senden</paper-button>
-            </paper-shadow>
-        </template>
-
         <paper-button class="tintText" affirmative>Schließen</paper-button>
+    </paper-action-dialog>
+
+    <paper-action-dialog heading="Helfer einer Gruppe zuordnen" id="editDialog">
+      <paper-dropdown-menu label="Gruppe">
+        <paper-dropdown layered class="dropdown">
+          <core-menu class="menu" valueattr="gid" selected="{{selectedGroup}}">
+            <template repeat="{{group in volunteerGroups.values}}">
+              <paper-item gid="{{group.id}}">{{group.name}}</paper-item>
+            </template>
+          </core-menu>
+        </paper-dropdown>
+      </paper-dropdown-menu>
+
+      <paper-button dismissive>Abbrechen</paper-button>
+      <paper-button class="tintText" on-click="{{saveVolunteer}}" affirmative>Speichern</paper-button>
+    </paper-action-dialog>
+
+    <paper-action-dialog heading="Helfer eine Nachricht senden" id="composeDialog">
+      <paper-input-decorator label="Betreff" floatingLabel>
+        <input type="text" value="{{message.subject}}" autofocus>
+      </paper-input-decorator>
+
+      <paper-input-decorator label="Nachricht" floatingLabel>
+        <textarea value="{{message.content}}" rows="3"></textarea>
+      </paper-input-decorator>
+
+      <paper-button dismissive>Abbrechen</paper-button>
+      <paper-button class="tintText" on-click="{{sendMessage}}" affirmative>Senden</paper-button>
     </paper-action-dialog>
 
   </template>
@@ -277,13 +289,12 @@
     },
     composeMessage: function() {
       this.message = {};
-      this.mode = this.mode == 'compose' ? null : 'compose';
+      this.$.composeDialog.open();
     },
     edit: function() {
-      this.mode = this.mode == 'edit' ? null : 'edit';
+      this.$.editDialog.open();
     },
     sendMessage: function() {
-      this.mode = null;
       this.selectedVolunteers.forEach(function(volunteer) {
         var message = Object.assign({}, this.message);
         message.receiver = volunteer.id;
