@@ -8,6 +8,7 @@
     }
     </style>
   </template>
+  <script type="text/javascript" src="../../bower_components/reconnectingWebsocket/reconnecting-websocket.min.js"></script>
   <script>
   Polymer({
     root_url: /*SETTINGS:websocket-server-url*/"ws://" + location.hostname +  ":8888/ws"/*END_SETTINGS*/,
@@ -16,10 +17,11 @@
     initWebSocket: function() {
       var self = this;
 
-      self.ws = new WebSocket(self.root_url);
+      self.ws = new ReconnectingWebSocket(self.root_url);
       self.ws.onopen = function() {
         console.log("Webservice connected");
-      };
+        this.fire('connect');
+      }.bind(this);
       self.ws.onmessage = function(msg) {
         console.log("Recieved message: " + msg.data);
 
@@ -35,6 +37,9 @@
         } else {
           console.warn("No handler registered for event: " + event);
         }
+      };
+      self.ws.onclose = function() {
+        console.log("Webservice disconnected");
       };
     },
     send: function(message) {

@@ -12,7 +12,7 @@
     </style>
 
     <zuks-rest id="rest"></zuks-rest>
-    <zuks-ws id="ws"></zuks-ws>
+    <zuks-ws id="ws" on-connect="{{handleConnect}}"></zuks-ws>
 
   </template>
   <script>
@@ -52,6 +52,11 @@
     },
     updateUser: function() {
       this.$.rest.put('volunteers', this.user);
+    },
+    handleConnect: function() {
+      if (this.user.id) {
+        this.$.ws.send(this.user.id);
+      }
     }
   });
   </script>
