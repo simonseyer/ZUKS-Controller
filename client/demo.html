@@ -23,7 +23,11 @@
   <!-- load the social icon set and core-icon element -->
   <link rel="import" href="/bower_components/core-icons/hardware-icons.html">
 
+  <!-- MDi reference ? -->
+  <link rel="import" href="/demo/mdi.html" />
+
   <style>
+
   html,body {
     height: 100%;
     width: 100%;
@@ -135,6 +139,34 @@
   html /deep/ paper-button[affirmative] {
     color: #4d9eff;
   }
+
+  html /deep/ .hardware-icons {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    text-align: center;
+  }
+
+  html /deep/ .hardware.left {
+    margin-right: 2em;
+  }
+
+  html /deep/ .hardware.right {
+    margin-left: 2em;
+  }
+
+  html /deep/ .arrow, html /deep/ .hardware {
+    height: 4em;
+    width: 4em;
+  }
+
+  html /deep/ a.social-link {
+    text-decoration: none;
+  }
+
+  html /deep/ core-icon.social-link-icon {
+    text-decoration: none;
+    color: black;
+  }
   
   </style>
 
@@ -169,43 +201,47 @@
 
     <web-tour id="tour" texts="{{tourTexts}}" host="{{tourHost}}">
       <web-tour-step heading="Demo-Tour">
-        <p>In dieser Tour lernst Du die wesentlichen Interaktionselemente des ZUKS-Prototypen kennen. 
+        <p>In dieser Tour lernst Du die wesentlichen Interaktionselemente des ZUKS-Prototyps kennen.</p>
 
-          <core-icon class="right" icon="hardware:phone-android"></core-icon>
-          <core-icon class="right" icon="hardware:keyboard-arrow-right"></core-icon>
-          Auf der rechten Seite siehst Du die App die Du als ZUKS-Helfer benutzen wirst. 
-
-          <core-icon class="left" icon="hardware:keyboard-arrow-left"></core-icon>
-          <core-icon class="left" icon="hardware:desktop-mac"></core-icon>
-          Links auf dem Bildschirm den Controller wie wir ihn in der ZUKS-Zentrale einsetzen. Um zu zeigen wie die beiden Anwednungen zusammenspielen kannst du in dieser Demo ausnahmensweise beide bedienen.
-
+        <div class="hardware-icons">
+          <core-icon class="arrow left" icon="hardware:keyboard-arrow-left"></core-icon>
+          <core-icon class="hardware left" icon="hardware:desktop-mac"></core-icon>
+          <core-icon class="hardware right" icon="hardware:phone-android"></core-icon>
+          <core-icon class="arrow right" icon="hardware:keyboard-arrow-right"></core-icon>
+        </div>
+          
+      <div>
+        <p>          
+          Auf der rechten Seite siehst Du die App die Du als ZUKS-Helfer benutzen wirst. Links auf dem Bildschirm den Controller wie wir ihn in der ZUKS-Zentrale einsetzen. Um zu zeigen wie die beiden Anwendungen zusammenspielen kannst Du in dieser Demo ausnahmensweise beide bedienen.
         </p>
+      </div>
+        
       </web-tour-step>
       <web-tour-step heading="Anmeldung in der App" autoNext="false" targetSelector="html /deep/ core-header-panel">
-        <p>Um bei einer Katastrophenschutzübung in deiner Nähe zu helfen hast du dir die ZUKS-App heruntergeladen und willst dich anmelden. Bitte trage hier deinen oder einen ausgedachten Namen ein und schließe mit 'Anmelden' ab.</p>
+        <p>Um bei einer Katastrophenschutzübung in Deiner Nähe zu helfen hast Du dir die ZUKS-App heruntergeladen und willst Dich anmelden. Bitte trage hier Deinen oder einen ausgedachten Namen ein und schließe mit 'Anmelden' ab.</p>
       </web-tour-step>
       <web-tour-step heading="Standortfreigabe" targetSelector="html /deep/ core-header-panel">
-        <p>Alle für Dich relevanten Infos erhältst du über solche "Karten". Hier bitten wir dich darum deinen Standort freizugeben. Dadurch können wir dir helfen wenn du dich verlaufen solltest oder dich warnen wenn du dich in ein Gefahrengebiet begibst.</p>
+        <p>Alle für Dich relevanten Infos erhältst Du über solche "Karten". Hier bitten wir Dich darum deinen Standort freizugeben, indem Du den Zugriff im Browser erlaubst. Dadurch können wir Dir helfen wenn Du dich verlaufen solltest oder Dich warnen wenn Du Dich in ein Gefahrengebiet begibst.</p>
       </web-tour-step>
       <web-tour-step heading="Helfer lokalisieren" targetSelector="html /deep/ zuks-volunteer-list">
-        <p>Wir in der ZUKS-Zentrale haben dich nun auf unserer Liste. Du bist als potentieller Helfer in der Datenbank eingetragen. Finde deinen Namen in der Liste unserer bisherigen Helfer und klicke auf <core-icon icon="maps:my-location"></core-icon>. Ist dein Standort korrekt?</p>
+        <p>Wir in der ZUKS-Zentrale haben Dich nun auf unserer Liste. Du bist als potentieller Helfer in der Datenbank eingetragen. Finde Deinen Namen in der Liste unserer bisherigen Helfer und klicke auf <core-icon icon="maps:my-location"></core-icon>. An dieser Stelle haben wir Dich lokalisiert.</p>
       </web-tour-step>      
       <web-tour-step heading="Helfer zum Einsatz leiten" targetSelector="html /deep/ zuks-volunteer-list">
-        <p>Du darfst hier einmal ZUKS-Zentrale spielen und dich selbst an einen beliebigen Einsatzort lotsen. Klicke auf <core-icon icon="maps:navigation"></core-icon> und wähle in der Karte den Ort aus, an dem deine Hilfe benötigt wird.</p>
+        <p>Du darfst hier einmal ZUKS-Zentrale spielen und Dich selbst an einen beliebigen Einsatzort lotsen. Klicke auf <core-icon icon="maps:navigation"></core-icon> und suche in der Karte einen Ort aus, an dem Deine Hilfe benötigt wird.</p>
       </web-tour-step>
       <web-tour-step heading="Wegbeschreibung" targetSelector="html /deep/ core-header-panel">
-        <p>Den Hinweis wohin es für dich im Einsatz gehen wird und das notwendige Kartenmaterial bekommst du direkt in der App angezeigt. Los gehts!</p>
+        <p>Den Hinweis wohin es für Dich im Einsatz gehen wird und das notwendige Kartenmaterial bekommst Du direkt in der App angezeigt. Los gehts!</p>
       </web-tour-step>
       <web-tour-step heading="Danke für deine Hilfe!">
-        <p>Dies ist das Ende unserer kleinen Demo-Tour. Wir freuen uns über Feedback und Verbesserungsvorschläge auf unseren Kanälen:</p>
-        <a href="mailto:info@zuks.org" onmouseover="this.href=this.href.replace(/x/g,'');" style="color:black;">
-            <core-icon icon="mail"/>
+        <p>Dies ist vorerst das Ende unserer kleinen Demo-Tour. Wir freuen uns über Dein Lob, Deine Kritik und Deine Verbesserungsvorschläge auf jeglichen Kanälen:</p>
+        <a class="social-link" href="mailto:info@zuks.org" onmouseover="this.href=this.href.replace(/x/g,'');" style="color:black;">
+            <core-icon class="social-link-icon" icon="mdi:email"></core-icon>
         </a>
-        <a href="https://www.facebook.com/zuks.org">
-            <core-icon icon="face"/>
+        <a class="social-link" href="https://www.facebook.com/zuks.org">
+            <core-icon class="social-link-icon" icon="mdi:facebook"></core-icon>
         </a>
-        <a href="https://twitter.com/zuksDE">
-            <core-icon icon="flag"/>
+        <a class="social-link" href="https://twitter.com/zuksDE">
+            <core-icon class="social-link-icon" icon="mdi:twitter"></core-icon>
         </a>
         <p>Viel Spaß beim weiteren Testen unsereres vorläufigen Prototyps.</p>
       </web-tour-step>
@@ -228,6 +264,10 @@
 
         var client = document.querySelector('zuks-client-app');
         client.addEventListener('login', function() {
+          document.querySelector('web-tour#tour').next();
+        })
+
+        client.addEventListener('ripple', function() {
           document.querySelector('web-tour#tour').next();
         })
 
