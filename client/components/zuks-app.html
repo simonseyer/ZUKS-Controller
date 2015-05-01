@@ -30,6 +30,11 @@
       background-color: #fff;
     }
 
+    .icon-container {
+      font-size: 0.5em;
+      position: relative;;
+    }
+
     paper-tabs::shadow #selectionBar {
       background-color: #ec7217;
     }
@@ -61,8 +66,16 @@
       <div vertical layout>
         <core-toolbar>
           <div flex>ZUKS</div>
-          <paper-icon-button icon="social:group-add" on-tap="{{createGroup}}"></paper-icon-button>
-          <paper-icon-button icon="social:location-city" on-tap="{{createPOI}}"></paper-icon-button>
+          <div vertical layout center center-justified on-tap="{{createGroup}}" class="icon-container">
+            <core-icon icon="social:group-add"></core-icon>
+            <div>Gruppe erstellen</div>
+            <paper-ripple fit class="recenteringTouch circle"></paper-ripple>
+          </div>
+          <div vertical layout center center-justified on-tap="{{createPOI}}" class="icon-container">
+            <core-icon icon="social:location-city"></core-icon>
+            <div>Ort erstellen</div>
+            <paper-ripple fit class="recenteringTouch circle"></paper-ripple>
+          </div>
         </core-toolbar>
         <paper-tabs selected="{{selectedTab}}">
           <paper-tab>
