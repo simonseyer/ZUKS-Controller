@@ -48,6 +48,14 @@
 
             var newGroup = self.volunteerGroups.get(volunteer.group);
             newGroup.members.push(volunteer);
+
+            // Hack to work around bug in core-list
+            if (oldGroup.members.length == 0 || newGroup.members.length == 1) {
+              self.volunteerGroups.values.push({name:"",id:-1,members:{}});
+              setTimeout(function() {
+                self.volunteerGroups.values.pop();
+              }, 0);
+            }
           }
 
           var v = self.volunteers.get(volunteer.id);
@@ -75,8 +83,16 @@
             var oldCategory = self.poiCategories.get(oldPOI.category);
             self.spliceModel(oldCategory.pois, oldPOI);
 
-            var newPOI = self.poiCategories.get(poi.category);
-            newPOI.pois.push(poi);
+            var newCategory = self.poiCategories.get(poi.category);
+            newCategory.pois.push(poi);
+
+            // Hack to work around bug in core-list
+            if (oldCategory.pois.length == 0 || newCategory.pois.length == 1) {
+              self.poiCategories.values.push({name:"",id:-1,pois:{}});
+              setTimeout(function() {
+                self.poiCategories.values.pop();
+              }, 0);
+            }
           }
 
           var p = self.pois.get(poi.id);
