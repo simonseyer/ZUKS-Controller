@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'server.main',
     'corsheaders',
+    'raven.contrib.django.raven_compat',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -111,6 +112,10 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'INFO'
     }
+}
+
+RAVEN_CONFIG = {
+    'dsn': 'http://6ccb19f079584ff6b9acf22be7146bf9:d67081dc937d490cbb298b479aa1a3f9@sentry.zuks.org/4',
 }
 
 # Web Socket Service
