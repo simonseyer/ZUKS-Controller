@@ -199,3 +199,16 @@ header {
 html /deep/ paper-button[affirmative] {
 	color: $zuks-color;
 }
+
+// Hack to restrict dialog to the desktop screen area
+core-overlay-layer {
+  top: 0;
+  left: 79px;
+  overflow: hidden;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  * {
+  	pointer-events: auto;
+  }
+}
