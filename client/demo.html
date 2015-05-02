@@ -164,8 +164,33 @@
   }
 
   html /deep/ core-icon.social-link-icon {
+    height: 2em;
+    width: 2em;
     text-decoration: none;
     color: black;
+  }
+
+  html /deep/ .socials {
+    text-align: center;
+  }
+
+  html /deep/ .mail core-icon {
+    color: #4d9eff;
+    color: black;
+  }
+
+  html /deep/ .google-plus core-icon {
+    color: #DD4B39;
+    height: 1em;
+    width: 1em;
+  }
+
+  html /deep/ .facebook core-icon {
+    color: #3B5998;
+  }
+
+  html /deep/ .twitter core-icon {
+    color: #55ACEE;
   }
   
   </style>
@@ -234,15 +259,20 @@
       </web-tour-step>
       <web-tour-step heading="Danke für deine Hilfe!">
         <p>Dies ist vorerst das Ende unserer kleinen Demo-Tour. Wir freuen uns über Dein Lob, Deine Kritik und Deine Verbesserungsvorschläge auf jeglichen Kanälen:</p>
-        <a class="social-link" href="mailto:info@zuks.org" onmouseover="this.href=this.href.replace(/x/g,'');" style="color:black;">
-            <core-icon class="social-link-icon" icon="mdi:email"></core-icon>
-        </a>
-        <a class="social-link" href="https://www.facebook.com/zuks.org">
-            <core-icon class="social-link-icon" icon="mdi:facebook"></core-icon>
-        </a>
-        <a class="social-link" href="https://twitter.com/zuksDE">
-            <core-icon class="social-link-icon" icon="mdi:twitter"></core-icon>
-        </a>
+        <div class="socials">
+          <a class="social-link mail" href="mailto:info@zuks.org" target="_blank" onmouseover="this.href=this.href.replace(/x/g,'');" style="color:black;">
+              <core-icon class="social-link-icon" icon="mdi:email"></core-icon>
+          </a>
+          <a class="social-link facebook" href="https://www.facebook.com/zuks.org" target="_blank">
+              <core-icon class="social-link-icon" icon="mdi:facebook"></core-icon>
+          </a>
+          <a class="social-link google-plus" href="https://plus.google.com/+ZuksOrg" target="_blank">
+              <core-icon class="social-link-icon" icon="mdi:google-plus"></core-icon>
+          </a>
+          <a class="social-link twitter" href="https://twitter.com/zuksDE" target="_blank">
+              <core-icon class="social-link-icon" icon="mdi:twitter"></core-icon>
+          </a>
+        </div>
         <p>Viel Spaß beim weiteren Testen unsereres vorläufigen Prototyps.</p>
       </web-tour-step>
     </web-tour>
