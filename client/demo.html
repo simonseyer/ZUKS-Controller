@@ -30,6 +30,9 @@
       <a class="navbar-brand" href="https://www.zuks.org">
         <img src="https://www.zuks.org/static/img/logo/logo%40300.png" alt="ZUKS Logo" />
       </a>
+      <paper-button id="feedback-button" raised>
+        <core-icon icon="communication:messenger"></core-icon> Feedback senden
+      </paper-button>
       <nav>
         <a href="https://www.zuks.org" class="back">ZUKS</a>
         <a href="#" class="active">Prototyp</a>
@@ -54,15 +57,7 @@
         uns und euch später im Einsatz begleiten wird.
       </p>
       <p>
-        Wir wollen euch hier unseren ersten Zwischenstand zeigen und um Feedback
-        bitten. Wir sind gespannt auf eure Ideen, die ihr uns gerne auf
-        <a href="https://www.facebook.com/zuks.org" class="fb">Facebook</a>,
-        <a href="https://plus.google.com/+ZuksOrg" class="google">Google+</a>,
-        <a href="https://twitter.com/zuksDE" class="twitter">Twitter</a> oder per
-        <a href="mailto:info@zuks.org" class="mail">Mail</a> zukommen lassen könnt.
-      </P>
-      <p>
-        Viel Spaß beim Ausprobieren!
+        Wir freuen uns auf euer Feedback und eure Ideen. Viel Spaß beim Ausprobieren! 
       </p>
       <div id="browser-error">
         <p class="info">
@@ -131,10 +126,29 @@
         </web-tour-step>
       </web-tour>
 
+      <paper-action-dialog heading="Feedback senden" id="feedback-dialog" backdrop>
+        <p>
+          Wir freuen uns über jedes Feedback und sind gespannt auf eure Ideen! 
+        </p>
+        <p>
+          Lasst gerne über
+          <a href="https://www.facebook.com/zuks.org" class="fb">Facebook</a>,
+          <a href="https://plus.google.com/+ZuksOrg" class="google">Google+</a>,
+          <a href="https://twitter.com/zuksDE" class="twitter">Twitter</a> oder per
+          <a href="mailto:info@zuks.org" class="mail">Mail</a> von euch hören.
+
+        </p>
+        <paper-button class="tintText" affirmative>Schließen</paper-button>
+      </paper-action-dialog>
+
     </template>
   </div>
 
   <script type="text/javascript">
+    var showFeedbackButton = function() {
+      document.querySelector('#feedback-button').style.opacity = 1;
+    };
+
     window.onload = function() {
       var closeWelcomeOverlay = function() {
         var overlay = document.querySelector('#welcome-overlay');
@@ -156,7 +170,10 @@
       }
 
       var closeButton = document.querySelector('#closeWelcomeOverlayButton');
-      closeButton.addEventListener('click', closeWelcomeOverlay);
+      closeButton.addEventListener('click', function() {
+        closeWelcomeOverlay();
+        showFeedbackButton();
+      });
     };
     var template = document.querySelector('template#demoTemplate');
     template.addEventListener('template-bound', function() {
@@ -178,9 +195,16 @@
       });
       tour.addEventListener('finish', function() {
         _paq.push(['trackGoal', 3]);
+        showFeedbackButton();
       });
       tour.addEventListener('abort', function() {
         _paq.push(['trackEvent', 'Prototyp Tour', 'abort']);
+        showFeedbackButton();
+      });
+
+      var feedbackButton = document.querySelector('#feedback-button');
+      feedbackButton.addEventListener('click', function() {
+        document.querySelector('#feedback-dialog').open();
       });
 
       // Safari hacks (IE is completely unsuported)
