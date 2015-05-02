@@ -3,17 +3,30 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/core-overlay/core-overlay.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/core-icons/social-icons.html">
 
 <link rel="import" href="zuks-list-item.html">
 
 <polymer-element name="zuks-group-list" attributes="volunteerGroups">
   <template>
+    <style>
+      .groupIcon {
+        width: 28px;
+        height: 28px;
+        margin-right: 8px;
+        color: #4d9eff;
+      }
+    </style>
+
     <core-list data="{{volunteerGroups.values}}"
    on-core-activate="{{groupSelected}}"
                  id="list" selectionenabled fit>
       <template>
         <zuks-list-item class="item" selected="{{selected}}">
-          {{model.name}}
+          <div horizontal layout center>
+            <core-icon class="groupIcon" icon="social:group"></core-icon>
+            <div flex>{{model.name}}</div>
+          </div>
         </zuks-list-item>
       </template>
     </core-list>

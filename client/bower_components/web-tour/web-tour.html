@@ -105,7 +105,15 @@ of the tour.
     start: function() {
       this.currentStep = -1;
       this.next();
+      this.fire('start');
     },
+
+    /**
+      * The `start` event is fired after
+      * the tour was started.
+      *
+      * @event start
+      */
 
     /**
       * Moves forward to the next step. Call this method
@@ -116,13 +124,13 @@ of the tour.
     next: function(event) {
       // Workround: prevent duplicate events
       if (event) {
-        if (event.timeStamp == this.lastTimeStamp) {
+        if (event.timeStamp == this.lastNext) {
           return;
         }
-        this.lastTimeStamp = event.timeStamp;
+        this.lastNext = event.timeStamp;
       }
 
-      if (!event && this.currentStep >= 0 && this.currentStep < this.children.length) {
+      if (this.currentStep >= 0 && this.currentStep < this.children.length) {
         this.children[this.currentStep].close();
       }
 
@@ -134,13 +142,33 @@ of the tour.
 
         nextStep.open();
 
-        this.backdropVisible = nextStep.backdrop;
+        this.backdropVisible = !nextStep.empty && nextStep.backdrop;
         this.currentTarget = nextStep.target;
         this.backdropOffset = nextStep.backdropOffset;
+        if (this.currentStep != 0) {
+          this.fire('step-forward', {step: nextStep, index: this.currentStep});
+        }
       } else {
-        this.abort();
+        this.abort(null, true);
+        this.fire('finish');
       }
     },
+
+    /**
+      * The `step-forward` event is fired whenever
+      * the tour went one step forward.
+      *
+      * @event step-forward
+      * @param {Object} the new step
+      * @param {number} index
+      */
+
+    /**
+      * The `finish` event is fired when
+      * the last step of the tour was dismissed.
+      *
+      * @event finish
+      */
 
     /**
       * Aborts a running tour. If a step is visible,
@@ -148,14 +176,33 @@ of the tour.
       *
       * @method abort
       */
-    abort: function(event) {
+    abort: function(event, suppressEvent) {
+      if (event) {
+        if (event.timeStamp == this.lastAbort) {
+          return;
+        }
+        this.lastAbort = event.timeStamp;
+      }
+
       if (!event && this.currentStep < this.children.length) {
         this.children[this.currentStep].close();
       }
       this.currentTarget = null;
       this.currentStep = -1;
       this.backdropVisible = false;
+
+      if (!suppressEvent) {
+        this.fire('abort');
+      }
     },
+
+    /**
+      * The `abort event is fired whenever
+      * the tour is aborted.
+      *
+      * @event abort
+      */
+
     _layoutDialog: function(event) {
       if (this.alignDialogs && event.target.target) {
         var dialog = event.detail.target;
@@ -179,8 +226,8 @@ of the tour.
     },
     _registerSteps: function() {
       for (var i = 0; i < this.children.length; i++) {
-        this.children[i].addEventListener('next', this.next.bind(this));
-        this.children[i].addEventListener('abort', this.abort.bind(this));
+        this.children[i].addEventListener('step-next', this.next.bind(this));
+        this.children[i].addEventListener('step-abort', this.abort.bind(this));
         this.children[i].addEventListener('info-request', this.abort.bind(this));
         this.children[i].addEventListener('core-overlay-position', this._layoutDialog.bind(this));
         this.children[i].texts = this.texts;

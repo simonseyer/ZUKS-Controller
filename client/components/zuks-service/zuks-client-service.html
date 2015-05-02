@@ -12,7 +12,7 @@
     </style>
 
     <zuks-rest id="rest"></zuks-rest>
-    <zuks-ws id="ws"></zuks-ws>
+    <zuks-ws id="ws" on-connect="{{handleConnect}}"></zuks-ws>
 
   </template>
   <script>
@@ -42,14 +42,22 @@
       this.user.location = {latitude: 0, longitude: 0};
       this.user.targetLocation = null;
       this.user.group = 1;
-      this.$.rest.post('volunteers', this.user, function(response) {
+      this.$.rest.post('volunteers/login', this.user, function(response) {
         this.user = response;
         this.$.ws.send(response.id);
         this.fire('login', {user: this.user});
       }.bind(this));
     },
+    logout: function() {
+      this.user = {};
+    },
     updateUser: function() {
       this.$.rest.put('volunteers', this.user);
+    },
+    handleConnect: function() {
+      if (this.user.id) {
+        this.$.ws.send(this.user.id);
+      }
     }
   });
   </script>

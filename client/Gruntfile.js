@@ -3,10 +3,14 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       code: {
-        files: ['components/**', 'client.html', 'controller.html', 'demo.html'],
+        files: ['components/**', 'client.html', 'controller.html', 'demo.html', 'demo/*'],
         options: {
           livereload: true
         }
+      },
+      css: {
+        files: '**/*.scss',
+				tasks: ['sass']
       }
     },
     settings: grunt.file.readJSON('settings.json'),
@@ -80,6 +84,21 @@ module.exports = function(grunt) {
         }
       },
     },
+    sass: {
+      default: {
+        files: {
+          'demo/demo.css': 'demo/demo.scss'
+        }
+      },
+      deploy: {
+        options: {
+          style: 'compressed'
+        },
+        files: {
+          'dist/demo/demo/demo.css': 'demo/demo.scss'
+        }
+      }
+    },
     copy: {
       default: {
         files: [
@@ -92,6 +111,7 @@ module.exports = function(grunt) {
   });
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-vulcanize');
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-devtools');
   grunt.loadNpmTasks('grunt-mkdir');
   grunt.loadNpmTasks('grunt-regex-replace');
@@ -101,6 +121,6 @@ module.exports = function(grunt) {
     grunt.file.write('settings.json', JSON.stringify(grunt.config('settings'), null, 4));
   });
 
-  grunt.registerTask('install', ['mkdir', 'vulcanize:default', 'copy', 'prompt', 'saveSettings', 'regex-replace', 'vulcanize:compress']);
-  grunt.registerTask('deploy', ['mkdir', 'vulcanize:default', 'copy', 'regex-replace', 'vulcanize:compress']);
+  grunt.registerTask('install', ['mkdir', 'vulcanize:default', 'sass:deploy', 'copy', 'prompt', 'saveSettings', 'regex-replace', 'vulcanize:compress']);
+  grunt.registerTask('deploy', ['mkdir', 'vulcanize:default', 'sass:deploy', 'copy', 'regex-replace', 'vulcanize:compress']);
 };

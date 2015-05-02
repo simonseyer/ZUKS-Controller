@@ -1,319 +1,260 @@
 <!doctype html>
 <html>
-
-<head>
-
-  <title>ZUKS Client</title>
-
-  <meta charset="UTF-8">
-  <meta name="viewport"
-  content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-
-  <link rel="shortcut icon" href="http://zuks.org/static/img/favicon.png?v=2" type="image/x-icon">
-
-  <script src="bower_components/webcomponentsjs/webcomponents.js">
-  </script>
-
-  <link rel="import" href="bower_components/polymer/polymer.html">
-  <link rel="import" href="bower_components/web-tour/web-tour.html">
-
-  <link rel="import" href="components/zuks-client-app.html">
-  <link rel="import" href="components/zuks-app.html">
-
-  <!-- load the social icon set and core-icon element -->
-  <link rel="import" href="/bower_components/core-icons/hardware-icons.html">
-
-  <!-- MDi reference ? -->
-  <link rel="import" href="/demo/mdi.html" />
-
-  <style>
-
-  html,body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    background-color: #f0f2f4;
-    
-    font-family: 'Roboto', sans-serif;
-    color: #666;
-  }
-
-  body {
-    min-width: 1000px;
-    overflow: hidden;
-  }
-
-  @media (max-width: 1000px) {
-    body {
-      overflow: scroll;
-    }
-  }
-
-  header {
-    background-color: white;
-    height: 60px;
-    border-bottom: 1px solid #4d9eff;
-    padding: 0 40px;
-  }
-
-  header img {
-    height: 41px;
-    width: 150px;
-    vertical-align: middle;
-    padding-top: 9px;
-  }
-
-  .back {
-    background: url('https://www.zuks.org/img/icons/back.png') no-repeat left;
-    background-size: 16px;
-    padding-left: 28px!important;
-    background-position: 5px;
-  }
-
-  nav {
-    float: right;
-  }
-
-  nav a {
-    display: block;
-    text-decoration: none;
-    padding: 20px 15px;
-    line-height: 20px;
-    color: #555;
-    float: left;
-    font-size: 14px;
-  }
-
-  nav .active {
-    color: #fff;
-    background-color: #4d9eff;
-  }
-
-  #content {
-    height: 100%;
-  }
-
-  .desktop-container, .mobile-container {
-    float: left;
-    position: relative;
-  }
-
-  .desktop-container {
-    margin: 9px 27px 0 27px;
-    /* 100 % - margin top - header */
-    height: calc(100% - 9px - 61px);
-    /* 100 % - margin left - margin right - mobile view - margin right */
-    width: calc(100% - 27px - 27px - 300px - 27px);
-  }
-
-  .desktop-container img {
-    width: 100%;
-    height: 100%
-  }
-
-  .mobile-container {
-    margin-top: 6%;
-    height: 588px;
-    width: 300px;
-
-    background-image: url('demo/smartphone.png');
-    background-size: cover;
-  }
-
-  zuks-app {
-    position: absolute;
-    left: 4%;
-    right: 4%;
-    top: 6%;
-    bottom: 13%;
-  }
-
-  zuks-client-app {
-    position: absolute;
-    left: 17px;
-    right: 17px;
-    top: 50px;
-    bottom: 66px;
-  }
-
-  html /deep/ paper-button[affirmative] {
-    color: #4d9eff;
-  }
-
-  html /deep/ .hardware-icons {
-    margin-top: 2em;
-    margin-bottom: 2em;
-    text-align: center;
-  }
-
-  html /deep/ .hardware.left {
-    margin-right: 2em;
-  }
-
-  html /deep/ .hardware.right {
-    margin-left: 2em;
-  }
-
-  html /deep/ .arrow, html /deep/ .hardware {
-    height: 4em;
-    width: 4em;
-  }
-
-  html /deep/ a.social-link {
-    text-decoration: none;
-  }
-
-  html /deep/ core-icon.social-link-icon {
-    height: 2em;
-    width: 2em;
-    text-decoration: none;
-    color: black;
-  }
-
-  html /deep/ .socials {
-    text-align: center;
-  }
-
-  html /deep/ .mail core-icon {
-    color: #4d9eff;
-    color: rgba(0, 0, 0, 0.67);
-  }
-
-  html /deep/ .google-plus core-icon {
-    color: #DD4B39;
-    height: 1.5em;
-    width: 1.5em;
-  }
-
-  html /deep/ .facebook core-icon {
-    color: #3B5998;
-  }
-
-  html /deep/ .twitter core-icon {
-    color: #55ACEE;
-  }
-  
-  </style>
-
-</head>
-
-<body unresolved>
-  <template is="auto-binding" id="demoTemplate">
-
+  <head>
+    <title>ZUKS Client</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+      content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <link rel="shortcut icon" href="http://zuks.org/static/img/favicon.png?v=2" type="image/x-icon">
+    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="bower_components/polymer/polymer.html">
+    <link rel="import" href="bower_components/web-tour/web-tour.html">
+    <link rel="import" href="components/zuks-client-app.html">
+    <link rel="import" href="components/zuks-app.html">
+    <!-- load the social icon set and core-icon element -->
+    <link rel="import" href="/bower_components/core-icons/hardware-icons.html">
+    <link rel="import" href="/bower_components/core-icons/communication-icons.html">
+    <!-- MDi reference ? -->
+    <link rel="import" href="/demo/mdi.html" />
+    <link rel="stylesheet" href="/demo/demo.css">
+  </head>
+  <body unresolved>
     <header>
       <div class="container">
         <a class="navbar-brand" href="https://www.zuks.org">
-          <img src="https://www.zuks.org/static/img/logo/logo%40300.png" alt="ZUKS Logo" />
+        <img src="https://www.zuks.org/static/img/logo/logo%40300.png" alt="ZUKS Logo" />
         </a>
+        <paper-button id="feedback-button" raised>
+          <core-icon icon="communication:messenger"></core-icon>
+          Feedback senden
+        </paper-button>
         <nav>
           <a href="https://www.zuks.org" class="back">ZUKS</a>
           <a href="#" class="active">Prototyp</a>
-          <a href="#" on-click="{{startTour}}">Tour starten</a>
         </nav>
       </div>
     </header>
-
     <div id="content">
-      <div class="desktop-container">
-        <img src="demo/desktop.png" />
-        <zuks-app></zuks-app>
+      <div id="welcome-backdrop">
       </div>
-
-      <div class="mobile-container">
-        <zuks-client-app></zuks-client-app>
-      </div>
-    </div>
-
-    <web-tour id="tour" texts="{{tourTexts}}" host="{{tourHost}}">
-      <web-tour-step heading="Demo-Tour">
-        <p>In dieser Tour lernst Du die wesentlichen Interaktionselemente des ZUKS-Prototyps kennen.</p>
-
-        <div class="hardware-icons">
-          <core-icon class="arrow left" icon="hardware:keyboard-arrow-left"></core-icon>
-          <core-icon class="hardware left" icon="hardware:desktop-mac"></core-icon>
-          <core-icon class="hardware right" icon="hardware:phone-android"></core-icon>
-          <core-icon class="arrow right" icon="hardware:keyboard-arrow-right"></core-icon>
-        </div>
-          
-      <div>
-        <p>          
-          Auf der rechten Seite siehst Du die App die Du als ZUKS-Helfer benutzen wirst. Links auf dem Bildschirm den Controller wie wir ihn in der ZUKS-Zentrale einsetzen. Um zu zeigen wie die beiden Anwendungen zusammenspielen kannst Du in dieser Demo ausnahmensweise beide bedienen.
+      <div id="welcome-overlay">
+        <div id="shadow-bottom" fit="" class="paper-shadow-bottom-z-3"></div>
+        <div id="shadow-top" fit="" class="paper-shadow-top-z-3"></div>
+        <h1>ZUKS Prototyp</h1>
+        <p>
+          Freiwillige Helfer in Katastrophen zu organisieren -  das ist unser Ziel von ZUKS.
         </p>
-      </div>
-        
-      </web-tour-step>
-      <web-tour-step heading="Anmeldung in der App" autoNext="false" targetSelector="html /deep/ core-header-panel">
-        <p>Um bei einer Katastrophenschutzübung in Deiner Nähe zu helfen hast Du dir die ZUKS-App heruntergeladen und willst Dich anmelden. Bitte trage hier Deinen oder einen ausgedachten Namen ein und schließe mit 'Anmelden' ab.</p>
-      </web-tour-step>
-      <web-tour-step heading="Standortfreigabe" targetSelector="html /deep/ core-header-panel">
-        <p>Alle für Dich relevanten Infos erhältst Du über solche "Karten". Hier bitten wir Dich darum deinen Standort freizugeben, indem Du den Zugriff im Browser erlaubst. Dadurch können wir Dir helfen wenn Du dich verlaufen solltest oder Dich warnen wenn Du Dich in ein Gefahrengebiet begibst.</p>
-      </web-tour-step>
-      <web-tour-step heading="Helfer lokalisieren" targetSelector="html /deep/ zuks-volunteer-list">
-        <p>Wir in der ZUKS-Zentrale haben Dich nun auf unserer Liste. Du bist als potentieller Helfer in der Datenbank eingetragen. Finde Deinen Namen in der Liste unserer bisherigen Helfer und klicke auf <core-icon icon="maps:my-location"></core-icon>. An dieser Stelle haben wir Dich lokalisiert.</p>
-      </web-tour-step>      
-      <web-tour-step heading="Helfer zum Einsatz leiten" targetSelector="html /deep/ zuks-volunteer-list">
-        <p>Du darfst hier einmal ZUKS-Zentrale spielen und Dich selbst an einen beliebigen Einsatzort lotsen. Klicke auf <core-icon icon="maps:navigation"></core-icon> und suche in der Karte einen Ort aus, an dem Deine Hilfe benötigt wird.</p>
-      </web-tour-step>
-      <web-tour-step heading="Wegbeschreibung" targetSelector="html /deep/ core-header-panel">
-        <p>Den Hinweis wohin es für Dich im Einsatz gehen wird und das notwendige Kartenmaterial bekommst Du direkt in der App angezeigt. Los gehts!</p>
-      </web-tour-step>
-      <web-tour-step heading="Danke für deine Hilfe!">
-        <p>Dies ist vorerst das Ende unserer kleinen Demo-Tour. Wir freuen uns über Dein Lob, Deine Kritik und Deine Verbesserungsvorschläge auf jeglichen Kanälen:</p>
-        <div class="socials">
-          <a class="social-link mail" href="mailto:info@zuks.org" target="_blank" onmouseover="this.href=this.href.replace(/x/g,'');" style="color:black;">
-              <core-icon class="social-link-icon" icon="mdi:email-open"></core-icon>
+        <p>
+          Diese Software soll uns dabei unterstützen, eine große Anzahl an Helfern
+          verlässlich zu organisieren und mit diesen zu kommunizieren.
+          Der Prototyp dient als Basis für die Anwendung, die
+          uns und euch später im Einsatz begleiten wird.
+        </p>
+        <p>
+          Wir freuen uns auf euer Feedback und eure Ideen. Viel Spaß beim Ausprobieren! 
+        </p>
+        <div id="browser-error">
+          <p class="info">
+            Dein Browser wird leider nicht vollständig von der Anwendung unterstützt.
+            Damit alles funktioniert, verwende bitte die aktuellste Version einer der folgenden Browser:
+          </p>
+          <a href="https://www.google.com/chrome/browser/desktop/index.html" class="browser">
+            <img src="demo/chrome.png" alt="Chrome logo" />
+            <div>Chrome</div>
           </a>
-          <a class="social-link facebook" href="https://www.facebook.com/zuks.org" target="_blank">
-              <core-icon class="social-link-icon" icon="mdi:facebook"></core-icon>
+          <a href="https://www.mozilla.org/de/firefox/new/" class="browser">
+            <img src="demo/firefox.png" alt="Firefox logo" />
+            <div>Firefox</div>
           </a>
-          <a class="social-link google-plus" href="https://plus.google.com/+ZuksOrg" target="_blank">
-              <core-icon class="social-link-icon" icon="mdi:google-plus"></core-icon>
-          </a>
-          <a class="social-link twitter" href="https://twitter.com/zuksDE" target="_blank">
-              <core-icon class="social-link-icon" icon="mdi:twitter"></core-icon>
+          <a href="http://www.opera.com/de" class="browser">
+            <img src="demo/opera.png" alt="Opera logo" />
+            <div>Opera</div>
           </a>
         </div>
-        <p>Viel Spaß beim weiteren Testen unsereres vorläufigen Prototyps.</p>
-      </web-tour-step>
-    </web-tour>
-
-  </template>
-
-  <script type="text/javascript">
-    window.onload = function() {
+        <p class="info" id="mobile-error">
+          Die Anwendung ist nicht für Smartphones optimiert. Damit alles funktioniert,
+          schau sie dir doch bitte auf einem großen Bildschirm an.
+        </p>
+        <button id="startTourButton" class="primary">Tour starten</button>
+        <button id="closeWelcomeOverlayButton">Schließen</button>
+        <script type="text/javascript" src="demo/bowser.min.js"></script>
+        <script type="text/javascript">
+          if (bowser.mobile) {
+            document.querySelector('#browser-error').remove();
+            document.querySelector('#startTourButton').remove();
+            var closeButton = document.querySelector('#closeWelcomeOverlayButton');
+            closeButton.innerText = "Trotzdem starten";
+            closeButton.className = "primary";
+          } else {
+            document.querySelector('#mobile-error').remove();
+            if (bowser.chrome && bowser.version >= 41 ||
+                bowser.opera && bowser.version >= 28 ||
+                bowser.firefox && bowser.version >= 37) {
+                  document.querySelector('#browser-error').remove();
+                }
+          }
+        </script>
+      </div>
+      <template is="auto-binding" id="demoTemplate">
+        <div class="desktop-container">
+          <img src="demo/desktop.png" />
+          <zuks-app></zuks-app>
+        </div>
+        <div class="mobile-container">
+          <zuks-client-app></zuks-client-app>
+        </div>
+        <web-tour id="tour" texts="{{tourTexts}}" host="{{tourHost}}">
+          <web-tour-step heading="Demo-Tour">
+            <p>In dieser Tour lernst Du die wesentlichen Interaktionselemente des ZUKS-Prototyps kennen.</p>
+            <div class="hardware-icons">
+              <core-icon class="arrow left" icon="hardware:keyboard-arrow-left"></core-icon>
+              <core-icon class="hardware left" icon="hardware:desktop-mac"></core-icon>
+              <core-icon class="hardware right" icon="hardware:phone-android"></core-icon>
+              <core-icon class="arrow right" icon="hardware:keyboard-arrow-right"></core-icon>
+            </div>
+            <div>
+              <p>          
+                Auf der rechten Seite siehst Du die App die Du als ZUKS-Helfer benutzen wirst. Links auf dem Bildschirm den Controller wie wir ihn in der ZUKS-Zentrale einsetzen. Um zu zeigen wie die beiden Anwendungen zusammenspielen kannst Du in dieser Demo ausnahmensweise beide bedienen.
+              </p>
+            </div>
+          </web-tour-step>
+          <web-tour-step heading="Anmeldung in der App" autoNext="false" targetSelector="html /deep/ core-header-panel">
+            <p>Um bei einer Katastrophenschutzübung in Deiner Nähe zu helfen hast Du dir die ZUKS-App heruntergeladen und willst Dich anmelden. Bitte trage hier Deinen oder einen ausgedachten Namen ein und schließe mit 'Anmelden' ab.</p>
+          </web-tour-step>
+          <web-tour-step heading="Standortfreigabe" targetSelector="html /deep/ core-header-panel">
+            <p>Alle für Dich relevanten Infos erhältst Du über solche "Karten". Hier bitten wir Dich darum deinen Standort freizugeben, indem Du den Zugriff im Browser erlaubst. Dadurch können wir Dir helfen wenn Du dich verlaufen solltest oder Dich warnen wenn Du Dich in ein Gefahrengebiet begibst.</p>
+          </web-tour-step>
+          <web-tour-step heading="Helfer lokalisieren" targetSelector="html /deep/ zuks-volunteer-list">
+            <p>
+              Wir in der ZUKS-Zentrale haben Dich nun auf unserer Liste. Du bist als potentieller Helfer in der Datenbank eingetragen. Finde Deinen Namen in der Liste unserer bisherigen Helfer und klicke auf 
+              <core-icon icon="maps:my-location"></core-icon>
+              . An dieser Stelle haben wir Dich lokalisiert.
+            </p>
+          </web-tour-step>
+          <web-tour-step heading="Helfer zum Einsatz leiten" targetSelector="html /deep/ zuks-volunteer-list">
+            <p>
+              Du darfst hier einmal ZUKS-Zentrale spielen und Dich selbst an einen beliebigen Einsatzort lotsen. Klicke auf 
+              <core-icon icon="maps:navigation"></core-icon>
+              und suche in der Karte einen Ort aus, an dem Deine Hilfe benötigt wird.
+            </p>
+          </web-tour-step>
+          <web-tour-step heading="Wegbeschreibung" targetSelector="html /deep/ core-header-panel">
+            <p>Den Hinweis wohin es für Dich im Einsatz gehen wird und das notwendige Kartenmaterial bekommst Du direkt in der App angezeigt. Los gehts!</p>
+          </web-tour-step>
+          <web-tour-step heading="Danke für deine Hilfe!">
+            <p>Dies ist vorerst das Ende unserer kleinen Demo-Tour. Wir freuen uns über Dein Lob, Deine Kritik und Deine Verbesserungsvorschläge auf jeglichen Kanälen:</p>
+            <div class="socials">
+              <a class="social-link mail" href="mailto:info@zuks.org" target="_blank" onmouseover="this.href=this.href.replace(/x/g,'');" style="color:black;">
+                <core-icon class="social-link-icon" icon="mdi:email-open"></core-icon>
+              </a>
+              <a class="social-link facebook" href="https://www.facebook.com/zuks.org" target="_blank">
+                <core-icon class="social-link-icon" icon="mdi:facebook"></core-icon>
+              </a>
+              <a class="social-link google-plus" href="https://plus.google.com/+ZuksOrg" target="_blank">
+                <core-icon class="social-link-icon" icon="mdi:google-plus"></core-icon>
+              </a>
+              <a class="social-link twitter" href="https://twitter.com/zuksDE" target="_blank">
+                <core-icon class="social-link-icon" icon="mdi:twitter"></core-icon>
+              </a>
+            </div>
+            <p>Viel Spaß beim weiteren Testen unsereres vorläufigen Prototyps.</p>
+          </web-tour-step>
+        </web-tour>
+        <paper-action-dialog heading="Feedback senden" id="feedback-dialog" backdrop>
+          <p>
+            Wir freuen uns über jedes Feedback und sind gespannt auf eure Ideen! 
+          </p>
+          <p>
+            Lasst gerne über
+            <a href="https://www.facebook.com/zuks.org" class="fb">Facebook</a>,
+            <a href="https://plus.google.com/+ZuksOrg" class="google">Google+</a>,
+            <a href="https://twitter.com/zuksDE" class="twitter">Twitter</a> oder per
+            <a href="mailto:info@zuks.org" class="mail">Mail</a> von euch hören.
+          </p>
+          <paper-button class="tintText" affirmative>Schließen</paper-button>
+        </paper-action-dialog>
+      </template>
+    </div>
+    <script type="text/javascript">
+      var showFeedbackButton = function() {
+        document.querySelector('#feedback-button').style.opacity = 1;
+      };
+      
+      window.onload = function() {
+        var closeWelcomeOverlay = function() {
+          var overlay = document.querySelector('#welcome-overlay');
+          var backdrop = document.querySelector('#welcome-backdrop');
+          overlay.style.opacity = 0;
+          backdrop.style.opacity = 0;
+          setTimeout(function() {
+            overlay.remove();
+            backdrop.remove()
+          }, 500)
+        };
+      
+        var startTourButton = document.querySelector('#startTourButton');
+        if (startTourButton) {
+          startTourButton.addEventListener('click', function() {
+            document.querySelector('web-tour').start();
+            closeWelcomeOverlay();
+          });
+        }
+      
+        var closeButton = document.querySelector('#closeWelcomeOverlayButton');
+        closeButton.addEventListener('click', function() {
+          closeWelcomeOverlay();
+          showFeedbackButton();
+        });
+      };
       var template = document.querySelector('template#demoTemplate');
       template.addEventListener('template-bound', function() {
         this.tourTexts = {
           next: 'Weiter',
-          abort: 'Abbrechen',
+          abort: 'Beenden',
           finish: 'Abschließen',
           moreInfos: 'Weitere Infos'
         }
-
+      
         this.tourHost = document.querySelector('div#content');
-
+      
+        var tour = document.querySelector('#tour');
+        tour.addEventListener('start', function() {
+          _paq.push(['trackGoal', 2]);
+        });
+        tour.addEventListener('step-forward', function(event) {
+          _paq.push(['trackEvent', 'Prototyp Tour', 'step forward', event.detail.index]);
+        });
+        tour.addEventListener('finish', function() {
+          _paq.push(['trackGoal', 3]);
+          showFeedbackButton();
+        });
+        tour.addEventListener('abort', function() {
+          _paq.push(['trackEvent', 'Prototyp Tour', 'abort']);
+          showFeedbackButton();
+        });
+      
         var client = document.querySelector('zuks-client-app');
         client.addEventListener('login', function() {
           document.querySelector('web-tour#tour').next();
-        })
-
-        client.addEventListener('ripple', function() {
-          document.querySelector('web-tour#tour').next();
-        })
-
+        });
+      
         this.startTour = function() {
           document.querySelector('web-tour#tour').start();
-        }
-
+        };
+      
+        var feedbackButton = document.querySelector('#feedback-button');
+        feedbackButton.addEventListener('click', function() {
+          document.querySelector('#feedback-dialog').open();
+        });
+      
         // Safari hacks (IE is completely unsuported)
-        var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
-        if (isSafari) {
+        if (bowser.safari) {
           // Safari hack to force layout refresh
           document.body.style.height = '0';
           setTimeout(function() {
             document.body.style.height = '100%';
           }, 1);
-
+      
           // Safari hack to fix marker icon layout
           var style = document.createElement("style");
           style.appendChild(document.createTextNode(""));
@@ -325,10 +266,32 @@
             margin-top: 18%;\
           }";
         }
-
       });
-    };
-  </script>
-</body>
-
+    </script>
+    <!-- Error logging -->
+    <script src="//cdn.ravenjs.com/1.1.18/raven.min.js"></script>
+    <script>
+      Raven.config('http://ed2fb309396a458f85f01100ef767e9e@sentry.zuks.org/3').install();
+    </script>
+    <!-- Piwik -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+      _paq.push(["setCookieDomain", "*.zuks.org"]);
+      _paq.push(["setDomains", ["*.zuks.org","*.www.zuks.org","*.www.zuks.org","*.zuks.org"]]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//analytics.zuks.org/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', 1]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript>
+      <p><img src="//analytics.zuks.org/piwik.php?idsite=1" style="border:0;" alt="" /></p>
+    </noscript>
+    <!-- End Piwik Code -->
+  </body>
 </html>

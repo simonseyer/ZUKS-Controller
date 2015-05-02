@@ -9,6 +9,7 @@
 <link rel="import" href="../bower_components/core-icons/social-icons.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
+<link rel="import" href="../bower_components/core-a11y-keys/core-a11y-keys.html">
 
 <link rel="import" href="zuks-service/zuks-client-service.html">
 <link rel="import" href="zuks-list-item.html">
@@ -39,6 +40,7 @@
       background-color: #4d9eff;
       height: 60px;
       color: white;
+      padding-right: 8px;
     }
 
     .core-header img {
@@ -75,15 +77,11 @@
       transform: translateX(110%);
     }
 
-    paper-icon-button, paper-spinner {
+    paper-icon-button.close {
       position: absolute;
       top: 0;
       right: 0;
       z-index: 1;
-    }
-
-    #locationButton, paper-spinner {
-      padding: 16px;
     }
 
     #emptyList {
@@ -114,15 +112,17 @@
     <zuks-client-service instructions="{{instructions}}" user="{{user}}" id="service"></zuks-client-service>
 
     <core-header-panel mode="waterfall" fullbleed>
-      <div class="core-header" center>
+      <div class="core-header" horizontal layout center>
         <img src="https://www.zuks.org/static/img/logo/logo-weiss%401200.png">
+        <div flex></div>
         <template if="{{user.id}}">
           <template if="{{!requestingLocation}}">
-            <paper-icon-button icon="maps:my-location" id="locationButton" on-click="{{locate}}"></core-icon-button>
+            <paper-icon-button icon="maps:my-location" id="locationButton" on-click="{{locate}}"></paper-icon-button>
           </template>
           <template if="{{requestingLocation}}">
             <paper-spinner active></paper-spinner>
           </template>
+          <paper-icon-button icon="exit-to-app" id="logoutButton" on-click="{{logout}}"></paper-icon-button>
         </template>
       </div>
 
@@ -130,9 +130,11 @@
       <template if="{{!user.id}}">
         <div id="login" vertical layout>
           <paper-input label="Vorname" value="{{user.first_name}}" autofocus floatingLabel></paper-input>
-          <paper-input label="Nachname" value="{{user.last_name}}" floatingLabel></paper-input>
+          <paper-input label="Nachname" value="{{user.last_name}}" floatingLabel>
+          <core-a11y-keys keys="Enter" on-keys-pressed="{{register}}"></core-a11y-keys>
+          </paper-input>
           <div>
-            <template if="{{user.first_name.length > 0 && user.last_name.length > 0}}">
+            <template if="{{credentialsValid(user.first_name, user.last_name)}}">
               <paper-button class="tintText" on-click="{{register}}">Anmelden</paper-button>
             </template>
           <div>
@@ -146,7 +148,7 @@
         <template repeat="{{instruction, index in instructions}}">
           <div class="item {{ {map: !!instruction.location} | tokenList }}">
             <paper-shadow>
-              <paper-icon-button icon="close" on-click="{{dismissCard}}"></paper-icon-button>
+              <paper-icon-button icon="close" class="close" on-click="{{dismissCard}}"></paper-icon-button>
 
               <template if="{{instruction.subject}}">
                 <h1>{{instruction.subject}}</h1>
@@ -184,19 +186,27 @@
     ready: function() {
       this.selectedTab = 0;
       CoreStyle.g.paperInput.focusedColor = '#4d9eff';
+    },
+    register: function() {
+      this.$.service.register();
       this.instructions.push({
         subject: "Herzlich Willkommen",
         content: "Schön dass Du bei dieser Katastrophenschutzübung mitmachst. Schließe Karten einfach mit dem x oben rechts."
       });
-    },
-    register: function() {
-      this.$.service.register();
-      this.async(function() {
+      this.addCardTask = setTimeout(function() {
         this.instructions.unshift({
           subject: "Wo bist Du?",
           content: "Gib uns doch bitte Deinen Standort frei. Einfach oben rechts auf das • Icon drücken und die Sicherheitsabfrage des Browsers erlauben."
         });
-      }, this, 4000);
+        this.addCardTask = null;
+      }.bind(this), 4000);
+    },
+    logout: function() {
+      this.$.service.logout();
+      this.instructions = [];
+      if (this.addCardTask) {
+        clearTimeout(this.addCardTask);
+      }
     },
     dismissCard: function(event) {
       var item = event.target.parentElement;
@@ -210,7 +220,7 @@
       if ("geolocation" in navigator) {
         this.requestingLocation = true;
         navigator.geolocation.getCurrentPosition(function(position) {
-            this.instructions.unshift({
+          this.instructions.unshift({
             subject: "Gefunden",
             content: "Wir konnten Deinen Standort erfolgreich lokalisieren!"
           });
@@ -232,6 +242,9 @@
     },
     getRandomLocationOffset: function() {
       return Math.random() * 0.006 - 0.003;
+    },
+    credentialsValid: function(first_name, last_name) {
+      return first_name && first_name.trim().length > 0 && last_name && last_name.trim().length > 0;
     }
   });
   </script>

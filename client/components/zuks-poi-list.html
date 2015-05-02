@@ -14,33 +14,31 @@
 
 <link rel="import" href="zuks-list-item.html">
 
-<polymer-element name="zuks-poi-list" attributes="poiCategories selectedPOI">
+<polymer-element name="zuks-poi-list" attributes="poiCategories pois selectedPOI">
 
   <!-- global dialog style -->
   <style type="text/css" shim-shadowdom>
     html /deep/ #poiDetail {
       margin: 0;
       max-width: 280px;
-      margin-top: 4px;
       transition: transform 0.15s;
     }
 
-    html /deep/ #poiDetail {
-      margin-top: 0;
+    html /deep/ #poiDetail .button-icon {
+      margin-right: 8px;
     }
 
-    html /deep/ #poiDetail /deep/ icon.category {
+    html /deep/ .menu core-icon.category {
       color: #505353;
       margin-right: 12px;
     }
 
-    html /deep/ #poiDetail /deep/ paper-icon-button.location {
-      margin: auto;
-      padding-top: 20px;
-    }
-
     html /deep/ #poiDetail.movedAway {
       transform: translateX(-200%);
+    }
+
+    html /deep/ paper-button {
+      margin-bottom: 4px;
     }
   </style>
 
@@ -54,22 +52,26 @@
     }
 
     #poiList core-icon {
-      color: #505353;
-      margin-right: 12px;
+      width: 28px;
+      height: 28px;
+      color: #4d9eff;
+      margin-right: 8px;
     }
     </style>
 
-    <core-list data="{{poiCategories.values | flattenGroup}}"
-             groups="{{poiCategories.values}}"
+    <core-list data="{{poiListData}}"
+             groups="{{poiCategoryListData}}"
           selection="{{selectedPOI}}"
                  id="poiList" selectionenabled fit>
       <template>
         <div divider class="divider" horizontal layout center>
-          <core-icon icon="{{groupModel.icon}}"></core-icon>
           <div flex>{{groupModel.name}}</div>
         </div>
         <zuks-list-item class="item" selected="{{selected}}">
-          {{model.name}}
+          <div horizontal layout center>
+            <core-icon icon="{{groupModel.icon}}" class="category"></core-icon>
+            <div flex>{{model.name}}</div>
+          </div>
         </zuks-list-item>
       </template>
     </core-list>
@@ -103,14 +105,15 @@
           <textarea value="{{editablePOI.description}}" rows="3"></textarea>
         </paper-input-decorator>
 
-        <div horizontal layout>
-          <paper-input-decorator label="Adresse" floatingLabel>
-            <textarea readonly value="{{editablePOI.address}}" rows="3"></textarea>
-          </paper-input-decorator>
-          <paper-icon-button icon="maps:my-location" class="location" on-click="{{changeLocation}}">
-          </paper-icon-button>
-        </div>
-
+       
+          <p>{{editablePOI.address}}</p>
+          <div horizontal layout center>
+            <paper-button on-click="{{changeLocation}}" raised flex>
+              <core-icon icon="maps:my-location" class="button-icon"></core-icon>
+              Standort finden
+            </paper-button>
+          </div>
+        
         <paper-button dismissive>Abbrechen</paper-button>
         <paper-button class="tintText" on-click="{{savePOI}}" affirmative>Speichern</paper-button>
       </template>
@@ -121,12 +124,23 @@
   <script>
   Polymer({
     editablePOI: null,
-    flattenGroup: function(categoryList) {
+    observe:  {
+      'poiCategories.values': 'poiCategoriesChanged',
+      'pois.values': 'poiCategoriesChanged',
+    },
+    poiCategoriesChanged: function() {
       var pois = [];
-      categoryList.forEach(function(category) {
-        pois.push(category.pois);
-      });
-      return pois;
+      var categories = [];
+      if (this.poiCategories && this.poiCategories.values) {
+        this.poiCategories.values.forEach(function(category) {
+          if (category.pois.length) {
+            categories.push(category);
+            pois.push(category.pois);
+          }
+        });
+      }
+      this.poiListData = pois;
+      this.poiCategoryListData = categories;
     },
     selectPOI: function(poi) {
       if (this.selectedPOI && this.selectedPOI.id == poi.id) {
