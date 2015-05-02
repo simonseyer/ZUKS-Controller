@@ -81,9 +81,12 @@ class VolunteerViewSet(EventViewSet):
     first_name = request.data['first_name']
     last_name = request.data['last_name']
     if not first_name or not last_name:
-      return Response(status_code=400)
+      return Response("Please provide a fist_name and a last_name", status=400)
 
     first_name, last_name = first_name.strip(), last_name.strip()
+    if not first_name or not last_name:
+      return Response("Please provide a non-empty fist_name and last_name", status=400)
+
     try:
       # login if the user already exists
       volunteer = Volunteer.objects.get(first_name=first_name, last_name=last_name)
