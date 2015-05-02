@@ -131,7 +131,7 @@
           <paper-input label="Vorname" value="{{user.first_name}}" autofocus floatingLabel></paper-input>
           <paper-input label="Nachname" value="{{user.last_name}}" floatingLabel></paper-input>
           <div>
-            <template if="{{user.first_name.length > 0 && user.last_name.length > 0}}">
+            <template if="{{credentialsValid(user.first_name, user.last_name)}}">
               <paper-button class="tintText" on-click="{{register}}">Anmelden</paper-button>
             </template>
           <div>
@@ -239,6 +239,9 @@
     },
     getRandomLocationOffset: function() {
       return Math.random() * 0.006 - 0.003;
+    },
+    credentialsValid: function(first_name, last_name) {
+      return first_name && first_name.trim().length > 0 && last_name && last_name.trim().length > 0;
     }
   });
   </script>
