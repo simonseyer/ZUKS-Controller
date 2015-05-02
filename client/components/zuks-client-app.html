@@ -9,6 +9,7 @@
 <link rel="import" href="../bower_components/core-icons/social-icons.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/leaflet-map/leaflet-map.html">
+<link rel="import" href="../bower_components/core-a11y-keys/core-a11y-keys.html">
 
 <link rel="import" href="zuks-service/zuks-client-service.html">
 <link rel="import" href="zuks-list-item.html">
@@ -129,7 +130,9 @@
       <template if="{{!user.id}}">
         <div id="login" vertical layout>
           <paper-input label="Vorname" value="{{user.first_name}}" autofocus floatingLabel></paper-input>
-          <paper-input label="Nachname" value="{{user.last_name}}" floatingLabel></paper-input>
+          <paper-input label="Nachname" value="{{user.last_name}}" floatingLabel>
+          <core-a11y-keys keys="Enter" on-keys-pressed="{{register}}"></core-a11y-keys>
+          </paper-input>
           <div>
             <template if="{{credentialsValid(user.first_name, user.last_name)}}">
               <paper-button class="tintText" on-click="{{register}}">Anmelden</paper-button>
