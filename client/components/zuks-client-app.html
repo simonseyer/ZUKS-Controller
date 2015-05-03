@@ -143,7 +143,7 @@
 
       <template if="{{user.id}}">
         <template if="{{instructions.length == 0}}">
-          <div id="emptyList">Gleich gibt's mehr Karten</div>
+          <div id="emptyList">Keine Meldungen.</div>
         </template>
         <template repeat="{{instruction, index in instructions}}">
           <div class="item {{ {map: !!instruction.location} | tokenList }}">
@@ -191,15 +191,15 @@
       this.$.service.register();
       this.instructions.push({
         subject: "Herzlich Willkommen",
-        content: "Schön dass du bei dieser Präsentation mit machst. Schließe Karten einfach mit dem x oben rechts."
+        content: "Schön dass Du bei dieser Katastrophenschutzübung mitmachst. Schließe Karten einfach mit dem x oben rechts."
       });
       this.addCardTask = setTimeout(function() {
         this.instructions.unshift({
-          subject: "Wo bist du?",
-          content: "Gib doch bitte deinen Standort frei. Einfach oben rechts auf das Icon drücken. DATENSCHUTZ wird bei mir übrigens groß geschrieben, versprochen!"
+          subject: "Wo bist Du?",
+          content: 'Gib uns doch bitte Deinen Standort frei. Einfach oben rechts auf das Icon drücken und die Sicherheitsabfrage des Browsers positiv bestätigen.'
         });
         this.addCardTask = null;
-      }.bind(this), 4000);
+      }.bind(this), 3000);
     },
     logout: function() {
       this.$.service.logout();
@@ -220,24 +220,26 @@
       if ("geolocation" in navigator) {
         this.requestingLocation = true;
         navigator.geolocation.getCurrentPosition(function(position) {
-            this.instructions.unshift({
+          this.instructions.unshift({
             subject: "Gefunden",
-            content: "Habe deinen Standort gefunden - schau mal nach vorne auf den Beamer!"
+            content: "Wir konnten Deinen Standort erfolgreich lokalisieren!"
           });
           this.requestingLocation = false;
           this.user.location = position.coords;
           this.$.service.updateUser();
+          this.fire('user-location-finished');
         }.bind(this));
       } else {
         this.instructions.unshift({
-          subject: "Kann dich nicht finden",
-          content: "Mit deinem Browser kann dein Standort leider nicht abgerufen werden. Ich denke mir einen aus."
+          subject: "Können Dich nicht finden",
+          content: "Mit Deinem Browser kann dein Standort leider nicht abgerufen werden. Ich denke mir einen aus."
         });
         this.user.location = {
           latitude: 50.097777 + this.getRandomLocationOffset(),
           longitude: 8.216612 + this.getRandomLocationOffset()
         };
         this.$.service.updateUser();
+        this.fire('user-location-finished');
       }
     },
     getRandomLocationOffset: function() {

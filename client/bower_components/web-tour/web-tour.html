@@ -103,6 +103,7 @@ of the tour.
       * @method start
       */
     start: function() {
+      this.started = true;
       this.currentStep = -1;
       this.next();
       this.fire('start');
@@ -122,6 +123,9 @@ of the tour.
       * @method next
       */
     next: function(event) {
+      if (!this.started) {
+        return;
+      }
       // Workround: prevent duplicate events
       if (event) {
         if (event.timeStamp == this.lastNext) {
@@ -130,7 +134,7 @@ of the tour.
         this.lastNext = event.timeStamp;
       }
 
-      if (this.currentStep >= 0 && this.currentStep < this.children.length) {
+      if (!event && this.currentStep >= 0 && this.currentStep < this.children.length) {
         this.children[this.currentStep].close();
       }
 
@@ -190,6 +194,7 @@ of the tour.
       this.currentTarget = null;
       this.currentStep = -1;
       this.backdropVisible = false;
+      this.started = false;
 
       if (!suppressEvent) {
         this.fire('abort');
@@ -208,18 +213,19 @@ of the tour.
         var dialog = event.detail.target;
         var dialogMargin = parseFloat(window.getComputedStyle(dialog).marginTop);
         var targetRect = event.target.target.getBoundingClientRect();
+        var offset = this.children[this.currentStep].dialogOffset;
 
         var left = targetRect.left > window.innerWidth - targetRect.right;
 
         // Align top with the target element
-        dialog.style.top = targetRect.top - dialogMargin + 'px';
+        dialog.style.top = targetRect.top - dialogMargin + offset.top + 'px';
         if (left) {
           // Align left of the target element
-          dialog.style.right = window.innerWidth - targetRect.left + 'px';
+          dialog.style.right = window.innerWidth - targetRect.left - offset.right + 'px';
           dialog.dimensions.position = {v: 'top', h: 'right'};
         } else {
           // Align right of the target element
-          dialog.style.left = targetRect.right + 'px';
+          dialog.style.left = targetRect.right + offset.left + 'px';
           dialog.dimensions.position = {v: 'top', h: 'left'};
         }
       }

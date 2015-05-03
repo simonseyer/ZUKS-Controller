@@ -224,27 +224,71 @@ core-overlay-layer {
 	* {
 		pointer-events: auto;
 	}
+
+  
+}
+
+html /deep/ {
+	.hardware-icons {
+        margin-top: 2em;
+        margin-bottom: 2em;
+        text-align: center;
+    }
+
+    .hardware {
+        &.left {
+            margin-right: 2em;
+        }
+        &.right {
+            margin-left: 2em;
+        }
+    }
+
+    .arrow, .hardware {
+        height: 4em;
+        width: 4em;
+    }
+
+    .socials {
+        width: 400px;
+        margin: auto;
+        margin-top: 48px;
+        margin-bottom: 48px;
+        a, a:hover, a:visited {
+            text-decoration: none;
+            color: rgba(0, 0, 0, 0.87);
+            opacity: 0.9;
+            display: inline-block;
+
+            core-icon {
+                width: 5em;
+                height: 5em;
+            }
+
+            &:hover {
+                opacity: 1;
+            }
+            &.facebook {color: #3B5998;}
+            &.google-plus {
+                color: #DD4B39;
+                core-icon {
+                    width: 4.2em;
+                    padding-top: 0.8em;
+                    height: 4.2em;
+                }
+            }
+            &.twitter {color: #55ACEE;}
+            &.mail {
+                color: $zuks-color;
+                padding-top: 0.25em;
+            }
+        }
+    }
 }
 
 html /deep/ #feedback-dialog, 
 html /deep/ #about-dialog {
 	width: 600px;
-} 
-
-html /deep/ #feedback-dialog {
-	a, a:hover, a:visited {
-		text-decoration: none;
-		color: rgba(0, 0, 0, 0.87);
-		opacity: 0.9;
-
-		&:hover {
-			opacity: 1;
-		}
-		&.fb {color: #3B5998;}
-		&.google {color: #DD4B39;}
-		&.twitter {color: #55ACEE;}
-		&.mail {color: $zuks-color;}
-	}
 }
 
 html /deep/ #about-dialog {
