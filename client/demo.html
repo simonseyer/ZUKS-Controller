@@ -177,8 +177,9 @@
       </template>
     </div>
     <script type="text/javascript">
-      var showFeedbackButton = function() {
+      var finishOnboarding = function() {
         document.querySelector('#feedback-button').style.opacity = 1;
+        document.querySelector('#logoutButtonStyle').remove();
       };
       
       window.onload = function() {
@@ -204,10 +205,9 @@
         var closeButton = document.querySelector('#closeWelcomeOverlayButton');
         closeButton.addEventListener('click', function() {
           closeWelcomeOverlay();
-          showFeedbackButton();
+          finishOnboarding();
         });
       };
-
 
       var template = document.querySelector('template#demoTemplate');
       template.addEventListener('template-bound', function() {
@@ -229,11 +229,11 @@
         });
         tour.addEventListener('finish', function() {
           _paq.push(['trackGoal', 3]);
-          showFeedbackButton();
+          finishOnboarding();
         });
         tour.addEventListener('abort', function() {
           _paq.push(['trackEvent', 'Prototyp Tour', 'abort']);
-          showFeedbackButton();
+          finishOnboarding();
         });
       
         var nextFunction = function() {
@@ -249,9 +249,17 @@
         controller.addEventListener('location-request', nextFunction);
         controller.addEventListener('search-finish', nextFunction);
 
-        // tried to hide logout-button during demo-tour
-        // var logoutButton = document.querySelector('#icon');
-        // logoutButton.style.visibility= 'hidden';
+        // Hide logout button for demo tour
+        var style = document.createElement('style');
+        style.type = 'text/css';
+        style.id = 'logoutButtonStyle';
+        var css = 'html /deep/ #logoutButton { opacity: 0; }';
+        if (style.styleSheet){
+          style.styleSheet.cssText = css;
+        } else {
+          style.appendChild(document.createTextNode(css));
+        }
+        document.head.appendChild(style);
       
         this.startTour = function() {
           document.querySelector('web-tour#tour').start();
