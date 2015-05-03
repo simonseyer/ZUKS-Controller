@@ -124,20 +124,21 @@
           <web-tour-step heading="Standortfreigabe" targetSelector="html /deep/ core-header-panel">
             <p>Alle für Dich relevanten Infos erhältst Du über solche "Karten". Hier bitten wir Dich darum deinen Standort freizugeben, indem Du den Zugriff im Browser erlaubst. Dadurch können wir Dir helfen wenn Du dich verlaufen solltest oder Dich warnen wenn Du Dich in ein Gefahrengebiet begibst.</p>
           </web-tour-step>
-          <web-tour-step heading="Helfer lokalisieren" targetSelector="html /deep/ zuks-volunteer-list">
+          <web-tour-step heading="Helfer lokalisieren" autoNext="false" targetSelector="html /deep/ zuks-volunteer-list" dialogOffset="{{demoDialogOffset}}">
             <p>
               Wir in der ZUKS-Zentrale haben Dich nun auf unserer Liste. Du bist als potentieller Helfer in der Datenbank eingetragen. Finde Deinen Namen in der Liste unserer bisherigen Helfer und klicke auf 
               <core-icon icon="maps:my-location"></core-icon>.
             </p>
           </web-tour-step>
           <web-tour-step empty delay="3000"></web-tour-step>
-          <web-tour-step heading="Helfer zum Einsatz leiten" targetSelector="html /deep/ zuks-volunteer-list">
+          <web-tour-step heading="Helfer zum Einsatz leiten" autoNext="false" targetSelector="html /deep/ zuks-volunteer-list" dialogOffset="{{demoDialogOffset}}">
             <p>
               Du darfst hier einmal ZUKS-Zentrale spielen und Dich selbst an einen beliebigen Einsatzort lotsen. Klicke auf 
               <core-icon icon="maps:navigation"></core-icon>
               und suche in der Karte einen Ort aus, an dem Deine Hilfe benötigt wird.
             </p>
           </web-tour-step>
+          <web-tour-step empty></web-tour-step>
           <web-tour-step heading="Wegbeschreibung" targetSelector="html /deep/ core-header-panel">
             <p>Den Hinweis wohin es für Dich im Einsatz gehen wird und das notwendige Kartenmaterial bekommst Du direkt in der App angezeigt. Los gehts!</p>
           </web-tour-step>
@@ -216,8 +217,8 @@
           finish: 'Abschließen',
           moreInfos: 'Weitere Infos'
         }
-      
         this.tourHost = document.querySelector('div#content');
+        this.demoDialogOffset.left = 260;
       
         var tour = document.querySelector('#tour');
         tour.addEventListener('start', function() {
@@ -235,10 +236,18 @@
           showFeedbackButton();
         });
       
+        var nextFunction = function() {
+          tour.next();
+        };
+
         var client = document.querySelector('zuks-client-app');
-        client.addEventListener('login', function() {
-          document.querySelector('web-tour#tour').next();
-        });
+        client.addEventListener('login',nextFunction);
+        client.addEventListener('user-location-finished', nextFunction);
+
+        var controller = document.querySelector('zuks-app');
+        controller.addEventListener('focus-request', nextFunction);
+        controller.addEventListener('location-request', nextFunction);
+        controller.addEventListener('search-finish', nextFunction);
 
         // tried to hide logout-button during demo-tour
         // var logoutButton = document.querySelector('#icon');
