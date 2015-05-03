@@ -65,6 +65,11 @@ header {
 		}
 	}
 
+	#feedback-button, #about-button {
+		transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  		opacity: 0;
+	}
+
 	#feedback-button {
 		float: left;
 		background-color: $zuks-color;
@@ -74,11 +79,13 @@ header {
   		left: calc(50% - 162px / 2);
   		width: 162px;
   		margin-top: 9px;
-  		transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  		opacity: 0;
   		core-icon {
   			margin-right: 8px;
   		}
+	}
+
+	#about-button core-icon {
+  		margin-right: 4px;
 	}
 }
 
@@ -219,9 +226,12 @@ core-overlay-layer {
 	}
 }
 
-html /deep/ #feedback-dialog {
+html /deep/ #feedback-dialog, 
+html /deep/ #about-dialog {
 	width: 600px;
+} 
 
+html /deep/ #feedback-dialog {
 	a, a:hover, a:visited {
 		text-decoration: none;
 		color: rgba(0, 0, 0, 0.87);
@@ -234,5 +244,19 @@ html /deep/ #feedback-dialog {
 		&.google {color: #DD4B39;}
 		&.twitter {color: #55ACEE;}
 		&.mail {color: $zuks-color;}
+	}
+}
+
+html /deep/ #about-dialog {
+	h1 {
+		color: #4d9eff;
+  		font-size: 1.3em;
+	}
+	img {
+		width: 200px;
+		margin: 16px;
+	}
+	paper-button {
+		margin-left: 0;
 	}
 }

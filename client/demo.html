@@ -36,6 +36,9 @@
       <nav>
         <a href="https://www.zuks.org" class="back">ZUKS</a>
         <a href="#" class="active">Prototyp</a>
+        <a href="#" id="about-button" horizontal layout center>
+          <core-icon icon="info"></core-icon> About
+        </a>
       </nav>
     </div>
   </header>
@@ -141,12 +144,53 @@
         <paper-button class="tintText" affirmative>Schließen</paper-button>
       </paper-action-dialog>
 
+      <paper-action-dialog heading="About" id="about-dialog" backdrop>
+        <h1>ZUKS</h1>
+        <p>
+          ZUKS hat das Ziel, freiwillige Helfer bei Katastophen zu organisieren. Menschen die 
+          sich nicht langfristig und zeitraubend in Katastrophenschutz-Organisieren engagieren wollen,
+          sollen die Möglichkeit erhalten gezielt und unkompliziert zu helfen.
+        </p>
+        <p>
+          ZUKS möchte eine technische Platform schaffen, um eine große Zahl an freiwilligen Helfern
+          in Zusammenarbeit mit den bestehenden Katastrophenschutz-Institutionen organisieren zu können
+          und den unerfahrenen Helfern die nötige Hilfestellung beim Einsatz bereit zu stellen.
+        </p>
+        <h1>Anwendung</h1>
+        <p>
+          Die linke Anwendung im Monitor stellt einen Prototypen von der Software dar, die wir später
+          bei uns in der Einsatzleitung nutzen werden. Rechts siehst du den sehr frühen Stand der 
+          Anwendung, die dich später auf euren Smartphones im Einsatz begleiten wird. 
+        </p>
+        <p>
+          Beide Anwendungen kommunizieren miteinander - sendest du im Controller (der linken Anwendung) 
+          einen Einsatzbefehl an einen Helfer, so wird dieser in der App (rechts) dargestellt, wenn du
+          mit dem Helfer angemeldet bist. Das funktioniert auch über verschiedene Computer hinweg, probier
+          es doch mal mit einem Freund oder Kollegen aus!
+        </p>
+        <p>
+          Die Anwendungen befindet sich in einem sehr frühen Stadium. Wir halten es jedoch für wichtig, euch, die späteren
+          Nutzer der App, rechtzeitig in die Entwicklung einzubeziehen und euch um Feedback zu bitten.
+        </p>
+        <h1>Entwicklung</h1>
+        <p>
+          Der Protoyp ist im Rahmen der Veranstaltung Web Engeneering des Studiengangs Medieninformatik bei Herrn Professor
+          Berdux entstanden.
+          <img src="demo/hsrm.png" />
+        </p>
+        <h1>Impressum</h1>
+        <paper-button raised on-tap="{{showTerms}}">Impressum öffnen</paper-button>
+
+        <paper-button class="tintText" affirmative>Schließen</paper-button>
+      </paper-action-dialog>
+
     </template>
   </div>
 
   <script type="text/javascript">
     var showFeedbackButton = function() {
       document.querySelector('#feedback-button').style.opacity = 1;
+      document.querySelector('#about-button').style.opacity = 1;
     };
 
     window.onload = function() {
@@ -185,6 +229,9 @@
       }
 
       this.tourHost = document.querySelector('div#content');
+      this.showTerms = function() {
+        window.location.href = "https://www.zuks.org/impressum/";
+      };
 
       var tour = document.querySelector('#tour');
       tour.addEventListener('start', function() {
@@ -205,6 +252,11 @@
       var feedbackButton = document.querySelector('#feedback-button');
       feedbackButton.addEventListener('click', function() {
         document.querySelector('#feedback-dialog').open();
+      });
+
+      var aboutButton = document.querySelector('#about-button');
+      aboutButton.addEventListener('click', function() {
+        document.querySelector('#about-dialog').open();
       });
 
       // Safari hacks (IE is completely unsuported)
