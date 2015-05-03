@@ -227,6 +227,7 @@
           this.requestingLocation = false;
           this.user.location = position.coords;
           this.$.service.updateUser();
+          this.fire('user-location-finished');
         }.bind(this));
       } else {
         this.instructions.unshift({
@@ -238,6 +239,7 @@
           longitude: 8.216612 + this.getRandomLocationOffset()
         };
         this.$.service.updateUser();
+        this.fire('user-location-finished');
       }
     },
     getRandomLocationOffset: function() {
