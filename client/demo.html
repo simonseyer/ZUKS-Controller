@@ -127,10 +127,10 @@
           <web-tour-step heading="Helfer lokalisieren" targetSelector="html /deep/ zuks-volunteer-list">
             <p>
               Wir in der ZUKS-Zentrale haben Dich nun auf unserer Liste. Du bist als potentieller Helfer in der Datenbank eingetragen. Finde Deinen Namen in der Liste unserer bisherigen Helfer und klicke auf 
-              <core-icon icon="maps:my-location"></core-icon>
-              . An dieser Stelle haben wir Dich lokalisiert.
+              <core-icon icon="maps:my-location"></core-icon>.
             </p>
           </web-tour-step>
+          <web-tour-step empty delay="3000"></web-tour-step>
           <web-tour-step heading="Helfer zum Einsatz leiten" targetSelector="html /deep/ zuks-volunteer-list">
             <p>
               Du darfst hier einmal ZUKS-Zentrale spielen und Dich selbst an einen beliebigen Einsatzort lotsen. Klicke auf 
@@ -206,6 +206,8 @@
           showFeedbackButton();
         });
       };
+
+
       var template = document.querySelector('template#demoTemplate');
       template.addEventListener('template-bound', function() {
         this.tourTexts = {
@@ -237,6 +239,10 @@
         client.addEventListener('login', function() {
           document.querySelector('web-tour#tour').next();
         });
+
+        // tried to hide logout-button during demo-tour
+        // var logoutButton = document.querySelector('#icon');
+        // logoutButton.style.visibility= 'hidden';
       
         this.startTour = function() {
           document.querySelector('web-tour#tour').start();

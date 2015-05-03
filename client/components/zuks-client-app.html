@@ -143,7 +143,7 @@
 
       <template if="{{user.id}}">
         <template if="{{instructions.length == 0}}">
-          <div id="emptyList">Gleich gibt's mehr Karten</div>
+          <div id="emptyList">Keine Meldungen.</div>
         </template>
         <template repeat="{{instruction, index in instructions}}">
           <div class="item {{ {map: !!instruction.location} | tokenList }}">
