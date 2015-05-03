@@ -103,6 +103,7 @@ of the tour.
       * @method start
       */
     start: function() {
+      this.started = true;
       this.currentStep = -1;
       this.next();
       this.fire('start');
@@ -122,6 +123,9 @@ of the tour.
       * @method next
       */
     next: function(event) {
+      if (!this.started) {
+        return;
+      }
       // Workround: prevent duplicate events
       if (event) {
         if (event.timeStamp == this.lastNext) {
@@ -130,7 +134,7 @@ of the tour.
         this.lastNext = event.timeStamp;
       }
 
-      if (this.currentStep >= 0 && this.currentStep < this.children.length) {
+      if (!event && this.currentStep >= 0 && this.currentStep < this.children.length) {
         this.children[this.currentStep].close();
       }
 
@@ -190,6 +194,7 @@ of the tour.
       this.currentTarget = null;
       this.currentStep = -1;
       this.backdropVisible = false;
+      this.started = false;
 
       if (!suppressEvent) {
         this.fire('abort');
