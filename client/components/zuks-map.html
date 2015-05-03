@@ -333,7 +333,7 @@
       if (locations.length == 1) {
         this.$.map.map.setView(locations[0], 17, {animate: true});
       } else if (locations.length > 1) {
-        this.$.map.map.fitBounds(L.latLngBounds(locations));
+        this.$.map.map.fitBounds(L.latLngBounds(locations), {maxZoom: 18});
       }
     },
     /* Search section */
