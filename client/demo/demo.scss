@@ -223,74 +223,62 @@ core-overlay-layer {
 
 html /deep/ {
 	.hardware-icons {
-    margin-top: 2em;
-    margin-bottom: 2em;
-    text-align: center;
-  }
+        margin-top: 2em;
+        margin-bottom: 2em;
+        text-align: center;
+    }
 
-  .hardware {
-  	&.left {
-    	margin-right: 2em;
-  	}
-  	&.right {
-   		margin-left: 2em;
-  	}
-  }
+    .hardware {
+        &.left {
+            margin-right: 2em;
+        }
+        &.right {
+            margin-left: 2em;
+        }
+    }
 
-  .arrow, .hardware {
-    height: 4em;
-    width: 4em;
-  }
+    .arrow, .hardware {
+        height: 4em;
+        width: 4em;
+    }
 
-  a.social-link {
-    text-decoration: none;
-  }
+    .socials {
+        width: 400px;
+        margin: auto;
+        margin-top: 48px;
+        margin-bottom: 48px;
+        a, a:hover, a:visited {
+            text-decoration: none;
+            color: rgba(0, 0, 0, 0.87);
+            opacity: 0.9;
+            display: inline-block;
 
-  core-icon.social-link-icon {
-    height: 2em;
-    width: 2em;
-    text-decoration: none;
-    color: black;
-  }
+            core-icon {
+                width: 5em;
+                height: 5em;
+            }
 
-  .socials {
-    text-align: center;
-  }
-
-  .mail core-icon {
-    color: #4d9eff;
-    color: rgba(0, 0, 0, 0.67);
-  }
-
-  .google-plus core-icon {
-    color: #DD4B39;
-    height: 1.5em;
-    width: 1.5em;
-  }
-
-  .facebook core-icon {
-    color: #3B5998;
-  }
-
-  .twitter core-icon {
-    color: #55ACEE;
-  }
+            &:hover {
+                opacity: 1;
+            }
+            &.facebook {color: #3B5998;}
+            &.google-plus {
+                color: #DD4B39;
+                core-icon {
+                    width: 4.2em;
+                    padding-top: 0.8em;
+                    height: 4.2em;
+                }
+            }
+            &.twitter {color: #55ACEE;}
+            &.mail {
+                color: $zuks-color;
+                padding-top: 0.25em;
+            }
+        }
+    }
 }
 
 html /deep/ #feedback-dialog {
 	width: 600px;
-
-	a, a:hover, a:visited {
-		text-decoration: none;
-		color: rgba(0, 0, 0, 0.87);
-		opacity: 0.9;
-
-		&:hover {
-			opacity: 1;
-		}
-		&.fb {color: #3B5998;}
-		&.google {color: #DD4B39;}
-		&.twitter {color: #55ACEE;}
-		&.mail {color: $zuks-color;}
-	}
 }

@@ -144,18 +144,18 @@
           </web-tour-step>
           <web-tour-step heading="Danke für deine Hilfe!">
             <p>Dies ist vorerst das Ende unserer kleinen Demo-Tour. Wir freuen uns über Dein Lob, Deine Kritik und Deine Verbesserungsvorschläge auf jeglichen Kanälen:</p>
-            <div class="socials">
-              <a class="social-link mail" href="mailto:info@zuks.org" target="_blank" onmouseover="this.href=this.href.replace(/x/g,'');" style="color:black;">
-                <core-icon class="social-link-icon" icon="mdi:email-open"></core-icon>
+            <div class="socials" horizontal layout justified>
+              <a class="facebook" href="https://www.facebook.com/zuks.org" target="_blank">
+                <core-icon icon="mdi:facebook"></core-icon>
               </a>
-              <a class="social-link facebook" href="https://www.facebook.com/zuks.org" target="_blank">
-                <core-icon class="social-link-icon" icon="mdi:facebook"></core-icon>
+              <a class="google-plus" href="https://plus.google.com/+ZuksOrg" target="_blank">
+                <core-icon icon="mdi:google-plus"></core-icon>
               </a>
-              <a class="social-link google-plus" href="https://plus.google.com/+ZuksOrg" target="_blank">
-                <core-icon class="social-link-icon" icon="mdi:google-plus"></core-icon>
+              <a class="twitter" href="https://twitter.com/zuksDE" target="_blank">
+                <core-icon icon="mdi:twitter"></core-icon>
               </a>
-              <a class="social-link twitter" href="https://twitter.com/zuksDE" target="_blank">
-                <core-icon class="social-link-icon" icon="mdi:twitter"></core-icon>
+              <a class="mail" href="mailto:info@zuks.org" target="_blank">
+                <core-icon icon="mdi:email-open"></core-icon>
               </a>
             </div>
             <p>Viel Spaß beim weiteren Testen unsereres vorläufigen Prototyps.</p>
@@ -165,13 +165,20 @@
           <p>
             Wir freuen uns über jedes Feedback und sind gespannt auf eure Ideen! 
           </p>
-          <p>
-            Lasst gerne über
-            <a href="https://www.facebook.com/zuks.org" class="fb">Facebook</a>,
-            <a href="https://plus.google.com/+ZuksOrg" class="google">Google+</a>,
-            <a href="https://twitter.com/zuksDE" class="twitter">Twitter</a> oder per
-            <a href="mailto:info@zuks.org" class="mail">Mail</a> von euch hören.
-          </p>
+          <div class="socials" horizontal layout justified>
+            <a class="facebook" href="https://www.facebook.com/zuks.org" target="_blank">
+              <core-icon icon="mdi:facebook"></core-icon>
+            </a>
+            <a class="google-plus" href="https://plus.google.com/+ZuksOrg" target="_blank">
+              <core-icon icon="mdi:google-plus"></core-icon>
+            </a>
+            <a class="twitter" href="https://twitter.com/zuksDE" target="_blank">
+              <core-icon icon="mdi:twitter"></core-icon>
+            </a>
+            <a class="mail" href="mailto:info@zuks.org" target="_blank">
+              <core-icon icon="mdi:email-open"></core-icon>
+            </a>
+          </div>
           <paper-button class="tintText" affirmative>Schließen</paper-button>
         </paper-action-dialog>
       </template>
