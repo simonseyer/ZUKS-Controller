@@ -196,10 +196,10 @@
       this.addCardTask = setTimeout(function() {
         this.instructions.unshift({
           subject: "Wo bist Du?",
-          content: "Gib uns doch bitte Deinen Standort frei. Einfach oben rechts auf das • Icon drücken und die Sicherheitsabfrage des Browsers erlauben."
+          content: 'Gib uns doch bitte Deinen Standort frei. Einfach oben rechts auf das Icon drücken und die Sicherheitsabfrage des Browsers positiv bestätigen.'
         });
         this.addCardTask = null;
-      }.bind(this), 4000);
+      }.bind(this), 3000);
     },
     logout: function() {
       this.$.service.logout();
