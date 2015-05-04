@@ -121,3 +121,7 @@ RAVEN_CONFIG = {
 # Web Socket Service
 
 WEB_SOCKET_SERVICE_URL = r'http://localhost:8888/notify'
+# BASE_URL = ''
+# to publish the site in a sub-directory, set the variable SUB_SITE to something like e.g. "rest/"
+# do not forget the trailing slash!
+SUB_SITE=''
