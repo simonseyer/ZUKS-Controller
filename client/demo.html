@@ -356,6 +356,11 @@
           margin-top: 18%;\
         }";
       }
+      if (bowser.safari || bowser.firefox) {
+        setTimeout(function() { 
+          window.dispatchEvent(new Event('resize'));
+        }, 1000);
+      }
     });
   </script>
   <!-- Error logging -->
