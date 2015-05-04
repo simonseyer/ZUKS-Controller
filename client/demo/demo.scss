@@ -194,18 +194,25 @@ header {
 			color: $secondary-color;
 		}
 
-		.browser {
-			display: inline-block;
-			margin-right: 40px;
-			img {
-				height: 70px;
-			}
-			div {
-				text-align: center;
-				margin-top: 4px;
-				font-weight: bold;
-			}
-		}
+        #browser-list {
+            margin-left: 150px;
+            a {
+                display: inline-block;
+                margin-right: 40px;
+                text-decoration: none;
+                color:rgba(0, 0, 0, 0.87);
+                img {
+                    height: 70px;
+                }
+                div {
+                    text-align: center;
+                    margin-top: 4px;
+                    margin-bottom: 4px;
+                    font-weight: bold;
+                }
+            }
+        }
+		
 	}
 }
 
