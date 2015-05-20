@@ -36,6 +36,8 @@ class POICategory(models.Model):
 
   class Meta:
     ordering = ['name']
+    verbose_name = "Point of interest category"
+    verbose_name_plural = "Point of interest categories"
 
   def __str__(self):
     return  self.name
@@ -49,6 +51,8 @@ class POI(models.Model):
 
   class Meta:
     ordering = ['category', 'name']
+    verbose_name = "Point of interest"
+    verbose_name_plural = "Points of interest"
 
   def __str__(self):
     return "%s [%s]" % (self.name, self.category.name)
