@@ -226,10 +226,8 @@
     },
     voluneerItemTapped: function(e) {
       if (e.target.classList.contains('item')) {
-        if (this.multiSelection) {
-          this.selectVolunteer(e.target.templateInstance.model.model);
-          this.multiSelection = false;
-        }
+        this.multiSelection = false;
+        this.selectVolunteer(e.target.templateInstance.model.model);
       }
     },
     volunteerMultiSelected: function(event) {
