@@ -23,6 +23,7 @@
     "jquery-throttle-debounce": "*",
     "web-tour": "~0.5",
     "observe-js": "~0.5",
-    "reconnectingWebsocket": "joewalnes/reconnecting-websocket#~1.0.0"
+    "reconnectingWebsocket": "joewalnes/reconnecting-websocket#~1.0.0",
+    "offline-leaflet-map": "mWater/offline-leaflet-map"
   }
 }

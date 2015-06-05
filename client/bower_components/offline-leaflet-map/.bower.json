@@ -1,0 +1,14 @@
+{
+  "name": "offline-leaflet-map",
+  "homepage": "https://github.com/mWater/offline-leaflet-map",
+  "_release": "bbcf12abea",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "bbcf12abeafaa4e3e8a867fb552c23d75c8c3270"
+  },
+  "_source": "git://github.com/mWater/offline-leaflet-map.git",
+  "_target": "*",
+  "_originalSource": "mWater/offline-leaflet-map",
+  "_direct": true
+}
