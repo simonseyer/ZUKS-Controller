@@ -1,0 +1,67 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/core-icons/social-icons.html">
+
+<link rel="import" href="zuks-list-item.html">
+
+<polymer-element name="zuks-operation-list">
+  <template>
+    <style>
+      .groupIcon {
+        width: 28px;
+        height: 28px;
+        margin-right: 8px;
+        color: #4d9eff;
+      }
+
+      .time {
+        color: darkgray;
+        font-size: 0.8em;
+      }
+
+      .time.soon {
+        color: #ec7217;
+      }
+
+      .count {
+        color: darkgray;
+        font-size: 0.9em;
+        margin-top: 4px;
+      }
+    </style>
+
+    <core-list data="{{operations}}"
+                 id="list" fit>
+      <template>
+        <zuks-list-item class="item">
+          <div horizontal layout center>
+            <core-icon class="groupIcon" icon="assignment"></core-icon>
+            <div vertical layout flex>
+              <div horizontal layout>
+                <div flex>{{model.name}}</div>
+                <div class="time {{ {soon: model.soon } | tokenList }}">{{model.time}}</div>
+              </div>
+              <div class="count">{{model.count}} Helfer</div>
+            </div>
+          </div>
+        </zuks-list-item>
+      </template>
+    </core-list>
+
+  </template>
+  <script type="text/javascript" src="assign.polyfill.js"></script>
+  <script>
+  Polymer({
+    ready: function() {
+      this.operations = [
+        {name : "Sandsäcke füllen", time:'01.05. 15:45', count: 20, soon : true},
+        {name : "Betten aufbauen", time:'02.05. 18:45', count: 8, soon : false},
+        {name : "Essen ausgeben", time:'02.05. 19:00', count: 4, soon : false},
+      ]
+    }
+  });
+  </script>
+</polymer-element>

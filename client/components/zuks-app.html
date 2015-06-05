@@ -13,6 +13,7 @@
 <link rel="import" href="zuks-volunteer-list.html">
 <link rel="import" href="zuks-group-list.html">
 <link rel="import" href="zuks-poi-list.html">
+<link rel="import" href="zuks-operation-list.html">
 
 <polymer-element name="zuks-app">
 
@@ -35,6 +36,17 @@
       position: relative;;
     }
 
+    .notification-count {
+      display: inline-block;
+          margin: 6px;
+  background-color: red;
+  border-radius: 10px;
+  width: 15px;
+  height: 18px;
+  padding-top: 2px;
+  padding-left: 5px;
+    }
+
     paper-tabs::shadow #selectionBar {
       background-color: #ec7217;
     }
@@ -43,13 +55,17 @@
     }
 
     paper-tabs, core-toolbar {
-      width: 300px;
+      width: 320px;
       background-color: #4d9eff;
       color: white;
     }
 
     paper-tabs {
       font-weight: 800;
+    }
+
+    #groupList {
+      display: none;
     }
     </style>
 
@@ -61,8 +77,6 @@
     </zuks-service>
 
     <div class="container" layout horizontal>
-
-
       <div vertical layout>
         <core-toolbar>
           <div flex>ZUKS</div>
@@ -80,12 +94,12 @@
         <paper-tabs selected="{{selectedTab}}">
           <paper-tab>
             Helfer
-          </paper-tab>
-          <paper-tab>
-            Gruppen
-          </paper-tab>
+          </paper-tab>  
           <paper-tab>
             Orte
+          </paper-tab>
+          <paper-tab>
+            <span>Einsätze<span class="notification-count">3</span></span>
           </paper-tab>
         </paper-tabs>
 
@@ -97,13 +111,10 @@
                               on-focus-request="{{volunteerFocusRequested}}"
                            on-location-request="{{locationRequested}}"
                         on-message-instruction="{{messageInstructionAdded}}"
+                              on-group-selected="{{groupSelected}}"
                                             id="list">
           </zuks-volunteer-list>
-          <zuks-group-list volunteerGroups="{{volunteerGroups}}"
-                                 on-create="{{groupAdded}}"
-                                 on-update="{{groupUpdated}}"
-                                        id="groupList">
-          </zuks-group-list>
+          
           <zuks-poi-list poiCategories="{{poiCategories}}"
                                   pois="{{pois}}"
                            selectedPOI="{{selectedPOI}}"
@@ -111,7 +122,8 @@
                              on-update="{{poiUpdated}}"
                    on-location-request="{{locationRequested}}"
                                     id="poiList">
-          </zuks-group-list>
+          </zuks-poi-list>
+          <zuks-operation-list id="operationList"></zuks-operation-list>
         </core-pages>
       </div>
 
@@ -124,20 +136,13 @@
                   on-poi-select="{{poiSelected}}"
                              id="map">
       </zuks-map>
+
+      <zuks-group-list volunteerGroups="{{volunteerGroups}}"
+                                 on-create="{{groupAdded}}"
+                                 on-update="{{groupUpdated}}"
+                                        id="groupList">
+      </zuks-group-list>
     </div>
-
-    <paper-action-dialog heading="Freiwilligen hinzufügen" id="addVolunteer" backdrop="true">
-        <paper-input-decorator label="Vorname">
-          <input is="core-input" value="{{volunteer.first_name}}" autofocus />
-        </paper-input-decorator>
-        <paper-input-decorator label="Nachname">
-          <input is="core-input" value="{{volunteer.last_name}}" />
-        </paper-input-decorator>
-
-        <paper-button dismissive>Abbrechen</paper-button>
-        <paper-button on-click="{{saveVolunteer}}" affirmative>Speichern</paper-button>
-    </paper-action-dialog>
-
   </template>
   <script>
   Polymer({
@@ -153,9 +158,6 @@
         group: 1
       }
       this.$.addVolunteer.open();
-    },
-    saveVolunteer: function() {
-      this.$.service.addVolunteer(this.volunteer);
     },
     groupAdded: function(event) {
       this.$.service.addGroup(event.detail);
@@ -194,6 +196,9 @@
     },
     messageInstructionAdded: function(event) {
       this.$.service.addMessageInstruction(event.detail);
+    },
+    groupSelected: function(event) {
+      this.$.groupList.updateGroup(event.detail);
     }
   });
   </script>

@@ -45,7 +45,10 @@
   <script>
   Polymer({
     groupSelected: function(event) {
-      this.group = Object.assign({}, event.detail.data);
+      this.updateGroup(event.detail.data)
+    },
+    updateGroup: function(group) { 
+      this.group = group
       this.actionName = "aktualisieren";
       this.$.addGroup.open();
     },

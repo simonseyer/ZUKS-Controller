@@ -93,7 +93,7 @@
           selection="{{selectedVolunteersInternal}}" multi?="{{multiSelection}}"
                  id="volunteerList" fit>
       <template>
-        <div divider class="divider">
+        <div divider class="divider" on-tap="{{groupSelected}}">
           {{groupModel.name}}
         </div>
         <zuks-list-item class="item" selected="{{selected}}" on-tap="{{voluneerItemTapped}}">
@@ -298,6 +298,9 @@
         message.receiver = volunteer.id;
         this.fire("message-instruction", message);
       }, this);
+    },
+    groupSelected: function(e) {
+      this.fire("group-selected", e.target.templateInstance.model.groupModel);
     }
   });
   </script>
