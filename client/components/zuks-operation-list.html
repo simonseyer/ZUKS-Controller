@@ -7,7 +7,7 @@
 
 <link rel="import" href="zuks-list-item.html">
 
-<polymer-element name="zuks-operation-list">
+<polymer-element name="zuks-operation-list" attributes="count operations">
   <!-- Global style -->
   <style type="text/css">
      html /deep/ #operationDetail {
@@ -137,11 +137,13 @@ on-core-overlay-close-completed="{{operationOverlayClosed}}"
   <script type="text/javascript" src="assign.polyfill.js"></script>
   <script>
   Polymer({
+    computed: {
+      count: 'operations.length'
+    },
     ready: function() {
       this.operations = [
         {name : "Sandsäcke füllen", time:'01.05. 15:45', count: 20, soon : true},
         {name : "Betten aufbauen", time:'02.05. 18:45', count: 8, soon : false},
-        {name : "Essen ausgeben", time:'02.05. 19:00', count: 4, soon : false},
       ]
     },
     operationOverlayClosed: function(event) {

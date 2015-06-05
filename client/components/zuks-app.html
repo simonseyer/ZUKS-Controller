@@ -7,6 +7,7 @@
 <link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/core-icons/social-icons.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="zuks-service/zuks-service.html">
 <link rel="import" href="zuks-map.html">
@@ -72,6 +73,13 @@
     #logo {
       width: 100px;
     }
+
+    #operationToast {
+      background-color: #ec7217;
+      left: 8px;
+      width: 304px;
+    }
+
     </style>
 
     <zuks-service volunteers="{{volunteers}}"
@@ -106,7 +114,7 @@
             Orte
           </paper-tab>
           <paper-tab>
-            <span>Einsätze</span><span class="notification-count">3</span>
+            <span>Einsätze</span><span class="notification-count">{{operationCount}}</span>
           </paper-tab>
         </paper-tabs>
 
@@ -130,9 +138,11 @@
                    on-location-request="{{locationRequested}}"
                                     id="poiList">
           </zuks-poi-list>
-          <zuks-operation-list id="operationList"></zuks-operation-list>
+          <zuks-operation-list count="{{operationCount}}" id="operationList"></zuks-operation-list>
         </core-pages>
       </div>
+
+      <paper-toast text="Neuer Einsatz" id="operationToast"></paper-toast>
 
       <zuks-map flex volunteers="{{volunteers}}"
              selectedVolunteers="{{selectedVolunteers}}"
@@ -206,6 +216,14 @@
     },
     groupSelected: function(event) {
       this.$.groupList.updateGroup(event.detail);
+    },
+    executeDemoAction: function() {
+      if (this.$.operationList.count == 2) {
+        this.$.operationList.operations.push({name : "Essen ausgeben", time:'02.05. 19:00', count: 4, soon : false});
+        this.$.operationToast.show()
+      } else {
+        this.$.operationList.operations.splice(2, 1);
+      }
     }
   });
   </script>
