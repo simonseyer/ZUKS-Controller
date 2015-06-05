@@ -181,8 +181,8 @@
 
         <!-- Search result markers-->
         <template repeat="{{location, index in locationResults}}">
-          <leaflet-marker longitude="{{location.lon}}"
-                           latitude="{{location.lat}}"
+          <leaflet-marker longitude="{{location.longitude}}"
+                           latitude="{{location.latitude}}"
                            on-click="{{searchResultSelected}}"
                                icon="{{leafletIconBindings.l[index]}}">
           </leaflet-marker>
@@ -224,7 +224,7 @@
         <ul id="suggestions">
           <template repeat="{{location, index in locationResults}}">
             <li selected?="{{selectedIndex == index}}" on-mousedown="{{searchResultSelected}}">
-              <span>{{location.display_name}}</span>
+              <span>{{location.name}}</span>
             </li>
           </template>
         </ul>
@@ -235,10 +235,10 @@
         <ul id="suggestions">
           <li selected>
             <template if="{{!searchFieldFocused && selectedIndex >= 0}}">
-              {{locationResults[selectedIndex].display_name}}
+              {{locationResults[selectedIndex].name}}
             </template>
             <template if="{{freehandLocation}}">
-              {{freehandLocation.lookup.display_name}}
+              {{freehandLocation.lookup.name}}
             </template>
           </li>
         </ul>
@@ -393,7 +393,7 @@
         // Reset freehand location
         this.freehandLocation = null;
         var result = this.locationResults[this.selectedIndex];
-        var latLng = L.latLng(result.lat, result.lon);
+        var latLng = L.latLng(result.latitude, result.longitude);
         this.$.map.map.setView(latLng, 17, {animate: true});
       }
       this.checkValidity();
@@ -419,7 +419,7 @@
     checkValidity: function() {
       // The freehandLocation is valid after the address lookup
       var valid = this.selectedIndex >= 0 || (this.freehandLocation &&
-                                              this.freehandLocation.lookup.lat);
+                                              this.freehandLocation.lookup.latitude);
       this.$.submitFab.classList.toggle('valid', !!valid);
       return !!valid;
     },
@@ -434,8 +434,8 @@
       }
       return {
         location: {
-          latitude: selectedLocation.lat,
-          longitude: selectedLocation.lon
+          latitude: selectedLocation.latitude,
+          longitude: selectedLocation.longitude
         },
         address: selectedLocation.display_name
       };

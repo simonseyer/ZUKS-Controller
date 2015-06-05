@@ -1,29 +1,36 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<polymer-element name="geo-search" attributes="results address limit countrycodes delay">
+<polymer-element name="geo-search" attributes="results address limit countrycode delay">
   <script type="text/javascript"
            src="../../bower_components/jquery-throttle-debounce/jquery.ba-throttle-debounce.js">
   </script>
   <script type="text/javascript" src="../assign.polyfill.js"></script>
-  <script type="text/javascript" src="NominatimGeoServer.js"></script>
+  <script type="text/javascript" src="GisgraphyGeoServer.js"></script>
   <script>
   Polymer({
     limit: 10,
-    countrycodes: "de",
+    countrycode: "de",
     ready: function() {
-      this.server = new NominatimGeoServer(false);
+      this.server = new GisgraphyGeoServer(false);
     },
     observe: {
       address: 'dataChanged',
-      countrycodes: 'dataChanged'
+      countrycode: 'dataChanged'
     },
     dataChanged: function() {
       var params = {
         q: this.address,
-        countrycodes: this.countrycodes,
-        limit: this.limit
+        countrycode: this.countrycode
       };
       this.server.sendRequest(params, function(results) {
+        var convertedResults = []
+        results.forEach(function(result){
+          convertedResults.append({
+            name : result.fully_qualified_name,
+            latitude: result.lat,
+            longitude: result.lng,
+          })
+        })
         this.results = results;
       }.bind(this));
     },
