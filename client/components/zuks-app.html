@@ -68,6 +68,10 @@
     #groupList {
       display: none;
     }
+
+    #logo {
+      width: 100px;
+    }
     </style>
 
     <zuks-service volunteers="{{volunteers}}"
@@ -80,7 +84,9 @@
     <div class="container" layout horizontal>
       <div vertical layout>
         <core-toolbar>
-          <div flex>ZUKS</div>
+          <div flex on-tap="{{executeDemoAction}}">
+            <img id="logo" src="/res/logo@1200.png" />
+          </div>
           <div vertical layout center center-justified on-tap="{{createGroup}}" class="icon-container">
             <core-icon icon="social:group-add"></core-icon>
             <div>Gruppe erstellen</div>
