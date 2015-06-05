@@ -13,6 +13,7 @@
 <link rel="import" href="geo-search/geo-search.html">
 <link rel="import" href="geo-search/reverse-geo-search.html">
 
+
 <polymer-element name="zuks-map" attributes="volunteers selectedVolunteers pois poiCategories selectedPOI">
   <template>
     <style>
@@ -253,6 +254,8 @@
     <core-a11y-keys keys="esc" on-keys-pressed="{{abortSearch}}"></core-a11y-keys>
     <core-a11y-keys keys="enter" on-keys-pressed="{{submitSearch}}"></core-a11y-keys>
   </template>
+  <script type="text/javascript" src="../bower_components/L.EasyButton/easy-button.js"></script>
+  <script type="text/javascript" src="../bower_components/offline-leaflet-map/dist/offlinemap.js"></script>
   <script>
   Polymer({
     selectedIndex: -1,
@@ -264,6 +267,31 @@
     leafletIconBindings: {v: [], p: [], l: [], t: []},
     observe: {
       'freehandLocation.lookup' : 'checkValidity'
+    },
+    ready: function() {
+      // Hack
+      setTimeout(function() {
+        this.offlineLayer = new OfflineLayer('https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          {
+            onReady: function(){console.log('caching ready')}, 
+            onError: function(){console.log('caching not available')},
+            dbOption:"WebSQL"
+          });
+        this.offlineLayer.addTo(this.$.map.map)
+
+        L.easyButton('', 
+              function (){
+                this.offlineLayer.saveTiles(17,
+                  function(){console.log("cache started")},
+                  function(){console.log("cache success")},
+                  function(error){console.log("cache error", error)});
+              }.bind(this),
+             'Cache map',
+             this.$.map.map
+            );
+      }.bind(this),1)
+      
+
     },
     locationValid: function(location) {
       return parseFloat(location.latitude) > 0 ||
