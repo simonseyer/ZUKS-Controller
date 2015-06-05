@@ -8,6 +8,53 @@
 <link rel="import" href="zuks-list-item.html">
 
 <polymer-element name="zuks-operation-list">
+  <!-- Global style -->
+  <style type="text/css">
+     html /deep/ #operationDetail {
+      margin: 0;
+      max-width: 280px;
+      margin-top: 4px;
+      transition: transform 0.15s;
+    }
+
+    html /deep/ #operationDetail {
+      margin-top: 0;
+    }
+
+    html /deep/ #operationDetail.movedAway {
+      transform: translateX(-200%);
+    }
+
+    html /deep/ #operationDetail .actions {
+      height: 100px;
+    }
+
+    html /deep/ #operationDetail .actions div {
+      width: 120px;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+    }
+
+    html /deep/ #operationDetail core-icon {
+      margin-bottom: 8px;
+    }
+
+    html /deep/ #operationDetail paper-ripple {
+      color: #4d9eff;
+    }
+
+    html /deep/ #operationDetail paper-shadow {
+      padding: 24px;
+      margin-top: 8px;
+      margin-bottom: 4px;
+      border-radius: 2px;
+    }
+
+    html /deep/ #operationDetail paper-shadow paper-button {
+      margin-right: -10px;
+    }
+  </style>
   <template>
     <style>
       .groupIcon {
@@ -34,7 +81,8 @@
     </style>
 
     <core-list data="{{operations}}"
-                 id="list" fit>
+                 id="list" fit
+                 selection="{{selectedOperation}}">
       <template>
         <zuks-list-item class="item">
           <div horizontal layout center>
@@ -51,6 +99,40 @@
       </template>
     </core-list>
 
+   <paper-action-dialog heading="{{selectedOperation.name}}"
+      on-core-overlay-position="{{layoutOperationOverlay}}"
+on-core-overlay-close-completed="{{operationOverlayClosed}}"
+                            id="operationDetail" autoCloseDisabled>
+      <div vertical layout >
+        <div horizontal layout class="actions">
+          <div vertical layout center center-justified >
+            <core-icon icon="social:group"></core-icon>
+            <div>Gruppen zuweisen</div>
+            <paper-ripple fit class="recenteringTouch circle"></paper-ripple>
+          </div>
+          <div vertical layout center center-justified >
+            <core-icon icon="maps:my-location"></core-icon>
+            <div>Treffpunkt anzeigen</div>
+            <paper-ripple fit class="recenteringTouch circle"></paper-ripple>
+          </div>
+        </div>
+        <div class="actions" horizontal layout>
+          <div vertical layout center center-justified>
+            <core-icon icon="face"></core-icon>
+            <div>Gruppenführer wählen</div>
+            <paper-ripple fit class="recenteringTouch circle"></paper-ripple>
+          </div>
+          <div vertical layout center center-justified >
+            <core-icon icon="check"></core-icon>
+            <div>Abschließen</div>
+            <paper-ripple fit class="recenteringTouch circle"></paper-ripple>
+          </div>
+        </div>
+      </div>
+
+        <paper-button class="tintText" affirmative>Schließen</paper-button>
+    </paper-action-dialog>
+
   </template>
   <script type="text/javascript" src="assign.polyfill.js"></script>
   <script>
@@ -61,6 +143,25 @@
         {name : "Betten aufbauen", time:'02.05. 18:45', count: 8, soon : false},
         {name : "Essen ausgeben", time:'02.05. 19:00', count: 4, soon : false},
       ]
+    },
+    operationOverlayClosed: function(event) {
+      if (event.target === this.$.operationDetail) {
+        this.$.list.clearSelection();
+      }
+    },
+    layoutOperationOverlay: function(event) {
+      var thisRect = this.getBoundingClientRect();
+
+      event.target.style.left = thisRect.right + 'px';
+      event.target.style.top = thisRect.top + 'px';
+      event.target.dimensions.position = {v: 'top', h: 'left'};
+    },
+    selectedOperationChanged: function(event) {
+      if (this.selectedOperation) {
+        this.$.operationDetail.open();
+      } else {
+        this.$.operationDetail.close();
+      }
     }
   });
   </script>
