@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="../bower_components/core-list/core-list.html">
@@ -64,13 +65,21 @@
 
     paper-shadow {
       border-radius: 2px;
-      padding: 16px;
+      padding: 24px;
       transition: transform 0.4s;
+    }
+
+    paper-shadow.borderless {
+      padding: 0;
     }
 
     :host /deep/ h1 {
       margin-top: 0;
       font-size: 1.3em;
+    }
+
+    :host /deep/ h2 {
+      font-size: 1.1em;
     }
 
     paper-shadow.deleted {
@@ -82,6 +91,7 @@
       top: 0;
       right: 0;
       z-index: 1;
+      padding: 24px;
     }
 
     #emptyList {
@@ -99,6 +109,44 @@
       padding: 0;
     }
 
+    span.hilight {
+      font-weight: bold;
+      color: #4d9eff;
+    }
+
+    ul {
+      list-style: none;
+      line-height: 2em;
+      padding: 0;
+      margin: 0;
+    }
+
+    ul paper-checkbox {
+      margin-right: 8px;
+      color: #4d9eff;
+    }
+
+    ul paper-checkbox::shadow #ink[checked] {
+      color: #4d9eff;
+    }
+    ul paper-checkbox::shadow #checkbox.checked {
+      background-color: #4d9eff;
+      border-color: #4d9eff;
+    }
+
+    ul li * {
+      vertical-align: middle;
+    }
+
+    .action {
+      color: #ec7217;
+    }
+
+    #gruppenfuehrer {
+      background-image: src('/res/gruppenfuehrer.png');
+      
+    }
+
     </style>
 
     <core-style id="map-style">
@@ -109,7 +157,7 @@
       </style>
     </core-style>
 
-    <zuks-client-service instructions="{{instructions}}" user="{{user}}" id="service"></zuks-client-service>
+    <zuks-client-service instructions="{{instructions}}" user="{{user}}" id="service" on-login="{{loggedIn}}"></zuks-client-service>
 
     <core-header-panel mode="waterfall" fullbleed>
       <div class="core-header" horizontal layout center>
@@ -130,7 +178,7 @@
       <template if="{{!user.id}}">
         <div id="login" vertical layout>
           <paper-input label="Vorname" value="{{user.first_name}}" autofocus floatingLabel></paper-input>
-          <paper-input label="Nachname" value="{{user.last_name}}" floatingLabel>
+          <paper-input label="Nachname" value="{{user.last_name}}" floatingLabel>Seyer
           <core-a11y-keys keys="Enter" on-keys-pressed="{{register}}"></core-a11y-keys>
           </paper-input>
           <div>
@@ -147,12 +195,36 @@
         </template>
         <template repeat="{{instruction, index in instructions}}">
           <div class="item {{ {map: !!instruction.location} | tokenList }}">
-            <paper-shadow>
+            <paper-shadow vertical layout class="{{ {borderless: instruction.location} | tokenList }}">
               <paper-icon-button icon="close" class="close" on-click="{{dismissCard}}"></paper-icon-button>
 
               <template if="{{instruction.subject}}">
                 <h1>{{instruction.subject}}</h1>
                 {{instruction.content}}
+              </template>
+
+              <template if="{{instruction.msg == 0}}">
+                <h1>Vorbesprechung</h1>
+                <p>
+                  Dein erster Einsatz beginnt Morgen, den <span class="hilight">13.06.</span> um <span class="hilight">10 Uhr</span>. 
+                  Sei bitte um <span class="hilight">9 Uhr</span> in <span class="hilight">Hannover, Messestraße 9</span>.
+                </p>
+                <h2>Packliste</h2>
+                <ul>
+                  <li><paper-checkbox></paper-checkbox><span>Regenfeste Kleidung</span></li>
+                  <li><paper-checkbox></paper-checkbox><span>Feste Schuhe</span></li>
+                  <li><paper-checkbox></paper-checkbox><span>Smartphone</span></li>
+                  <li><paper-checkbox></paper-checkbox><span>Akkupack</span></li>
+                </ul>
+                <paper-button class="action"self-end>Navigation starten</paper-button>
+              </template>
+
+              <template if="{{instruction.msg == 1}}">
+                <h1>Gruppenführer treffen</h1>
+                <p>
+                  Du bist einer Gruppe zugeordnet worden. Gruppenführer erkennst du an folgendem Zeichen:
+                </p>
+                <div id="gruppenfuehrer"></div>
               </template>
 
               <template if="{{instruction.location}}">
@@ -170,6 +242,7 @@
                                 leafletIcon="{{leafletIconBindings.t[index]}}"
                   </leaflet-marker-icon>
                 </leaflet-map>
+                <paper-button class="action"self-end>Navigation starten</paper-button>
               </template>
             </paper-shadow>
           </div>
@@ -186,27 +259,30 @@
     ready: function() {
       this.selectedTab = 0;
       CoreStyle.g.paperInput.focusedColor = '#4d9eff';
+      this.defineOfflineCards();
+
+      this.user.first_name = 'Simon';
+      this.user.last_name = 'Seyer';
+      this.register();
+    },
+    defineOfflineCards: function() {
+      this.offlineCards = [
+        { msg: 0 },
+        { msg: 1 },];
     },
     register: function() {
       this.$.service.register();
+    },
+    loggedIn: function(event) {
       this.instructions.push({
-        subject: "Herzlich Willkommen",
-        content: "Schön dass Du bei dieser Katastrophenschutzübung mitmachst. Schließe Karten einfach mit dem x oben rechts."
+        subject: "Herzlich Willkommen, " + event.detail.first_name,
+        content: "Vielen Dank, dass du bei diesem Einsatz dabei bist. Du wirst alle wichtigen Informationen hier in dieser App erhalten. Lass uns starten und schließe die Karte mit dem X oben rechts."
       });
-      this.addCardTask = setTimeout(function() {
-        this.instructions.unshift({
-          subject: "Wo bist Du?",
-          content: 'Gib uns doch bitte Deinen Standort frei. Einfach oben rechts auf das Icon drücken und die Sicherheitsabfrage des Browsers positiv bestätigen.'
-        });
-        this.addCardTask = null;
-      }.bind(this), 3000);
     },
     logout: function() {
       this.$.service.logout();
       this.instructions = [];
-      if (this.addCardTask) {
-        clearTimeout(this.addCardTask);
-      }
+      this.defineOfflineCards();
     },
     dismissCard: function(event) {
       var item = event.target.parentElement;
@@ -214,7 +290,14 @@
       item.classList.add('deleted');
       this.async(function() {
         this.instructions.splice(index, 1);
+        this.nextCard();
       }, this, 300);
+    },
+    nextCard: function() {
+      if (this.offlineCards.length > 0) {
+        var newCard = this.offlineCards.splice(0,1)[0];
+        this.instructions.push(newCard);
+      }
     },
     locate: function() {
       if ("geolocation" in navigator) {

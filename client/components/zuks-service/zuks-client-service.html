@@ -45,7 +45,7 @@
       this.$.rest.post('volunteers/login', this.user, function(response) {
         this.user = response;
         this.$.ws.send(response.id);
-        this.fire('login', {user: this.user});
+        this.fire('login', this.user);
       }.bind(this));
     },
     logout: function() {
