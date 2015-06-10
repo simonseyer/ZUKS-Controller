@@ -5,11 +5,11 @@
            src="../../bower_components/jquery-throttle-debounce/jquery.ba-throttle-debounce.js">
   </script>
   <script type="text/javascript" src="../assign.polyfill.js"></script>
-  <script type="text/javascript" src="GisgraphyGeoServer.js"></script>
+  <script type="text/javascript" src="NominatimGeoServer.js"></script>
   <script>
   Polymer({
     ready: function() {
-      this.server = new GisgraphyGeoServer(true);
+      this.server = new NominatimGeoServer(true);
     },
     observe: {
       latitude: 'locationChanged',
@@ -18,13 +18,13 @@
     locationChanged: function() {
       var params = {
         lat: this.latitude,
-        lng: this.longitude,
+        lon: this.longitude,
       };
-      this.server.sendRequest(params, function(results) {
+      this.server.sendRequest(params, function(result) {
         this.result = {
-          name: resuls[0].name,
-          latitude: resuls[0].lat,
-          longitude: resuls[0].lng,
+          name: result.display_name,
+          latitude: result.lat,
+          longitude: result.lon,
         };
       }.bind(this));
     },

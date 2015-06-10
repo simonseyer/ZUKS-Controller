@@ -1,13 +1,14 @@
-if (typeof GisgraphyGeoServer === 'undefined') {
+if (typeof NominatimGeoServer === 'undefined') {
   (function() {
 
-    var GisgraphyGeoServer = function(reverse) {
-      this.root_url = "http://localhost:8080/";
-      this.root_url += reverse ? 'street/streetsearch' : 'fulltext/fulltextsearch';
-      this.setDelay(0);
+    var NominatimGeoServer = function(reverse) {
+      this.root_url = "http://nominatim.openstreetmap.org/";
+      this.root_url += reverse ? 'reverse' : '';
+      this.email = "simon.seyer@zuks.org";
+      this.setDelay(1000);
     };
 
-    GisgraphyGeoServer.prototype = {
+    NominatimGeoServer.prototype = {
       setDelay: function(delay) {
         this.delay = delay;
         this.throtteledRequest = Cowboy.throttle(delay, this._sendRequest);
@@ -26,6 +27,7 @@ if (typeof GisgraphyGeoServer === 'undefined') {
 
         var params = {
           format: 'json',
+          email: this.email
         };
         // Merge external and internal params
         Object.assign(params, parameters);
@@ -43,6 +45,6 @@ if (typeof GisgraphyGeoServer === 'undefined') {
       }
     }
 
-    window.GisgraphyGeoServer = GisgraphyGeoServer;
+    window.NominatimGeoServer = NominatimGeoServer;
   })();
 }
